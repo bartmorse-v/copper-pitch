@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copper — Strategic Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --copper:       #C8792A;
+    --copper-light: #E8A44A;
+    --copper-pale:  #F5C87A;
+    --copper-dark:  #8B4E12;
+    --bg:           #080808;
+    --surface:      #111111;
+    --surface-2:    #181818;
+    --border:       rgba(200,121,42,0.18);
+    --border-dim:   rgba(255,255,255,0.07);
+    --text:         #FFFFFF;
+    --text-2:       #A0A0A0;
+    --text-3:       #606060;
+    --green:        #30D158;
+    --red:          #FF453A;
+    --grad: linear-gradient(135deg, #C8792A 0%, #E8A44A 50%, #F5C87A 100%);
+    --grad-subtle: linear-gradient(135deg, rgba(200,121,42,0.15) 0%, rgba(232,164,74,0.08) 100%);
+  }
+
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide Container ── */
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .slide.exit-left {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* ── Ambient glow ── */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,121,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── Nav ── */
+  .nav {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+    background: rgba(17,17,17,0.85);
+    border: 1px solid var(--border-dim);
+    backdrop-filter: blur(20px);
+    padding: 10px 20px;
+    border-radius: 100px;
+  }
+
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-dim);
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-size: 16px;
+  }
+
+  .nav-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+
+  .nav-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-3);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .dot.active {
+    width: 20px;
+    border-radius: 3px;
+    background: var(--copper);
+  }
+
+  .slide-counter {
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 0.05em;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  /* ── Typography ── */
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+    margin-bottom: 16px;
+  }
+
+  .display {
+    font-size: clamp(52px, 6vw, 84px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+
+  .headline {
+    font-size: clamp(32px, 3.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .subhead {
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--text-2);
+  }
+
+  .copper-text {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .card-copper {
+    background: var(--grad-subtle);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  /* ── Stat Block ── */
+  .stat-num {
+    font-size: clamp(42px, 5vw, 72px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.4;
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  /* ── Divider ── */
+  .copper-line {
+    width: 48px;
+    height: 3px;
+    background: var(--grad);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  /* ── Pill / Tag ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(200,121,42,0.12);
+    border: 1px solid rgba(200,121,42,0.3);
+    color: var(--copper-light);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  /* ═══════════════════════════════════════
+     iPHONE 15 PRO MOCKUP
+  ═══════════════════════════════════════ */
+  .iphone-wrap {
+    position: relative;
+    width: 260px;
+    flex-shrink: 0;
+  }
+
+  .iphone {
+    width: 260px;
+    height: 532px;
+    background: linear-gradient(160deg, #2c2c2e 0%, #1c1c1e 40%, #161618 100%);
+    border-radius: 46px;
+    border: 1.5px solid #3a3a3c;
+    box-shadow:
+      0 0 0 0.5px #4a4a4c,
+      0 50px 100px rgba(0,0,0,0.7),
+      0 20px 40px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      inset 0 -1px 0 rgba(0,0,0,0.4);
+    position: relative;
+    padding: 12px;
+  }
+
+  /* Side buttons */
+  .iphone::before {
+    content: '';
+    position: absolute;
+    left: -3px;
+    top: 100px;
+    width: 3px;
+    height: 32px;
+    background: #2c2c2e;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 44px 0 #2c2c2e, 0 80px 0 #2c2c2e;
+  }
+
+  .iphone::after {
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: 130px;
+    width: 3px;
+    height: 64px;
+    background: #2c2c2e;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .iphone-screen {
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    border-radius: 36px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Dynamic Island */
+  .dynamic-island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 30px;
+    background: #000000;
+    border-radius: 20px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .di-camera {
+    width: 8px; height: 8px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    border: 1px solid #2a2a2a;
+  }
+
+  /* Status bar */
+  .app-status {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 20px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    z-index: 10;
+    background: transparent;
+  }
+
+  .status-time { font-size: 13px; font-weight: 700; }
+
+  .status-icons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* App content */
+  .app-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: #0A0A0A;
+  }
+
+  .app-header {
+    background: linear-gradient(160deg, #1a0d00 0%, #0d0d0d 100%);
+    padding: 56px 20px 24px;
+    flex-shrink: 0;
+  }
+
+  .app-greeting {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .app-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .app-logo {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #C8792A, #F5C87A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C8792A, #E8A44A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .app-balance-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .app-balance {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .app-balance span {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .app-change {
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Quick actions */
+  .app-actions {
+    display: flex;
+    gap: 8px;
+    padding: 16px 16px 0;
+    flex-shrink: 0;
+  }
+
+  .app-action {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 10px 4px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .action-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(200,121,42,0.3), rgba(232,164,74,0.2));
+    border: 1px solid rgba(200,121,42,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .action-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.02em;
+  }
+
+  /* Transactions */
+  .app-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 18px 8px;
+    flex-shrink: 0;
+  }
+
+  .app-txns {
+    flex: 1;
+    overflow: hidden;
+    padding: 0 12px;
+  }
+
+  .txn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .txn:last-child { border-bottom: none; }
+
+  .txn-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .txn-info { flex: 1; }
+
+  .txn-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .txn-date {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .txn-amount {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .txn-pos { color: var(--green); }
+  .txn-neg { color: rgba(255,255,255,0.8); }
+
+  /* Bottom nav */
+  .app-bottom-nav {
+    display: flex;
+    padding: 10px 8px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    flex-shrink: 0;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .nav-item-icon {
+    width: 22px; height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .nav-item-label {
+    font-size: 8px;
+    font-weight: 600;
+  }
+
+  .nav-item.active .nav-item-label { color: var(--copper-light); }
+  .nav-item:not(.active) .nav-item-label { color: rgba(255,255,255,0.3); }
+  .nav-item:not(.active) .nav-item-icon { opacity: 0.3; }
+
+  /* Copper coin logo */
+  .copper-coin {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--grad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(200,121,42,0.4);
+    letter-spacing: -0.05em;
+    flex-shrink: 0;
+  }
+
+  /* ── Comparison Table ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .compare-table th {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    text-align: left;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .compare-table th.col-copper {
+    color: var(--copper-light);
+    background: rgba(200,121,42,0.06);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .compare-table td {
+    padding: 10px 16px;
+    color: var(--text-2);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .compare-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .compare-table td.col-copper {
+    background: rgba(200,121,42,0.04);
+    color: var(--copper-light);
+    font-weight: 600;
+  }
+
+  .check { color: var(--green); font-size: 15px; }
+  .cross { color: var(--text-3); font-size: 15px; }
+
+  /* ── Competitive Quadrant ── */
+  .quadrant {
+    position: relative;
+    width: 460px;
+    height: 360px;
+    flex-shrink: 0;
+  }
+
+  .q-axis-x, .q-axis-y {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .q-axis-x {
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+  }
+
+  .q-axis-y {
+    left: 50%; top: 0; bottom: 0;
+    width: 1px;
+  }
+
+  .q-label {
+    position: absolute;
+    font-size: 10px;
+    color: var(--text-3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .q-dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .q-dot-circle {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .q-dot-name {
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--text-2);
+  }
+
+  /* ── Roadmap ── */
+  .phase {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .phase-header {
+    padding: 16px 20px;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid var(--border-dim);
+    border-bottom: none;
+  }
+
+  .phase-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+    margin-bottom: 4px;
+  }
+
+  .phase-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .phase-period {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+
+  .phase-items {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 0 0 12px 12px;
+    padding: 12px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .phase-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+
+  .phase-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--copper);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  /* ── Revenue bar ── */
+  .rev-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rev-bar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .rev-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .rev-bar-name { color: var(--text); font-weight: 500; }
+  .rev-bar-pct { color: var(--text-3); }
+
+  .rev-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .rev-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--grad);
+  }
+
+  /* ── Glow ring for logo ── */
+  .logo-glow {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .logo-glow::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,121,42,0.25) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { display: none; }
+
+  /* ── Pillar card ── */
+  .pillar {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 16px;
+    padding: 24px;
+    transition: border-color 0.3s;
+  }
+
+  .pillar:hover { border-color: var(--border); }
+
+  .pillar-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: var(--grad-subtle);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .pillar-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .pillar-body {
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+
+  /* Investment table */
+  .inv-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .inv-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+
+  .inv-table td:first-child { color: var(--text-2); }
+  .inv-table td:last-child { text-align: right; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+
+  .inv-total td {
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .inv-total td:first-child { color: var(--text); }
+  .inv-total td:last-child {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 18px;
+  }
+
+  /* Two-col layout */
+  .two-col {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .col-left { flex: 1; }
+  .col-right { flex: 1; }
+
+  /* Ask items */
+  .ask-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ask-item:last-child { border-bottom: none; }
+
+  .ask-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--grad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ask-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .ask-body { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+  /* Footer watermark */
+  .slide-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.05em;
+  }
+
+  /* SVG Icons */
+  .icon { display: inline-block; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════
+       SLIDE 1 — COVER
+  ════════════════════════════════ -->
+  <div class="slide active" data-slide="0">
+
+    <div class="two-col" style="gap:64px; align-items:center;">
+
+      <!-- Left -->
+      <div class="col-left">
+        <div class="tag">Confidential &nbsp;·&nbsp; Copper State Strategic Initiative</div>
+        <div class="display" style="margin-bottom:20px; font-size:clamp(40px,4.5vw,64px);">
+          <span class="copper-text">Copper.</span><br>
+          <span style="color:var(--text);">Banking built<br>for Arizona's<br>next generation.</span>
+        </div>
+        <p class="subhead" style="max-width:460px; margin-bottom:36px;">
+          A separate fintech brand, quietly powered by Copper State Credit Union — designed to win back the generation credit unions have been losing for a decade.
+        </p>
+
+        <!-- 3 micro stats -->
+        <div style="display:flex; gap:32px;">
+          <div>
+            <div style="font-size:28px; font-weight:800; letter-spacing:-0.03em; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">61%</div>
+            <div style="font-size:14px; color:var(--text-3); margin-top:4px; line-height:1.4;">of Gen Z already<br>use neobanks</div>
+          </div>
+          <div style="width:1px; background:var(--border-dim);"></div>
+          <div>
+            <div style="font-size:28px; font-weight:800; letter-spacing:-0.03em; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">600K+</div>
+            <div style="font-size:14px; color:var(--text-3); margin-top:4px; line-height:1.4;">underbanked<br>Arizonans</div>
+          </div>
+          <div style="width:1px; background:var(--border-dim);"></div>
+          <div>
+            <div style="font-size:28px; font-weight:800; letter-spacing:-0.03em; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">47%</div>
+            <div style="font-size:14px; color:var(--text-3); margin-top:4px; line-height:1.4;">willing to switch<br>with better UX</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — iPhone -->
+      <div class="col-right" style="display:flex; justify-content:center;">
+        <div class="iphone-wrap">
+          <!-- Subtle glow -->
+          <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:320px; height:320px; background:radial-gradient(circle, rgba(200,121,42,0.18) 0%, transparent 70%); pointer-events:none;"></div>
+
+          <div class="iphone">
+            <div class="iphone-screen">
+              <!-- Dynamic Island -->
+              <div class="dynamic-island">
+                <div class="di-camera"></div>
+              </div>
+
+              <!-- App -->
+              <div class="app-content">
+                <!-- Status bar -->
+                <div class="app-status">
+                  <span class="status-time">9:41</span>
+                  <div class="status-icons">
+                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="4" width="3" height="7" rx="1" fill="white" fill-opacity="0.4"/><rect x="4" y="2.5" width="3" height="8.5" rx="1" fill="white" fill-opacity="0.6"/><rect x="8" y="1" width="3" height="10" rx="1" fill="white" fill-opacity="0.8"/><rect x="12" y="0" width="3" height="11" rx="1" fill="white"/></svg>
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="white" fill-opacity="0.8"><path d="M8 3.2C10.2 3.2 12.2 4.1 13.7 5.6L15 4.3C13.1 2.4 10.7 1.2 8 1.2C5.3 1.2 2.9 2.4 1 4.3L2.3 5.6C3.8 4.1 5.8 3.2 8 3.2Z"/><path d="M8 6C9.4 6 10.7 6.6 11.6 7.5L12.9 6.2C11.6 4.9 9.9 4 8 4C6.1 4 4.4 4.9 3.1 6.2L4.4 7.5C5.3 6.6 6.6 6 8 6Z"/><circle cx="8" cy="10" r="1.5"/></svg>
+                    <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="white"/><path d="M23 4.5C23.8 4.9 24.5 5.4 24.5 6S23.8 7.1 23 7.5V4.5Z" fill="white" fill-opacity="0.4"/></svg>
+                  </div>
+                </div>
+
+                <!-- App Header -->
+                <div class="app-header">
+                  <div class="app-name-row">
+                    <div class="app-logo">copper</div>
+                    <div class="app-avatar">AJ</div>
+                  </div>
+                  <div class="app-balance-label">Available Balance</div>
+                  <div class="app-balance"><span>$</span>2,847<span>.50</span></div>
+                  <div class="app-change">↑ +$234.00 this month</div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="app-actions">
+                  <div class="app-action">
+                    <div class="action-icon">↑</div>
+                    <div class="action-label">Send</div>
+                  </div>
+                  <div class="app-action">
+                    <div class="action-icon">↓</div>
+                    <div class="action-label">Request</div>
+                  </div>
+                  <div class="app-action">
+                    <div class="action-icon">+</div>
+                    <div class="action-label">Add Cash</div>
+                  </div>
+                  <div class="app-action">
+                    <div class="action-icon" style="font-size:11px;">%</div>
+                    <div class="action-label">Save</div>
+                  </div>
+                </div>
+
+                <!-- Transactions -->
+                <div class="app-section-title">Recent</div>
+                <div class="app-txns">
+                  <div class="txn">
+                    <div class="txn-icon" style="background:rgba(52,199,89,0.15);">💼</div>
+                    <div class="txn-info">
+                      <div class="txn-name">Direct Deposit</div>
+                      <div class="txn-date">2 days early · Today</div>
+                    </div>
+                    <div class="txn-amount txn-pos">+$1,840</div>
+                  </div>
+                  <div class="txn">
+                    <div class="txn-icon" style="background:rgba(255,149,0,0.15);">🛒</div>
+                    <div class="txn-info">
+                      <div class="txn-name">Fry's Food</div>
+                      <div class="txn-date">Yesterday</div>
+                    </div>
+                    <div class="txn-amount txn-neg">−$67.42</div>
+                  </div>
+                  <div class="txn">
+                    <div class="txn-icon" style="background:rgba(255,55,95,0.15);">🎵</div>
+                    <div class="txn-info">
+                      <div class="txn-name">Spotify</div>
+                      <div class="txn-date">Mar 10</div>
+                    </div>
+                    <div class="txn-amount txn-neg">−$9.99</div>
+                  </div>
+                  <div class="txn">
+                    <div class="txn-icon" style="background:rgba(200,121,42,0.15);">⛽</div>
+                    <div class="txn-info">
+                      <div class="txn-name">QuikTrip · Phoenix</div>
+                      <div class="txn-date">Mar 9</div>
+                    </div>
+                    <div class="txn-amount txn-neg">−$48.00</div>
+                  </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="app-bottom-nav">
+                  <div class="nav-item active">
+                    <div class="nav-item-icon">⌂</div>
+                    <div class="nav-item-label">Home</div>
+                  </div>
+                  <div class="nav-item">
+                    <div class="nav-item-icon">↕</div>
+                    <div class="nav-item-label">Pay</div>
+                  </div>
+                  <div class="nav-item">
+                    <div class="nav-item-icon">◎</div>
+                    <div class="nav-item-label">Save</div>
+                  </div>
+                  <div class="nav-item">
+                    <div class="nav-item-icon">★</div>
+                    <div class="nav-item-label">Credit</div>
+                  </div>
+                  <div class="nav-item">
+                    <div class="nav-item-icon">☰</div>
+                    <div class="nav-item-label">More</div>
+                  </div>
+                </div>
+              </div><!-- end app-content -->
+            </div><!-- end screen -->
+          </div><!-- end iphone -->
+        </div>
+      </div>
+
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>CONFIDENTIAL</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 2 — THE PROBLEM
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="1">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">The Problem</div>
+      <div class="headline" style="margin-bottom:16px;">
+        Credit unions are becoming<br><span class="copper-text">invisible to the next generation.</span>
+      </div>
+      <p class="subhead" style="margin-bottom:52px; max-width:620px;">
+        While fintechs grew by millions of users annually, credit unions watched from the sidelines. This isn't a brand problem. It's an existential one.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+        <div class="card-copper">
+          <div class="stat-num">11%</div>
+          <div class="stat-label">of Gen Z use a credit union as their <em>primary</em> financial institution</div>
+        </div>
+        <div class="card">
+          <div class="stat-num">61%</div>
+          <div class="stat-label">of Gen Z have already adopted neobanks like Chime and Cash App</div>
+        </div>
+        <div class="card">
+          <div class="stat-num">4.7</div>
+          <div class="stat-label">fintech apps Gen Z uses on average — and a CU app isn't one of them</div>
+        </div>
+        <div class="card">
+          <div class="stat-num">42%</div>
+          <div class="stat-label">growth in digital bank account openings by Gen Z from 2024 to 2025</div>
+        </div>
+      </div>
+
+      <div style="margin-top:40px; padding:20px 28px; background:rgba(200,121,42,0.07); border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; gap:16px;">
+        <div style="font-size:28px;">⚡</div>
+        <div>
+          <div style="font-size:14px; font-weight:700; margin-bottom:4px;">The window is closing.</div>
+          <div style="font-size:13px; color:var(--text-2);">47% of Gen Z say they would switch to a credit union <strong style="color:var(--text);">if the digital experience were competitive.</strong> That opportunity won't last forever.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>01 / THE PROBLEM</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 3 — THE OPPORTUNITY
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="2">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">The Market</div>
+      <div class="headline" style="margin-bottom:12px;">
+        Arizona is one of the best markets<br><span class="copper-text">in the country for this bet.</span>
+      </div>
+      <p class="subhead" style="margin-bottom:44px;">The customers are already here. Growing fast. Underserved.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+        <div class="card-copper" style="padding:24px;">
+          <div style="font-size:11px; font-weight:600; color:var(--copper-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Population</div>
+          <div class="stat-num" style="font-size:48px;">7.58M</div>
+          <div class="stat-label">Arizonans — growing above the national average. One of the fastest-growing states in America.</div>
+        </div>
+        <div class="card" style="padding:24px;">
+          <div style="font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Gen Z + Millennials</div>
+          <div class="stat-num" style="font-size:48px;">57%</div>
+          <div class="stat-label">of Phoenix metro population. Gen Z is 26% of all new Arizona residents moving in.</div>
+        </div>
+        <div class="card" style="padding:24px;">
+          <div style="font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Underbanked</div>
+          <div class="stat-num" style="font-size:48px;">600K+</div>
+          <div class="stat-label">Arizonans with no adequate financial home. A validated, underserved market with urgency to act.</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="card" style="padding:20px 24px; display:flex; align-items:center; gap:16px;">
+          <div style="font-size:32px;">🏜️</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; margin-bottom:3px;">Arizona = Copper Country</div>
+            <div style="font-size:12px; color:var(--text-2);">Arizona is the #1 copper-producing state. Copper is on the state flag, the state quarter. The brand is authentically local before a single ad runs.</div>
+          </div>
+        </div>
+        <div class="card" style="padding:20px 24px; display:flex; align-items:center; gap:16px;">
+          <div style="font-size:32px;">⚠️</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; margin-bottom:3px;">First mover window is open — but not forever</div>
+            <div style="font-size:12px; color:var(--text-2);">Arizona Financial Credit Union launched "Azpire" for underbanked residents. The model is validated. The Gen Z brand play is still unclaimed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>02 / THE MARKET</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 4 — THE INSIGHT
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="3">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">The Insight</div>
+
+      <div style="max-width:740px; margin-bottom:52px;">
+        <div class="display" style="font-size:clamp(36px,4vw,56px); margin-bottom:20px; line-height:1.1;">
+          <span style="white-space:nowrap;">Gen Z doesn't dislike credit unions.</span><br>
+          <span class="copper-text">They just can't find one.</span>
+        </div>
+        <p class="subhead">The problem is visibility, brand, and UX — not values. Credit unions offer better rates, lower fees, and member ownership. Gen Z would love that. They just have no idea it exists.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px; display:flex; align-items:center; gap:8px;"><span style="width:8px; height:8px; border-radius:50%; background:var(--red); display:inline-block;"></span> What Gen Z Wants</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">📱</div>
+              <div style="font-size:13px; color:var(--text);">Mobile-first onboarding. Account open in 90 seconds.</div>
+            </div>
+            <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">🚫</div>
+              <div style="font-size:13px; color:var(--text);">Zero fees. Zero minimums. Zero BS.</div>
+            </div>
+            <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">💸</div>
+              <div style="font-size:13px; color:var(--text);">Get paid 2 days early. Every time.</div>
+            </div>
+            <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">🧠</div>
+              <div style="font-size:13px; color:var(--text);">Personalized money tools. Subscription manager. Budgeting.</div>
+            </div>
+            <div class="card" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">✨</div>
+              <div style="font-size:13px; color:var(--text);">A brand that feels like it was built for them.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px; display:flex; align-items:center; gap:8px;"><span style="width:8px; height:8px; border-radius:50%; background:var(--copper); display:inline-block;"></span> What Copper Delivers</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="card-copper" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">📱</div>
+              <div style="font-size:13px; color:var(--text);">90-second account open. No branch. No wait.</div>
+            </div>
+            <div class="card-copper" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">🚫</div>
+              <div style="font-size:13px; color:var(--text);">No monthly fee. No minimum. Overdraft protection.</div>
+            </div>
+            <div class="card-copper" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">💸</div>
+              <div style="font-size:13px; color:var(--text);">Early deposit — 2 days before anyone else.</div>
+            </div>
+            <div class="card-copper" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">🧠</div>
+              <div style="font-size:13px; color:var(--text);">Built-in budgeting, savings goals, subscription tracker.</div>
+            </div>
+            <div class="card-copper" style="padding:14px 18px; display:flex; align-items:center; gap:12px;">
+              <div style="font-size:18px;">🏜️</div>
+              <div style="font-size:13px; color:var(--text);">A brand built for Arizona. Not a bank. Something better.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>03 / THE INSIGHT</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 5 — INTRODUCING COPPER
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="4">
+    <div style="width:100%; max-width:1100px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+
+      <div class="logo-glow" style="margin-bottom:28px;">
+        <div style="width:80px; height:80px; border-radius:26px; background:var(--grad); display:flex; align-items:center; justify-content:center; box-shadow:0 20px 60px rgba(200,121,42,0.4);">
+          <span style="font-size:44px; font-weight:900; color:#fff; letter-spacing:-0.05em;">C</span>
+        </div>
+      </div>
+
+      <div style="font-size:64px; font-weight:900; letter-spacing:-0.04em; margin-bottom:12px;" class="copper-text">copper</div>
+      <div style="font-size:18px; color:var(--text-2); margin-bottom:52px; font-weight:400; letter-spacing:0.02em;">Separate brand. Full fintech experience. Credit union values.</div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; width:100%; max-width:900px; text-align:left;">
+        <div class="pillar">
+          <div class="pillar-icon">🏷️</div>
+          <div class="pillar-title">Separate Brand</div>
+          <div class="pillar-body">No "credit union" in the name. No legacy baggage. Copper is its own identity — designed for people who've never considered a CU.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">⚡</div>
+          <div class="pillar-title">Fintech Experience</div>
+          <div class="pillar-body">On par with Chime, Cash App, and Venmo. Mobile-first, instant onboarding, beautiful UX. The product has to earn its place on the home screen.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🏦</div>
+          <div class="pillar-title">CU Superpowers</div>
+          <div class="pillar-body">Copper State's NCUA charter and balance sheet power everything. Members get 8% loans, not 28% SpotMe. Real banking benefits, fintech wrapper.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:36px; padding:16px 32px; background:var(--surface); border:1px solid var(--border-dim); border-radius:12px; max-width:700px;">
+        <div style="font-size:13px; color:var(--text-2); line-height:1.6;">
+          <strong style="color:var(--text);">The structure:</strong> Copper operates as a separate venture backed by Copper State Credit Union's charter and capital. Members see Copper. Copper State's infrastructure does the work — invisibly.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>04 / THE PRODUCT</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 6 — THE COPPER STATE ADVANTAGE
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="5">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">Competitive Advantage</div>
+      <div class="headline" style="margin-bottom:8px;">Copper does what Chime <span class="copper-text">literally cannot.</span></div>
+      <p class="subhead" style="margin-bottom:36px; max-width:580px;">Chime spent hundreds of millions trying to build what Copper State already has. The charter. The balance sheet. The trust.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:32%;">Feature</th>
+            <th class="col-copper">Copper</th>
+            <th>Chime</th>
+            <th>Traditional CU</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No monthly fees</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Early paycheck (2 days)</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>90-sec mobile onboarding</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Personal loans at CU rates (8–12%)</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Auto loans</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Savings APY 4–5%</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td style="color:var(--text-2); font-size:12px;">0.75%</td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Member ownership / equity</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>No sponsor bank dependency</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Gen Z brand appeal</td>
+            <td class="col-copper"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:20px; font-size:12px; color:var(--text-3);">Chime's structural risk: dependent on The Bancorp Bank and Stride Bank for all operations. If either exits, Chime's product collapses. Copper State IS the bank.</div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>05 / ADVANTAGE</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 7 — TECHNOLOGY
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="6">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">Technology Strategy</div>
+      <div class="headline" style="margin-bottom:8px;">Launch fast. <span class="copper-text">Own the roadmap.</span></div>
+      <p class="subhead" style="margin-bottom:36px; max-width:600px;">As a separate venture, Copper can choose modern infrastructure — no legacy core constraints. Three paths to market.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
+        <div class="card-copper" style="position:relative;">
+          <div style="position:absolute; top:16px; right:16px; background:var(--copper); color:#fff; font-size:9px; font-weight:700; padding:3px 8px; border-radius:100px; letter-spacing:0.08em;">RECOMMENDED</div>
+          <div style="font-size:11px; font-weight:700; color:var(--copper-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Option A</div>
+          <div style="font-size:16px; font-weight:700; margin-bottom:4px;">BaaS Platform</div>
+          <div style="font-size:12px; color:var(--text-2); margin-bottom:16px; line-height:1.5;">Unit, Synctera, or Treasury Prime. Full API suite: accounts, cards, payments, compliance. Copper State provides charter backing.</div>
+          <div style="display:flex; justify-content:space-between; font-size:12px;">
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Time to market</div><div style="color:var(--green); font-weight:700;">6–9 months</div></div>
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Investment</div><div style="font-weight:700;">$$</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:11px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Option B</div>
+          <div style="font-size:16px; font-weight:700; margin-bottom:4px;">Modern Core</div>
+          <div style="font-size:12px; color:var(--text-2); margin-bottom:16px; line-height:1.5;">Mambu or Thought Machine as core. Full ownership of tech stack. Better unit economics at scale. Path to licensing the platform to other CUs.</div>
+          <div style="display:flex; justify-content:space-between; font-size:12px;">
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Time to market</div><div style="font-weight:700;">12–18 months</div></div>
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Investment</div><div style="font-weight:700;">$$$</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:11px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Option C</div>
+          <div style="font-size:16px; font-weight:700; margin-bottom:4px;">CU White-Label</div>
+          <div style="font-size:12px; color:var(--text-2); margin-bottom:16px; line-height:1.5;">Narmi (built for credit unions). Fastest and lowest risk. Case studies: 3x account growth in 30 days. Less differentiated UX.</div>
+          <div style="display:flex; justify-content:space-between; font-size:12px;">
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Time to market</div><div style="font-weight:700;">3–4 months</div></div>
+            <div><div style="color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">Investment</div><div style="font-weight:700;">$</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:18px 24px; background:rgba(200,121,42,0.07); border:1px solid var(--border); border-radius:12px; font-size:13px; color:var(--text-2); line-height:1.6;">
+        <strong style="color:var(--text);">Strategy recommendation:</strong> Launch on Option A (Unit or Synctera) for speed to market and brand differentiation. Migrate to Option B at 50,000 members when unit economics support the investment in full stack ownership — and optionally license the platform to other Arizona credit unions as a revenue stream.
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>06 / TECHNOLOGY</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 8 — BUSINESS MODEL
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="7">
+    <div class="two-col" style="gap:56px;">
+      <div class="col-left">
+        <div class="eyebrow">Business Model</div>
+        <div class="headline" style="margin-bottom:12px;">Revenue that <span class="copper-text">compounds.</span></div>
+        <p class="subhead" style="margin-bottom:32px;">Chime earns interchange only. Copper earns interchange <em>plus</em> loan spread — the real money in banking.</p>
+
+        <div class="rev-bar-wrap" style="margin-bottom:32px;">
+          <div class="rev-bar-row">
+            <div class="rev-bar-label"><span class="rev-bar-name">Interchange fees (debit swipes)</span><span class="rev-bar-pct">Day 1</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:60%;"></div></div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-label"><span class="rev-bar-name">Loan interest — personal &amp; auto (CU rates)</span><span class="rev-bar-pct">Month 6+</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:85%;"></div></div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-label"><span class="rev-bar-name">Savings spread (deposit funding)</span><span class="rev-bar-pct">Month 6+</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:70%;"></div></div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-label"><span class="rev-bar-name">Copper Pro premium tier ($5/mo)</span><span class="rev-bar-pct">Month 12+</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:30%;"></div></div>
+          </div>
+        </div>
+
+        <div style="font-size:12px; color:var(--text-3); line-height:1.6;">
+          Chime needs 16 million users to make interchange work. Copper needs far fewer — because CU loan margins are 10–15x interchange margins.
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="card-copper">
+            <div style="font-size:11px; color:var(--copper-light); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Industry avg ARPU</div>
+            <div class="stat-num" style="font-size:40px;">$30</div>
+            <div class="stat-label">Most neobanks, annually</div>
+          </div>
+          <div class="card-copper">
+            <div style="font-size:11px; color:var(--copper-light); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Copper target ARPU</div>
+            <div class="stat-num" style="font-size:40px;">$100+</div>
+            <div class="stat-label">With CU lending products</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px;">
+          <div style="font-size:13px; font-weight:700; margin-bottom:12px; color:var(--text);">Path to break-even</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; padding-bottom:8px; border-bottom:1px solid var(--border-dim);">
+              <span style="color:var(--text-2);">Active members needed</span>
+              <span style="font-weight:600; color:var(--text);">15,000–20,000</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; padding-bottom:8px; border-bottom:1px solid var(--border-dim);">
+              <span style="color:var(--text-2);">25K members × $100 ARPU</span>
+              <span style="font-weight:600; color:var(--green);">$2.5M / year</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span style="color:var(--text-2);">50K members × $120 ARPU</span>
+              <span style="font-weight:600; color:var(--green);">$6M / year</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:14px 18px; background:rgba(48,209,88,0.08); border:1px solid rgba(48,209,88,0.2); border-radius:12px; font-size:12px; color:var(--text-2); line-height:1.5;">
+          <strong style="color:var(--green);">Nubank model validation:</strong> Nubank started with interchange, cross-sold credit cards and personal loans — reaching ~$96 ARPU and $2B net income in 2024. Copper's CU charter makes this playbook easier, not harder.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>07 / BUSINESS MODEL</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 9 — COMPETITIVE LANDSCAPE
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="8">
+    <div class="two-col" style="gap:64px; align-items:flex-start;">
+      <div class="col-left">
+        <div class="eyebrow">Market Position</div>
+        <div class="headline" style="margin-bottom:12px;">Copper owns a <span class="copper-text">quadrant no one else occupies.</span></div>
+        <p class="subhead" style="margin-bottom:32px;">The combination of fintech-grade UX <em>and</em> credit union financial benefits doesn't exist anywhere in Arizona today.</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card" style="padding:16px 20px; display:flex; gap:14px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--green); flex-shrink:0;"></div>
+            <div style="font-size:12px; color:var(--text-2); line-height:1.5;"><strong style="color:var(--text);">Copper</strong> — Great UX + Great rates. The only player in the top-right. Unclaimed territory.</div>
+          </div>
+          <div class="card" style="padding:16px 20px; display:flex; gap:14px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:50%; background:#64B5F6; flex-shrink:0;"></div>
+            <div style="font-size:12px; color:var(--text-2); line-height:1.5;"><strong style="color:var(--text);">Chime / Varo / Current</strong> — Great UX, weak financial products. No loans, low APY, VC-dependent.</div>
+          </div>
+          <div class="card" style="padding:16px 20px; display:flex; gap:14px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:50%; background:#888; flex-shrink:0;"></div>
+            <div style="font-size:12px; color:var(--text-2); line-height:1.5;"><strong style="color:var(--text);">Traditional CUs</strong> — Great financial products, poor UX. Invisible to Gen Z.</div>
+          </div>
+          <div class="card" style="padding:16px 20px; display:flex; gap:14px; align-items:center;">
+            <div style="width:10px; height:10px; border-radius:50%; background:#444; flex-shrink:0;"></div>
+            <div style="font-size:12px; color:var(--text-2); line-height:1.5;"><strong style="color:var(--text);">Big Banks</strong> — Poor UX, poor rates. Held by inertia alone.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right" style="display:flex; justify-content:center;">
+        <div class="quadrant">
+          <!-- Axes -->
+          <div class="q-axis-x"></div>
+          <div class="q-axis-y"></div>
+
+          <!-- Axis labels -->
+          <div class="q-label" style="bottom:8px; left:50%; transform:translateX(-50%);">Poor Financial Products</div>
+          <div class="q-label" style="top:8px; left:50%; transform:translateX(-50%);">Great Financial Products</div>
+          <div class="q-label" style="left:6px; top:50%; transform:translateY(-50%) rotate(-90deg); transform-origin:center;">Poor UX</div>
+          <div class="q-label" style="right:0px; top:50%; transform:translateY(-50%) rotate(90deg); transform-origin:center;">Great UX</div>
+
+          <!-- Copper -->
+          <div class="q-dot" style="top:20%; left:72%;">
+            <div class="q-dot-circle" style="width:52px; height:52px; background:var(--grad); box-shadow:0 8px 32px rgba(200,121,42,0.5);">
+              <span style="font-size:11px; font-weight:800;">copper</span>
+            </div>
+            <div class="q-dot-name" style="color:var(--copper-light);">Target</div>
+          </div>
+
+          <!-- Chime -->
+          <div class="q-dot" style="top:68%; left:70%;">
+            <div class="q-dot-circle" style="width:40px; height:40px; background:#1a6b3c;">Chime</div>
+            <div class="q-dot-name">Chime</div>
+          </div>
+
+          <!-- Varo -->
+          <div class="q-dot" style="top:58%; left:78%;">
+            <div class="q-dot-circle" style="width:30px; height:30px; background:#2a4a8a; font-size:8px;">Varo</div>
+            <div class="q-dot-name">Varo</div>
+          </div>
+
+          <!-- Traditional CUs -->
+          <div class="q-dot" style="top:25%; left:28%;">
+            <div class="q-dot-circle" style="width:40px; height:40px; background:#333; font-size:8px; text-align:center; line-height:1.2;">Trad<br>CUs</div>
+            <div class="q-dot-name">Trad. CUs</div>
+          </div>
+
+          <!-- Big Banks -->
+          <div class="q-dot" style="top:72%; left:25%;">
+            <div class="q-dot-circle" style="width:44px; height:44px; background:#1a1a3a; font-size:8px;">Big<br>Banks</div>
+            <div class="q-dot-name">Big Banks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>08 / MARKET POSITION</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 10 — ROADMAP
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="9">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">Execution Roadmap</div>
+      <div class="headline" style="margin-bottom:8px;">From decision to launch <span class="copper-text">in 9 months.</span></div>
+      <p class="subhead" style="margin-bottom:36px;">Three phases. Disciplined execution. Clear milestones at each stage.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative;">
+        <!-- connector line -->
+        <div style="position:absolute; top:38px; left:calc(33% + 10px); right:calc(33% + 10px); height:2px; background:var(--grad); z-index:-1;"></div>
+
+        <!-- Phase 1 -->
+        <div class="phase" style="padding-right:16px;">
+          <div class="phase-header" style="background:rgba(200,121,42,0.12); border-color:var(--border);">
+            <div class="phase-label">Phase 1 · Months 1–9</div>
+            <div class="phase-title">Build &amp; Launch</div>
+            <div class="phase-period">Q2–Q4 2026</div>
+          </div>
+          <div class="phase-items">
+            <div class="phase-item"><div class="phase-dot"></div>Select infrastructure vendor (Unit/Synctera)</div>
+            <div class="phase-item"><div class="phase-dot"></div>Build Copper brand — name, identity, app UI</div>
+            <div class="phase-item"><div class="phase-dot"></div>NCUA approval &amp; card network partnership</div>
+            <div class="phase-item"><div class="phase-dot"></div>Hire product + engineering team (or agency)</div>
+            <div class="phase-item"><div class="phase-dot"></div>Beta: 500 members (CSCU staff + families)</div>
+            <div class="phase-item"><div class="phase-dot" style="background:var(--green);"></div><strong style="color:var(--green); font-size:12px;">Public launch — Arizona</strong></div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase" style="padding: 0 8px;">
+          <div class="phase-header" style="background:var(--surface-2);">
+            <div class="phase-label">Phase 2 · Months 10–18</div>
+            <div class="phase-title">Grow</div>
+            <div class="phase-period">Q1–Q3 2027</div>
+          </div>
+          <div class="phase-items">
+            <div class="phase-item"><div class="phase-dot"></div>Reach 10,000 active members</div>
+            <div class="phase-item"><div class="phase-dot"></div>Launch personal loan product (CU rates)</div>
+            <div class="phase-item"><div class="phase-dot"></div>Launch Copper Pro premium tier ($5/mo)</div>
+            <div class="phase-item"><div class="phase-dot"></div>University + gig worker marketing push</div>
+            <div class="phase-item"><div class="phase-dot"></div>Launch auto loan product</div>
+            <div class="phase-item"><div class="phase-dot" style="background:var(--green);"></div><strong style="color:var(--green); font-size:12px;">Break-even target</strong></div>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase" style="padding-left:16px;">
+          <div class="phase-header" style="background:var(--surface-2);">
+            <div class="phase-label">Phase 3 · Months 19–36</div>
+            <div class="phase-title">Scale</div>
+            <div class="phase-period">Q4 2027–Q2 2028</div>
+          </div>
+          <div class="phase-items">
+            <div class="phase-item"><div class="phase-dot"></div>50,000 active members</div>
+            <div class="phase-item"><div class="phase-dot"></div>Expand to Southwest markets</div>
+            <div class="phase-item"><div class="phase-dot"></div>Evaluate full tech stack ownership</div>
+            <div class="phase-item"><div class="phase-dot"></div>License Copper platform to other AZ CUs</div>
+            <div class="phase-item"><div class="phase-dot"></div>Bilingual app for Latino community</div>
+            <div class="phase-item"><div class="phase-dot" style="background:var(--green);"></div><strong style="color:var(--green); font-size:12px;">Platform asset: $6M+ ARR</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>09 / ROADMAP</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 11 — GO TO MARKET
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="10">
+    <div style="width:100%; max-width:1100px;">
+      <div class="eyebrow">Go-to-Market</div>
+      <div class="headline" style="margin-bottom:8px;">Meet Gen Z <span class="copper-text">where they actually are.</span></div>
+      <p class="subhead" style="margin-bottom:36px; max-width:580px;">Target CAC under $40. Activation trigger: first direct deposit. Arizona only at launch.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px;">
+        <div class="pillar">
+          <div class="pillar-icon">🎓</div>
+          <div class="pillar-title">University Partnerships</div>
+          <div class="pillar-body">ASU, U of A, Grand Canyon University. On-campus presence, student perks, first direct deposit bonus. ASU alone: 80,000+ students.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🚗</div>
+          <div class="pillar-title">Gig Worker Segment</div>
+          <div class="pillar-body">DoorDash, Instacart, Uber drivers in Phoenix metro. Early deposit is their #1 pain point. Copper solves it. Ready-made audience of 150K+ in AZ.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">📲</div>
+          <div class="pillar-title">Social-First Marketing</div>
+          <div class="pillar-body">TikTok and Instagram — financial content, not ads. Personal finance for Gen Z is a massive content category. Copper earns its place organically.</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <div class="pillar">
+          <div class="pillar-icon">🤝</div>
+          <div class="pillar-title">Referral Program</div>
+          <div class="pillar-body">$20 for member + $20 for referral on first direct deposit. Virality is built into the product. Gen Z shares financial wins publicly.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🏢</div>
+          <div class="pillar-title">Employer Partnerships</div>
+          <div class="pillar-body">Pitch Copper's early deposit feature as an employee benefit. Target AZ employers with hourly workforces first — retail, hospitality, logistics.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🌮</div>
+          <div class="pillar-title">Latino Community</div>
+          <div class="pillar-body">Arizona is 32% Hispanic. Bilingual app + community-focused positioning targets the underbanked segment with highest urgency and switching intent.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>10 / GO-TO-MARKET</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 12 — INVESTMENT
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="11">
+    <div class="two-col" style="gap:56px; align-items:flex-start;">
+      <div class="col-left">
+        <div class="eyebrow">Investment Required</div>
+        <div class="headline" style="margin-bottom:12px;">$1.5M to own a <span class="copper-text">generation.</span></div>
+        <p class="subhead" style="margin-bottom:32px;">Year 1–2 investment to reach 10,000 active members and break-even trajectory.</p>
+
+        <table class="inv-table">
+          <tbody>
+            <tr>
+              <td>Technology platform + integration</td>
+              <td>$150K – $250K</td>
+            </tr>
+            <tr>
+              <td>App design + development</td>
+              <td>$200K – $350K</td>
+            </tr>
+            <tr>
+              <td>Brand development</td>
+              <td>$25K – $50K</td>
+            </tr>
+            <tr>
+              <td>Regulatory, legal &amp; compliance</td>
+              <td>$75K – $125K</td>
+            </tr>
+            <tr>
+              <td>Member acquisition (10K @ $40 CAC)</td>
+              <td>$400K</td>
+            </tr>
+            <tr>
+              <td>Team — product, ops, marketing (Year 1)</td>
+              <td>$300K – $500K</td>
+            </tr>
+            <tr class="inv-total">
+              <td>Total Year 1–2 Investment</td>
+              <td>$1.15M – $1.7M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-right">
+        <div style="margin-bottom:20px;">
+          <div style="font-size:12px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px;">Return on Investment</div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="card-copper">
+              <div style="font-size:11px; color:var(--copper-light); margin-bottom:4px; font-weight:600;">Year 3 — 25K Members</div>
+              <div class="stat-num" style="font-size:40px;">$2.5M</div>
+              <div class="stat-label">Annual recurring revenue at $100 ARPU</div>
+            </div>
+            <div class="card">
+              <div style="font-size:11px; color:var(--text-3); margin-bottom:4px; font-weight:600;">Year 4 — 50K Members</div>
+              <div class="stat-num" style="font-size:40px;">$6M+</div>
+              <div class="stat-label">Annual recurring revenue at $120 ARPU</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:16px 20px; background:rgba(48,209,88,0.07); border:1px solid rgba(48,209,88,0.2); border-radius:12px;">
+          <div style="font-size:12px; font-weight:700; color:var(--green); margin-bottom:6px;">Beyond direct revenue</div>
+          <div style="font-size:12px; color:var(--text-2); line-height:1.6;">Every Copper member is a potential Copper State loan, mortgage, or auto finance customer. The member acquisition cost for a $20K auto loan closed at CU rates pays back the entire CAC investment in a single transaction.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>11 / INVESTMENT</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 13 — THE ASK
+  ════════════════════════════════ -->
+  <div class="slide" data-slide="12">
+    <div style="width:100%; max-width:1100px;">
+      <div class="two-col" style="gap:64px; align-items:flex-start;">
+        <div class="col-left">
+          <div class="eyebrow">The Ask</div>
+          <div class="headline" style="margin-bottom:12px;">Five decisions.<br><span class="copper-text">One generation.</span></div>
+          <p class="subhead" style="margin-bottom:32px; max-width:380px;">What Copper State Credit Union is being asked to commit to — and what it gets in return.</p>
+
+          <div style="padding:20px 24px; background:var(--grad-subtle); border:1px solid var(--border); border-radius:16px;">
+            <div style="font-size:12px; font-weight:700; margin-bottom:12px; color:var(--text);">What Copper State gets in return</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; gap:10px; font-size:12px; color:var(--text-2);">
+                <span style="color:var(--green);">✓</span> New members from a demographic lost for 10 years
+              </div>
+              <div style="display:flex; gap:10px; font-size:12px; color:var(--text-2);">
+                <span style="color:var(--green);">✓</span> Loan origination volume at profitable CU rates
+              </div>
+              <div style="display:flex; gap:10px; font-size:12px; color:var(--text-2);">
+                <span style="color:var(--green);">✓</span> A platform asset that appreciates in value
+              </div>
+              <div style="display:flex; gap:10px; font-size:12px; color:var(--text-2);">
+                <span style="color:var(--green);">✓</span> First-mover positioning in Arizona fintech
+              </div>
+              <div style="display:flex; gap:10px; font-size:12px; color:var(--text-2);">
+                <span style="color:var(--green);">✓</span> A future licensing play for other CUs nationwide
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-right">
+          <div class="ask-item">
+            <div class="ask-num">1</div>
+            <div>
+              <div class="ask-title">Commit $2.5M investment</div>
+              <div class="ask-body">Fund Year 1–2 operations as a CU subsidiary investment. Structure as a separate entity with its own P&amp;L and governance.</div>
+            </div>
+          </div>
+          <div class="ask-item">
+            <div class="ask-num">2</div>
+            <div>
+              <div class="ask-title">Provide charter backing</div>
+              <div class="ask-body">Allow Copper to operate under Copper State's NCUA coverage, providing member deposit insurance on day one without a separate bank charter.</div>
+            </div>
+          </div>
+          <div class="ask-item">
+            <div class="ask-num">3</div>
+            <div>
+              <div class="ask-title">Designate an executive sponsor</div>
+              <div class="ask-body">An internal champion to navigate NCUA approvals, board alignment, and card network partnerships. Speed matters here.</div>
+            </div>
+          </div>
+          <div class="ask-item">
+            <div class="ask-num">4</div>
+            <div>
+              <div class="ask-title">Approve full brand separation</div>
+              <div class="ask-body">Copper operates independently — its own name, identity, leadership, and product roadmap. No "powered by Copper State" on the home screen.</div>
+            </div>
+          </div>
+          <div class="ask-item" style="border-bottom:none;">
+            <div class="ask-num">5</div>
+            <div>
+              <div class="ask-title">Set a 90-day decision timeline</div>
+              <div class="ask-body">Arizona Financial already launched a competitor. The Gen Z brand window is open now — not in 18 months after 12 committee reviews.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>COPPER — STRATEGIC PITCH · MARCH 2026</span>
+      <span>CONFIDENTIAL</span>
+    </div>
+  </div>
+
+</div><!-- end deck -->
+
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <button class="nav-btn" id="prev" title="Previous">←</button>
+  <div class="nav-dots" id="dots"></div>
+  <button class="nav-btn" id="next" title="Next">→</button>
+  <div class="slide-counter" id="counter">1 / 13</div>
+</nav>
+
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+
+    const direction = n > current ? 1 : -1;
+
+    slides[current].classList.remove('active');
+    slides[current].style.transform = `translateX(${-direction * 60}px)`;
+    slides[current].style.opacity = '0';
+
+    setTimeout(() => {
+      slides[current].style.transform = '';
+      slides[current].style.opacity = '';
+      slides[current].style.transition = 'none';
+      setTimeout(() => slides[current].style.transition = '', 10);
+    }, 450);
+
+    current = n;
+
+    slides[current].style.transform = `translateX(${direction * 60}px)`;
+    slides[current].style.opacity = '0';
+    slides[current].style.transition = 'none';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        slides[current].style.transition = '';
+        slides[current].classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+
+    counter.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  document.getElementById('prev').onclick = () => goTo(current - 1);
+  document.getElementById('next').onclick = () => goTo(current + 1);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault(); goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goTo(current - 1);
+    }
+  });
+
+  // Swipe support
+  let touchX = 0;
+  document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) goTo(current + (dx > 0 ? 1 : -1));
+  });
+</script>
+</body>
+</html>
