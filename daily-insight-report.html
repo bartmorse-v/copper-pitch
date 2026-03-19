@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Insight Report · Vestibule Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:         #1A6FD4;
+    --blue-light:   #4A9FFF;
+    --blue-pale:    #A8D0FF;
+    --bg:           #080810;
+    --surface:      #0F1018;
+    --surface-2:    #161820;
+    --border:       rgba(26,111,212,0.2);
+    --border-dim:   rgba(255,255,255,0.07);
+    --text:         #FFFFFF;
+    --text-2:       #9DA3B4;
+    --text-3:       #4A5068;
+    --green:        #30D158;
+    --amber:        #FF9F0A;
+    --grad: linear-gradient(135deg, #1A6FD4 0%, #4A9FFF 60%, #A8D0FF 100%);
+    --grad-subtle: linear-gradient(135deg, rgba(26,111,212,0.12) 0%, rgba(74,159,255,0.06) 100%);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(8,8,16,0.9); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-dim);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 60px;
+  }
+
+  .topbar-brand { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
+  .topbar-brand span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .topbar-meta { font-size: 12px; color: var(--text-3); letter-spacing: 0.04em; }
+
+  /* ── Layout ── */
+  .page { max-width: 880px; margin: 0 auto; padding: 120px 40px 120px; }
+
+  section { margin-bottom: 96px; }
+
+  .divider { height: 1px; background: var(--border-dim); margin: 80px 0; }
+
+  .blue-rule { width: 48px; height: 3px; background: var(--grad); border-radius: 2px; margin-bottom: 28px; }
+
+  /* ── Typography ── */
+  .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue-light); margin-bottom: 14px; display: block;
+  }
+
+  h1 { font-size: clamp(48px, 7vw, 82px); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 28px; }
+  h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 20px; }
+  h3 { font-size: 19px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 10px; }
+  h4 { font-size: 13px; font-weight: 700; color: var(--blue-light); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+
+  p { font-size: 16px; line-height: 1.75; color: var(--text-2); margin-bottom: 16px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  .blue-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .lead { font-size: 20px; line-height: 1.65; color: var(--text-2); font-weight: 400; }
+
+  /* ── Cards ── */
+  .card { background: var(--surface); border: 1px solid var(--border-dim); border-radius: 16px; padding: 32px; }
+  .card-blue { background: var(--grad-subtle); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* ── Stat ── */
+  .stat-num { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .stat-label { font-size: 13px; color: var(--text-2); margin-top: 8px; line-height: 1.4; }
+
+  /* ── Fact chips ── */
+  .fact-strip { display: flex; gap: 14px; flex-wrap: wrap; margin: 32px 0; }
+  .fact-chip { background: var(--surface); border: 1px solid var(--border-dim); border-radius: 100px; padding: 10px 20px; font-size: 13px; color: var(--text-2); }
+  .fact-chip strong { color: var(--blue-light); }
+
+  /* ── Callout ── */
+  .callout { border-left: 3px solid var(--blue); padding: 20px 28px; background: var(--surface); border-radius: 0 12px 12px 0; margin: 32px 0; }
+  .callout p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+  /* ── System diagram ── */
+  .system-flow { display: flex; align-items: center; gap: 0; margin: 40px 0; overflow-x: auto; }
+
+  .flow-node {
+    flex-shrink: 0; background: var(--surface); border: 1px solid var(--border-dim);
+    border-radius: 14px; padding: 20px 18px; text-align: center; width: 140px;
+  }
+  .flow-node.active { background: var(--grad-subtle); border-color: var(--border); }
+  .flow-node-icon { font-size: 22px; margin-bottom: 8px; }
+  .flow-node-label { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .flow-node-sub { font-size: 10px; color: var(--text-3); margin-top: 4px; line-height: 1.4; }
+
+  .flow-arrow {
+    font-size: 18px; color: var(--text-3); flex-shrink: 0;
+    padding: 0 8px; display: flex; align-items: center;
+  }
+
+  /* ── Phase blocks ── */
+  .phase { border: 1px solid var(--border-dim); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
+
+  .phase-header {
+    display: flex; align-items: center; gap: 20px;
+    padding: 26px 32px; border-bottom: 1px solid var(--border-dim);
+    background: var(--surface);
+  }
+
+  .phase-num-wrap { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--grad-subtle); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .phase-num { font-size: 15px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .phase-title { font-size: 17px; font-weight: 700; }
+  .phase-weeks { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+  .phase-cost { margin-left: auto; font-size: 16px; font-weight: 700; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; flex-shrink: 0; }
+
+  .phase-body { padding: 28px 32px; background: var(--bg); }
+  .phase-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .activity-list, .deliverable-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .activity-list li { font-size: 14px; color: var(--text-2); padding-left: 16px; position: relative; line-height: 1.5; }
+  .activity-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-3); }
+  .deliverable-list li { font-size: 14px; color: var(--text-2); padding-left: 24px; position: relative; line-height: 1.5; }
+  .deliverable-list li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-size: 12px; font-weight: 700; top: 1px; }
+
+  /* ── Tech stack table ── */
+  .tech-row { display: flex; gap: 20px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border-dim); }
+  .tech-row:last-child { border-bottom: none; }
+  .tech-category { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; width: 140px; flex-shrink: 0; padding-top: 2px; }
+  .tech-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .tech-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  .tech-badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-left: 10px; }
+  .badge-existing { background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.25); color: var(--green); }
+  .badge-new { background: rgba(26,111,212,0.1); border: 1px solid rgba(26,111,212,0.3); color: var(--blue-light); }
+
+  /* ── Role grid ── */
+  .role-chip {
+    background: var(--surface); border: 1px solid var(--border-dim);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 13px; color: var(--text-2); font-weight: 500;
+  }
+
+  /* ── Investment ── */
+  .inv-block { background: var(--grad-subtle); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin-bottom: 20px; }
+  .inv-price { font-size: clamp(48px, 6vw, 72px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .inv-subtitle { font-size: 14px; color: var(--text-3); margin-bottom: 28px; }
+  .inv-includes { display: flex; flex-direction: column; gap: 12px; }
+  .inv-item { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: var(--text-2); line-height: 1.5; }
+  .inv-check { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.25); display: flex; align-items: center; justify-content: center; color: var(--green); font-size: 11px; font-weight: 700; margin-top: 1px; }
+
+  /* ── Price breakdown ── */
+  .price-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-dim); font-size: 14px; }
+  .price-row:last-child { border-bottom: none; }
+  .price-label { color: var(--text-2); }
+  .price-val { color: var(--text); font-weight: 600; }
+  .price-total { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: var(--grad-subtle); border: 1px solid var(--border); border-radius: 12px; margin-top: 12px; font-size: 16px; font-weight: 700; }
+  .price-total-val { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 20px; }
+
+  /* ── Timeline ── */
+  .tl { display: flex; flex-direction: column; }
+  .tl-row { display: grid; grid-template-columns: 110px 28px 1fr; gap: 20px; align-items: flex-start; }
+  .tl-label { font-size: 11px; color: var(--text-3); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 4px; text-align: right; }
+  .tl-spine { display: flex; flex-direction: column; align-items: center; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--blue); flex-shrink: 0; box-shadow: 0 0 10px rgba(26,111,212,0.5); }
+  .tl-line { width: 2px; background: var(--border-dim); flex: 1; min-height: 40px; margin-top: 4px; }
+  .tl-content { padding-bottom: 36px; }
+  .tl-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .tl-desc { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* ── Creds ── */
+  .cred-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .cred-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; background: var(--surface); border: 1px solid var(--border-dim); border-radius: 10px; font-size: 14px; color: var(--text-2); }
+  .cred-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+  /* ── Next Steps ── */
+  .step-row { display: flex; align-items: flex-start; gap: 20px; padding: 24px 28px; border-bottom: 1px solid var(--border-dim); }
+  .step-row:last-child { border-bottom: none; }
+  .step-badge-wrap { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: var(--grad-subtle); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .step-num-badge { font-size: 14px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .step-text-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .step-text-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+
+  /* ── Footer ── */
+  .footer { border-top: 1px solid var(--border-dim); padding: 48px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-size: 13px; color: var(--text-3); }
+  .footer-brand span { color: var(--blue-light); font-weight: 600; }
+  .footer-conf { font-size: 11px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .hero-glow { position: fixed; top: -200px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(26,111,212,0.07) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+</style>
+</head>
+<body>
+
+<div class="hero-glow"></div>
+
+<div class="topbar">
+  <div class="topbar-brand"><span>Daily Insight Report</span> · Proposal</div>
+  <div class="topbar-meta">Vestibule Consulting · March 2026 · Confidential</div>
+</div>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section style="padding-top: 40px;">
+    <span class="label">Copper State Credit Union · AI Intelligence Initiative</span>
+    <h1>
+      The right intelligence,<br>to the right person,<br><span class="blue-text">every morning.</span>
+    </h1>
+    <p class="lead" style="max-width:640px;">
+      A daily AI-powered briefing system that harvests relevant news, extracts role-specific insights, and delivers personalized intelligence to every manager at Copper State — while building a searchable internal knowledge repository over time.
+    </p>
+
+    <div class="fact-strip">
+      <div class="fact-chip"><strong>Daily</strong> automated delivery</div>
+      <div class="fact-chip"><strong>20 roles</strong> personalized</div>
+      <div class="fact-chip"><strong>9 weeks</strong> to full deployment</div>
+      <div class="fact-chip"><strong>Microsoft stack</strong> you already own</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       EXECUTIVE SUMMARY
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Executive Summary</span>
+    <h2>Your managers are making decisions<br>without the full picture.</h2>
+
+    <p>
+      The financial services landscape moves fast. Regulatory changes, competitor moves, member behavior shifts, and technology disruptions surface daily — across dozens of publications, feeds, and sources that no manager has time to monitor alone.
+    </p>
+    <p>
+      The Daily Insight Report changes that. Each morning, AI harvests and processes the news that matters — filtered and contextualized for each of your 20 manager roles — and delivers a <strong>personalized briefing directly to their inbox</strong>. Your branch operations VP sees what's relevant to branches. Your lending team sees what moves rates and risk. Your digital team sees what's reshaping member expectations.
+    </p>
+    <p>
+      Every insight is also stored in an <strong>internal news repository</strong> — a growing, searchable library hosted in SharePoint — and ingested into your existing <strong>Kasisto knowledge base</strong>, so the intelligence compounds over time. The more the system runs, the smarter and more valuable it becomes.
+    </p>
+
+    <div class="callout">
+      <p>This system is built almost entirely on <strong>technology Copper State already licenses</strong> — Microsoft Copilot, Power Automate, SharePoint, and Kasisto. The investment is in configuration, intelligence design, and deployment — not new infrastructure.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">How It Works</span>
+    <h2>Five steps.<br><span class="blue-text">Fully automated.</span></h2>
+    <p style="max-width:580px; margin-bottom:36px;">Every morning, the system runs end-to-end without human intervention. Here is what happens.</p>
+
+    <div class="system-flow">
+      <div class="flow-node active">
+        <div class="flow-node-icon">📡</div>
+        <div class="flow-node-label">Harvest</div>
+        <div class="flow-node-sub">Copilot + Bing pull articles daily from curated sources</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">
+        <div class="flow-node-icon">🧠</div>
+        <div class="flow-node-label">Process</div>
+        <div class="flow-node-sub">AI summarizes each article and extracts role-relevant insights</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">
+        <div class="flow-node-icon">🗂️</div>
+        <div class="flow-node-label">Store</div>
+        <div class="flow-node-sub">Articles and insights saved to SharePoint repository</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">
+        <div class="flow-node-icon">📧</div>
+        <div class="flow-node-label">Deliver</div>
+        <div class="flow-node-sub">Personalized email brief sent to each of 20 roles</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">
+        <div class="flow-node-icon">💬</div>
+        <div class="flow-node-label">Learn</div>
+        <div class="flow-node-sub">Insights ingested into Kasisto — knowledge compounds daily</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="gap:16px; margin-top:8px;">
+      <div class="card">
+        <div style="font-size:20px; margin-bottom:12px;">📬</div>
+        <h3 style="font-size:15px; margin-bottom:8px;">The Daily Insight Report</h3>
+        <p style="font-size:13px; margin:0;">Each manager receives a personalized email every morning — curated articles, AI-generated summaries, and 2–3 specific insights tied to their role. Relevant, actionable, and brief enough to read over coffee.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:20px; margin-bottom:12px;">🗄️</div>
+        <h3 style="font-size:15px; margin-bottom:8px;">Internal News Repository</h3>
+        <p style="font-size:13px; margin:0;">A searchable SharePoint library where every article, summary, and insight is stored and organized by topic, date, and role relevance. Any staff member can browse, filter, and search the institutional intelligence Copper State has accumulated.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       THE 20 ROLES
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Personalization</span>
+    <h2>20 roles.<br><span class="blue-text">20 different briefings.</span></h2>
+    <p style="max-width:600px; margin-bottom:32px;">
+      Each role receives only what is relevant to their work. A mortgage VP and a branch manager operate in different worlds — their briefings should reflect that. Role profiles are defined in Phase 1 and refined during the pilot.
+    </p>
+
+    <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-bottom:24px;">
+      <div class="role-chip">Chief Executive Officer</div>
+      <div class="role-chip">Chief Financial Officer</div>
+      <div class="role-chip">Chief Operations Officer</div>
+      <div class="role-chip">Chief Lending Officer</div>
+      <div class="role-chip">Chief Digital Officer</div>
+      <div class="role-chip">VP of Marketing</div>
+      <div class="role-chip">VP of Retail / Branches</div>
+      <div class="role-chip">VP of Consumer Lending</div>
+      <div class="role-chip">VP of Commercial Lending</div>
+      <div class="role-chip">VP of Mortgage</div>
+      <div class="role-chip">VP of Compliance &amp; Risk</div>
+      <div class="role-chip">VP of Human Resources</div>
+      <div class="role-chip">VP of Information Technology</div>
+      <div class="role-chip">VP of Member Experience</div>
+      <div class="role-chip">Branch Managers</div>
+      <div class="role-chip">Collections Manager</div>
+      <div class="role-chip">Business Development</div>
+      <div class="role-chip">Wealth Management</div>
+      <div class="role-chip">Card Services</div>
+      <div class="role-chip">Internal Audit</div>
+    </div>
+
+    <div class="callout">
+      <p>Role profiles are finalized during Phase 1 stakeholder interviews. The 20 roles shown above are a starting framework — the actual list is confirmed with Copper State leadership before any configuration begins.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       TECHNOLOGY STACK
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Technology</span>
+    <h2>Built on what<br><span class="blue-text">you already have.</span></h2>
+    <p style="max-width:580px; margin-bottom:36px;">
+      The Daily Insight Report is designed to run on Copper State's existing Microsoft ecosystem. No new enterprise platforms to procure or license — only configuration, integration, and intelligence design.
+    </p>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+      <div style="padding:0 28px;">
+        <div class="tech-row">
+          <div class="tech-category">News Harvesting</div>
+          <div>
+            <div class="tech-name">Microsoft Copilot + Bing News <span class="tech-badge badge-existing">Already Licensed</span></div>
+            <div class="tech-desc">Daily automated article collection from curated sources — industry publications, regulatory bodies, competitor news, Arizona business press. Configured via Power Automate with Bing News connector.</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-category">AI Processing</div>
+          <div>
+            <div class="tech-name">Azure OpenAI via Copilot Studio <span class="tech-badge badge-new">New Config</span></div>
+            <div class="tech-desc">Each article is processed by GPT-4o — generating a 3–5 sentence summary, extracting 2–3 role-specific insights, and tagging relevance across the 20 role profiles. Prompts are engineered and refined during Phase 3.</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-category">Orchestration</div>
+          <div>
+            <div class="tech-name">Microsoft Power Automate <span class="tech-badge badge-existing">Already Licensed</span></div>
+            <div class="tech-desc">The central automation layer. Schedules daily runs, routes processed insights to SharePoint, triggers personalized emails to each role, and manages the Kasisto ingestion pipeline.</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-category">Email Delivery</div>
+          <div>
+            <div class="tech-name">Microsoft Outlook <span class="tech-badge badge-existing">Already Licensed</span></div>
+            <div class="tech-desc">Daily Insight Reports sent as formatted HTML emails via Power Automate. Each of 20 role templates is designed for clarity and scannability — article title, AI summary, and role-specific insights in under 2 minutes of reading.</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-category">Repository</div>
+          <div>
+            <div class="tech-name">SharePoint Online / OneDrive <span class="tech-badge badge-existing">Already Licensed</span></div>
+            <div class="tech-desc">All articles, summaries, and insights are stored in a structured SharePoint document library — searchable, filterable by topic, date, and role. Accessible to any Copper State staff member with appropriate permissions.</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-category">Knowledge Base</div>
+          <div>
+            <div class="tech-name">Kasisto <span class="tech-badge badge-existing">Already Licensed</span></div>
+            <div class="tech-desc">Processed insights are ingested into Copper State's existing Kasisto instance on a daily or weekly cadence. Over time, Kasisto becomes a deep institutional knowledge base — every article, every trend, every insight accumulated and queryable by AI.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px; display:flex; gap:16px; align-items:center; padding:20px 24px;">
+      <div style="font-size:20px;">💡</div>
+      <p style="margin:0; font-size:14px; color:var(--text-2); line-height:1.6;">
+        <strong>Estimated ongoing API cost: $300–600/month.</strong> Azure OpenAI usage for daily processing of 20–40 articles across 20 role profiles. All other components run on existing Microsoft licensing with no additional per-use cost.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       SCOPE OF WORK
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Scope of Work</span>
+    <h2>Four phases.<br><span class="blue-text">Nine weeks to full deployment.</span></h2>
+    <p style="max-width:580px; margin-bottom:36px;">Each phase delivers a concrete output before the next begins. No open-ended retainer — a defined engagement with a clear finish line.</p>
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num-wrap"><span class="phase-num">1</span></div>
+        <div>
+          <div class="phase-title">Discovery &amp; Intelligence Design</div>
+          <div class="phase-weeks">Weeks 1–2</div>
+        </div>
+        <div class="phase-cost">$8,000</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          Before building anything, we define what the system should know, what it should say, and who it should say it to. This phase produces the intelligence architecture that guides all subsequent build decisions.
+        </p>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>Stakeholder interviews with leadership across departments</li>
+              <li>Map 20 manager roles to specific intelligence needs and topic domains</li>
+              <li>Define and curate the article source list (publications, feeds, regulatory bodies)</li>
+              <li>Design role-specific prompt templates for AI insight extraction</li>
+              <li>Define SharePoint repository structure and taxonomy</li>
+              <li>Define Kasisto ingestion format and cadence</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>Role intelligence profiles (20 roles)</li>
+              <li>Curated source list and topic taxonomy</li>
+              <li>AI prompt framework (summary + insight extraction)</li>
+              <li>SharePoint information architecture</li>
+              <li>System design document</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num-wrap"><span class="phase-num">2</span></div>
+        <div>
+          <div class="phase-title">Build &amp; Configure</div>
+          <div class="phase-weeks">Weeks 3–6</div>
+        </div>
+        <div class="phase-cost">$18,000</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          The core build phase. Every component of the system is configured, connected, and tested in a development environment before the pilot begins.
+        </p>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>Configure Power Automate flows for daily news harvesting via Bing connector</li>
+              <li>Build Azure OpenAI / Copilot Studio processing pipeline</li>
+              <li>Engineer and test AI prompts for each role profile</li>
+              <li>Build 20 role-specific email templates in HTML</li>
+              <li>Configure SharePoint document library and internal repository</li>
+              <li>Build Kasisto ingestion pipeline</li>
+              <li>End-to-end system testing in dev environment</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>Fully configured Power Automate automation</li>
+              <li>AI processing pipeline (harvest → summarize → tag → route)</li>
+              <li>20 role-specific email templates</li>
+              <li>SharePoint repository — live and structured</li>
+              <li>Kasisto ingestion pipeline configured</li>
+              <li>System test results documentation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num-wrap"><span class="phase-num">3</span></div>
+        <div>
+          <div class="phase-title">Pilot &amp; Refinement</div>
+          <div class="phase-weeks">Weeks 7–8</div>
+        </div>
+        <div class="phase-cost">$8,000</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          The system runs live with 5 pilot roles. Real articles, real AI processing, real emails. Feedback from participants is used to refine prompt quality, email format, and source relevance before full rollout.
+        </p>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>Live pilot with 5 selected roles (2 weeks)</li>
+              <li>Daily monitoring of article quality and AI output</li>
+              <li>Structured feedback sessions with pilot participants</li>
+              <li>Prompt engineering refinement based on feedback</li>
+              <li>Source list tuning — add, remove, and reweight</li>
+              <li>Email format and template adjustments</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>Pilot performance summary</li>
+              <li>Refined AI prompts for all 20 roles</li>
+              <li>Tuned source list and topic weights</li>
+              <li>Updated email templates</li>
+              <li>Sign-off for full rollout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase">
+      <div class="phase-header" style="background: var(--grad-subtle); border-bottom-color: var(--border);">
+        <div class="phase-num-wrap"><span class="phase-num">4</span></div>
+        <div>
+          <div class="phase-title">Full Deployment &amp; Handoff</div>
+          <div class="phase-weeks">Week 9 · Final Delivery</div>
+        </div>
+        <div class="phase-cost">$4,000</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          All 20 roles go live. The system runs autonomously from day one. Copper State's internal administrator is trained to manage sources, update role profiles, and monitor output quality going forward.
+        </p>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>Full 20-role deployment</li>
+              <li>Administrator training session</li>
+              <li>Documentation of system configuration and maintenance procedures</li>
+              <li>30-day monitoring and support window</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>All 20 roles live and receiving daily briefings</li>
+              <li>Internal news repository live in SharePoint</li>
+              <li>Kasisto ingestion running on schedule</li>
+              <li>Administrator training and documentation</li>
+              <li>30-day post-launch support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       TIMELINE
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Timeline</span>
+    <h2>Nine weeks from kickoff<br>to <span class="blue-text">full deployment.</span></h2>
+    <p style="margin-bottom:48px;">Decision today. All 20 roles receiving daily briefings by early June.</p>
+
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-label">Weeks 1–2</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Discovery &amp; Intelligence Design</div>
+          <div class="tl-desc">Stakeholder interviews. Role intelligence profiles defined. Source list curated. AI prompt framework designed. SharePoint architecture finalized.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Weeks 3–6</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Build &amp; Configure</div>
+          <div class="tl-desc">Power Automate flows built. AI pipeline configured. 20 email templates designed. SharePoint repository live. Kasisto ingestion pipeline configured. Full system test.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Weeks 7–8</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Pilot — 5 Roles Live</div>
+          <div class="tl-desc">Real articles, real AI, real emails. Two weeks of live operation with 5 pilot roles. Feedback collected. Prompts, sources, and templates refined. Approval for full rollout.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Week 9</div>
+        <div class="tl-spine"><div class="tl-dot" style="background:var(--blue-pale); box-shadow:0 0 14px rgba(168,208,255,0.5);"></div></div>
+        <div class="tl-content">
+          <div class="tl-title" style="color:var(--blue-light);">Full Deployment — All 20 Roles Live</div>
+          <div class="tl-desc">All 20 manager roles receive their first personalized Daily Insight Report. Internal repository live. Kasisto ingestion running. Administrator trained. 30-day support window begins.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       INVESTMENT
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Investment</span>
+    <h2>Fixed fee.<br><span class="blue-text">No surprises.</span></h2>
+
+    <div class="inv-block" style="margin-top:32px;">
+      <div style="font-size:12px; color:var(--text-3); font-weight:700; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:12px;">Daily Insight Report — Full Engagement</div>
+      <div class="inv-price">$38,000</div>
+      <div class="inv-subtitle">Total investment · Fixed fee · 9 weeks</div>
+      <div class="inv-includes">
+        <div class="inv-item"><div class="inv-check">✓</div><div>Discovery, role intelligence mapping, and system design (Phase 1)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Full build: Power Automate, AI pipeline, email templates, SharePoint repository, Kasisto integration (Phase 2)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Live pilot with 5 roles, feedback-driven refinement (Phase 3)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Full 20-role deployment, administrator training, 30-day support (Phase 4)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Internal news repository configured in SharePoint</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Kasisto daily ingestion pipeline</div></div>
+      </div>
+
+      <div style="margin-top:28px; padding-top:24px; border-top:1px solid var(--border);">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px;">Phase Breakdown</div>
+        <div style="padding:0 4px;">
+          <div class="price-row"><div class="price-label">Phase 1 — Discovery &amp; Intelligence Design</div><div class="price-val">$8,000</div></div>
+          <div class="price-row"><div class="price-label">Phase 2 — Build &amp; Configure</div><div class="price-val">$18,000</div></div>
+          <div class="price-row"><div class="price-label">Phase 3 — Pilot &amp; Refinement</div><div class="price-val">$8,000</div></div>
+          <div class="price-row"><div class="price-label">Phase 4 — Deployment &amp; Handoff</div><div class="price-val">$4,000</div></div>
+        </div>
+        <div class="price-total"><div>Total Engagement</div><div class="price-total-val">$38,000</div></div>
+      </div>
+
+      <div style="margin-top:28px; padding-top:24px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:14px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue-light);">Payment Terms</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-dim); border-radius:12px; padding:20px;">
+            <div style="font-size:24px; font-weight:800; letter-spacing:-0.02em; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:4px;">50%</div>
+            <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Due at signing</div>
+            <div style="font-size:12px; color:var(--text-3);">Work begins within 3 business days of receipt</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-dim); border-radius:12px; padding:20px;">
+            <div style="font-size:24px; font-weight:800; letter-spacing:-0.02em; background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:4px;">50%</div>
+            <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Due at full deployment</div>
+            <div style="font-size:12px; color:var(--text-3);">Upon go-live of all 20 roles at Week 9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:24px 28px;">
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-3); margin-bottom:16px;">Ongoing Technology Costs (Post-Deployment)</div>
+      <div class="price-row"><div class="price-label">Azure OpenAI API (daily processing, ~30 articles × 20 roles)</div><div class="price-val">~$300–600/mo</div></div>
+      <div class="price-row" style="border-bottom:none;"><div class="price-label">All other components (Copilot, Power Automate, SharePoint, Kasisto)</div><div class="price-val" style="color:var(--green);">Already licensed</div></div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border-dim); font-size:13px; color:var(--text-3); line-height:1.6;">Total estimated monthly operating cost after deployment: <strong style="color:var(--text);">$300–600/month</strong> in new API spend.</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       CREDENTIALS
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Experience &amp; Credentials</span>
+    <h2>Bart Morse<br><span class="blue-text">Vestibule Consulting</span></h2>
+
+    <p>Bart Morse brings over 20 years of experience designing enterprise systems and digital applications, with a strong track record of translating complex technology capabilities into practical, user-centered tools that organizations actually adopt.</p>
+    <p>This engagement combines AI system design, UX, and workflow automation experience — ensuring the Daily Insight Report is not just technically functional, but genuinely useful to the managers who receive it every morning.</p>
+
+    <div style="margin: 28px 0 16px;"><h4>Organizations Served</h4></div>
+    <div class="cred-list">
+      <div class="cred-item"><div class="cred-dot"></div>Microsoft</div>
+      <div class="cred-item"><div class="cred-dot"></div>The Academy of Motion Picture Arts and Sciences</div>
+      <div class="cred-item"><div class="cred-dot"></div>Pacific Life Insurance</div>
+      <div class="cred-item"><div class="cred-dot"></div>The Irvine Company</div>
+      <div class="cred-item"><div class="cred-dot"></div>Strum Platform</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       NEXT STEPS
+  ══════════════════════════════════ -->
+  <section>
+    <div class="blue-rule"></div>
+    <span class="label">Next Steps</span>
+    <h2>Four steps.<br><span class="blue-text">One decision.</span></h2>
+    <p style="margin-bottom:40px;">Every manager at Copper State could be reading their first Daily Insight Report within nine weeks of a decision to proceed.</p>
+
+    <div style="border:1px solid var(--border-dim); border-radius:16px; overflow:hidden;">
+      <div class="step-row">
+        <div class="step-badge-wrap"><span class="step-num-badge">1</span></div>
+        <div>
+          <div class="step-text-title">Confirm scope and engagement</div>
+          <div class="step-text-desc">Review this proposal with relevant stakeholders. Confirm the role list, technology assumptions, and timeline align with Copper State's current environment and priorities.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-badge-wrap"><span class="step-num-badge">2</span></div>
+        <div>
+          <div class="step-text-title">Execute agreement and submit deposit</div>
+          <div class="step-text-desc">Sign the engagement letter and submit the 50% deposit. Work begins within 3 business days of receipt.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-badge-wrap"><span class="step-num-badge">3</span></div>
+        <div>
+          <div class="step-text-title">Schedule kickoff and stakeholder interviews</div>
+          <div class="step-text-desc">A 90-minute kickoff call to align on objectives and confirm the interview schedule. Phase 1 interviews with department heads begin immediately after.</div>
+        </div>
+      </div>
+      <div class="step-row" style="border-bottom:none;">
+        <div class="step-badge-wrap"><span class="step-num-badge">4</span></div>
+        <div>
+          <div class="step-text-title">Begin intelligence design</div>
+          <div class="step-text-desc">Role profiles defined. Sources curated. AI prompts designed. The system architecture is locked before a single line of automation is written.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <div class="footer">
+    <div class="footer-brand"><span>Vestibule Consulting</span> · Bart Morse · vestibuleconsulting.com</div>
+    <div class="footer-conf">Confidential · March 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
