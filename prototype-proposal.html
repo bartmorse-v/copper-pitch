@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Copper — Prototype Proposal</title>
+<title>Copper — Prototype Proposal · Vestibule Consulting</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,7 +14,6 @@
     --copper:       #C8792A;
     --copper-light: #E8A44A;
     --copper-pale:  #F5C87A;
-    --copper-dark:  #8B4E12;
     --bg:           #080808;
     --surface:      #111111;
     --surface-2:    #181818;
@@ -22,990 +21,844 @@
     --border-dim:   rgba(255,255,255,0.07);
     --text:         #FFFFFF;
     --text-2:       #A0A0A0;
-    --text-3:       #606060;
+    --text-3:       #505050;
     --green:        #30D158;
-    --red:          #FF453A;
     --grad: linear-gradient(135deg, #C8792A 0%, #E8A44A 50%, #F5C87A 100%);
-    --grad-subtle: linear-gradient(135deg, rgba(200,121,42,0.15) 0%, rgba(232,164,74,0.08) 100%);
+    --grad-subtle: linear-gradient(135deg, rgba(200,121,42,0.12) 0%, rgba(232,164,74,0.06) 100%);
   }
 
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
   }
 
-  .deck {
-    width: 100vw; height: 100vh;
-    position: relative; overflow: hidden;
+  /* ── Sticky Nav ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(8,8,8,0.88); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-dim);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 60px;
   }
 
-  .slide {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--bg);
-    padding: 60px 80px;
-    opacity: 0; transform: translateX(60px);
-    transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1), transform 0.45s cubic-bezier(0.4,0,0.2,1);
-    pointer-events: none;
+  .topbar-brand {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-2);
   }
 
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
-  .slide.exit-left { opacity: 0; transform: translateX(-60px); }
-
-  .slide::before {
-    content: '';
-    position: absolute; top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(200,121,42,0.08) 0%, transparent 70%);
-    pointer-events: none;
+  .topbar-brand span {
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
   }
 
-  /* Nav */
-  .nav {
-    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 20px; z-index: 100;
-    background: rgba(17,17,17,0.85); border: 1px solid var(--border-dim);
-    backdrop-filter: blur(20px); padding: 10px 20px; border-radius: 100px;
+  .topbar-meta { font-size: 12px; color: var(--text-3); letter-spacing: 0.04em; }
+
+  /* ── Layout ── */
+  .page { max-width: 860px; margin: 0 auto; padding: 120px 40px 120px; }
+
+  /* ── Section spacing ── */
+  section { margin-bottom: 96px; }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px; background: var(--border-dim); margin: 80px 0;
   }
 
-  .nav-btn {
-    width: 36px; height: 36px; border-radius: 50%;
-    border: 1px solid var(--border-dim); background: transparent;
-    color: var(--text-2); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; font-size: 16px;
-  }
-  .nav-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border); }
-
-  .nav-dots { display: flex; gap: 6px; align-items: center; }
-
-  .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--text-3); cursor: pointer; transition: all 0.3s;
-  }
-  .dot.active { width: 20px; border-radius: 3px; background: var(--copper); }
-
-  .slide-counter {
-    font-size: 11px; color: var(--text-3);
-    letter-spacing: 0.05em; min-width: 40px; text-align: center;
+  .copper-rule {
+    width: 48px; height: 3px; background: var(--grad);
+    border-radius: 2px; margin-bottom: 28px;
   }
 
-  /* Typography */
-  .eyebrow {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--copper-light); margin-bottom: 16px;
+  /* ── Typography ── */
+  .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--copper-light);
+    margin-bottom: 14px; display: block;
   }
 
-  .display {
-    font-size: clamp(52px, 6vw, 84px);
-    font-weight: 800; line-height: 1.0; letter-spacing: -0.03em;
+  h1 {
+    font-size: clamp(52px, 7vw, 88px); font-weight: 800;
+    line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 28px;
   }
 
-  .headline {
-    font-size: clamp(32px, 3.5vw, 52px);
-    font-weight: 700; line-height: 1.1; letter-spacing: -0.025em;
+  h2 {
+    font-size: clamp(30px, 4vw, 44px); font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 20px;
   }
 
-  .subhead {
-    font-size: clamp(14px, 1.6vw, 20px);
-    font-weight: 400; line-height: 1.55; color: var(--text-2);
+  h3 {
+    font-size: 20px; font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.015em; margin-bottom: 12px;
   }
+
+  h4 {
+    font-size: 14px; font-weight: 700; color: var(--copper-light);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px; line-height: 1.75; color: var(--text-2);
+    margin-bottom: 16px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  p strong { color: var(--text); font-weight: 600; }
 
   .copper-text {
-    background: var(--grad);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
   }
 
-  /* Cards */
+  .lead {
+    font-size: 20px; line-height: 1.65; color: var(--text-2); font-weight: 400;
+  }
+
+  /* ── Cards ── */
   .card {
     background: var(--surface); border: 1px solid var(--border-dim);
-    border-radius: 16px; padding: 28px;
+    border-radius: 16px; padding: 32px;
   }
 
   .card-copper {
     background: var(--grad-subtle); border: 1px solid var(--border);
-    border-radius: 16px; padding: 28px;
+    border-radius: 16px; padding: 32px;
   }
 
-  .card-sm {
-    background: var(--surface); border: 1px solid var(--border-dim);
-    border-radius: 12px; padding: 20px;
-  }
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
 
-  /* Stat */
+  /* ── Stat ── */
   .stat-num {
-    font-size: clamp(36px, 4vw, 58px); font-weight: 800; letter-spacing: -0.03em;
+    font-size: 48px; font-weight: 800; letter-spacing: -0.03em;
     background: var(--grad); -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
   }
 
-  .stat-label { font-size: 13px; color: var(--text-2); line-height: 1.4; margin-top: 8px; }
+  .stat-label { font-size: 13px; color: var(--text-2); margin-top: 8px; line-height: 1.4; }
 
-  .copper-line { width: 48px; height: 3px; background: var(--grad); border-radius: 2px; margin-bottom: 24px; }
-
-  .tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(200,121,42,0.12); border: 1px solid rgba(200,121,42,0.3);
-    color: var(--copper-light); font-size: 11px; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 100px; margin-bottom: 24px;
+  /* ── Phase block ── */
+  .phase {
+    border: 1px solid var(--border-dim); border-radius: 16px;
+    overflow: hidden; margin-bottom: 24px;
   }
 
-  .footer-label {
-    position: absolute; bottom: 24px; left: 80px;
-    font-size: 10px; color: var(--text-3);
-    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+  .phase-header {
+    display: flex; align-items: center; gap: 20px;
+    padding: 28px 32px; border-bottom: 1px solid var(--border-dim);
+    background: var(--surface);
   }
 
-  .footer-right {
-    position: absolute; bottom: 24px; right: 80px;
-    font-size: 10px; color: var(--text-3);
-    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
-  }
-
-  /* Grid helpers */
-  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-  .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-
-  /* Check list */
-  .check-list { display: flex; flex-direction: column; gap: 12px; }
-  .check-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    font-size: 14px; color: var(--text-2); line-height: 1.5;
-  }
-  .check-icon {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: rgba(48,209,88,0.12); border: 1px solid rgba(48,209,88,0.3);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--green); font-size: 11px; flex-shrink: 0; margin-top: 1px;
-  }
-
-  /* Timeline */
-  .timeline { display: flex; flex-direction: column; gap: 0; }
-  .timeline-row {
-    display: grid; grid-template-columns: 80px 24px 1fr;
-    gap: 16px; align-items: flex-start; position: relative;
-  }
-  .timeline-row:not(:last-child) .tl-line { height: 100%; }
-  .tl-week { font-size: 11px; color: var(--text-3); font-weight: 600; letter-spacing: 0.08em; padding-top: 3px; text-align: right; }
-  .tl-dot-col { display: flex; flex-direction: column; align-items: center; }
-  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--copper); flex-shrink: 0; }
-  .tl-line { width: 2px; background: var(--border); flex: 1; margin-top: 4px; min-height: 36px; }
-  .tl-content { padding-bottom: 28px; }
-  .tl-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
-  .tl-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-
-  /* Price table */
-  .price-table { width: 100%; }
-  .price-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 20px; border-bottom: 1px solid var(--border-dim);
-    font-size: 14px;
-  }
-  .price-row:last-child { border-bottom: none; }
-  .price-row.total {
-    background: var(--grad-subtle); border: 1px solid var(--border);
-    border-radius: 10px; margin-top: 8px; font-weight: 700;
-    font-size: 15px;
-  }
-  .price-label { color: var(--text-2); }
-  .price-val { color: var(--text); font-weight: 500; }
-  .price-val.copper { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
-
-  /* Screen cards */
-  .screen-card {
-    background: var(--surface); border: 1px solid var(--border-dim);
-    border-radius: 14px; padding: 18px 20px;
-  }
-  .screen-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-  .screen-count { font-size: 11px; color: var(--copper-light); font-weight: 600; margin-bottom: 10px; }
-  .screen-items { display: flex; flex-direction: column; gap: 4px; }
-  .screen-item { font-size: 12px; color: var(--text-3); line-height: 1.4; }
-  .screen-item::before { content: '— '; }
-
-  /* iPhone mockup (simplified) */
-  .iphone-wrap { position: relative; width: 220px; flex-shrink: 0; }
-  .iphone {
-    width: 220px; height: 450px;
-    background: linear-gradient(160deg, #2c2c2e 0%, #1c1c1e 40%, #161618 100%);
-    border-radius: 40px; border: 1.5px solid #3a3a3c;
-    box-shadow: 0 0 0 0.5px #4a4a4c, 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
-    position: relative; padding: 10px;
-  }
-  .iphone::before {
-    content: ''; position: absolute; left: -3px; top: 90px;
-    width: 3px; height: 28px; background: #2c2c2e; border-radius: 2px 0 0 2px;
-    box-shadow: 0 40px 0 #2c2c2e, 0 72px 0 #2c2c2e;
-  }
-  .iphone::after {
-    content: ''; position: absolute; right: -3px; top: 110px;
-    width: 3px; height: 54px; background: #2c2c2e; border-radius: 0 2px 2px 0;
-  }
-  .iphone-screen {
-    width: 100%; height: 100%;
-    background: #0A0A0A; border-radius: 32px;
-    overflow: hidden; position: relative;
-  }
-  .di {
-    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-    width: 90px; height: 26px; background: #000; border-radius: 16px; z-index: 20;
-  }
-  .app-hdr {
-    background: linear-gradient(160deg, #1a0d00 0%, #0d0d0d 100%);
-    padding: 46px 16px 18px;
-  }
-  .app-logo-sm {
-    font-size: 15px; font-weight: 800; letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #C8792A, #F5C87A);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .app-bal { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: #fff; line-height: 1; }
-  .app-bal-cents { font-size: 16px; font-weight: 600; }
-  .app-bal-sub { font-size: 10px; color: var(--green); margin-top: 4px; }
-  .app-actions {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 6px; padding: 14px 16px;
-  }
-  .app-action-btn {
-    background: var(--surface-2); border-radius: 10px;
-    padding: 8px 4px; display: flex; flex-direction: column;
-    align-items: center; gap: 4px;
-  }
-  .app-action-icon {
-    width: 26px; height: 26px; border-radius: 50%;
-    background: rgba(200,121,42,0.2); display: flex;
-    align-items: center; justify-content: center; font-size: 12px;
-  }
-  .app-action-label { font-size: 9px; color: var(--text-2); font-weight: 500; }
-  .app-txns { padding: 0 16px; }
-  .app-txn-label { font-size: 10px; color: var(--text-3); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
-  .app-txn {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .app-txn-left { display: flex; align-items: center; gap: 8px; }
-  .app-txn-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .app-txn-name { font-size: 11px; font-weight: 600; color: var(--text); }
-  .app-txn-date { font-size: 9px; color: var(--text-3); }
-  .app-txn-amt { font-size: 12px; font-weight: 600; }
-  .pos { color: var(--green); } .neg { color: var(--text-2); }
-  .app-bar {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: rgba(10,10,10,0.95); border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex; padding: 10px 16px 14px; gap: 0;
-  }
-  .app-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .app-bar-icon { font-size: 14px; }
-  .app-bar-label { font-size: 8px; color: var(--text-3); }
-  .app-bar-item.active .app-bar-label { color: var(--copper-light); }
-
-  /* Recommended badge */
-  .badge-rec {
-    display: inline-flex; align-items: center;
-    background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.25);
-    color: var(--green); font-size: 10px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 3px 10px; border-radius: 100px;
-  }
-
-  /* Progress bar */
-  .prog-track { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
-  .prog-fill { height: 100%; background: var(--grad); border-radius: 2px; }
-
-  /* Step number */
-  .step-num {
-    width: 36px; height: 36px; border-radius: 50%;
+  .phase-num {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
     background: var(--grad-subtle); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700;
+    font-size: 15px; font-weight: 800;
     background: var(--grad); -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; background-clip: text;
-    flex-shrink: 0;
   }
-  .step-num-wrap {
-    width: 36px; height: 36px; border-radius: 50%;
+
+  .phase-num-wrap {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
     background: var(--grad-subtle); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .phase-title { font-size: 18px; font-weight: 700; }
+  .phase-weeks { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  .phase-body { padding: 28px 32px; background: var(--bg); }
+
+  .phase-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .activity-list, .deliverable-list {
+    list-style: none; display: flex; flex-direction: column; gap: 10px;
+    margin-top: 10px;
+  }
+
+  .activity-list li {
+    font-size: 14px; color: var(--text-2); padding-left: 16px;
+    position: relative; line-height: 1.5;
+  }
+
+  .activity-list li::before {
+    content: '—'; position: absolute; left: 0; color: var(--text-3);
+  }
+
+  .deliverable-list li {
+    font-size: 14px; color: var(--text-2); padding-left: 24px;
+    position: relative; line-height: 1.5;
+  }
+
+  .deliverable-list li::before {
+    content: '✓'; position: absolute; left: 0;
+    color: var(--green); font-size: 12px; font-weight: 700; top: 1px;
+  }
+
+  /* ── Value grid ── */
+  .value-card {
+    padding: 28px; background: var(--surface);
+    border: 1px solid var(--border-dim); border-radius: 14px;
+  }
+
+  .value-icon { font-size: 26px; margin-bottom: 14px; }
+  .value-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .value-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+  /* ── Investment block ── */
+  .inv-block {
+    background: var(--grad-subtle); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px; margin-bottom: 20px;
+  }
+
+  .inv-price {
+    font-size: clamp(48px, 6vw, 72px); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1;
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 6px;
+  }
+
+  .inv-subtitle { font-size: 14px; color: var(--text-3); margin-bottom: 28px; }
+
+  .inv-includes { display: flex; flex-direction: column; gap: 12px; }
+
+  .inv-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: var(--text-2); line-height: 1.5;
+  }
+
+  .inv-check {
+    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green); font-size: 11px; font-weight: 700; margin-top: 1px;
+  }
+
+  .addon-block {
+    background: var(--surface); border: 1px solid var(--border-dim);
+    border-radius: 20px; padding: 40px;
+  }
+
+  .addon-price {
+    font-size: 32px; font-weight: 800; letter-spacing: -0.025em;
+    color: var(--text); margin-bottom: 4px;
+  }
+
+  /* ── Timeline ── */
+  .tl { display: flex; flex-direction: column; gap: 0; }
+
+  .tl-row {
+    display: grid; grid-template-columns: 100px 28px 1fr;
+    gap: 20px; align-items: flex-start;
+  }
+
+  .tl-label {
+    font-size: 11px; color: var(--text-3); font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; padding-top: 4px;
+    text-align: right;
+  }
+
+  .tl-spine { display: flex; flex-direction: column; align-items: center; }
+
+  .tl-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--copper); flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(200,121,42,0.4);
+  }
+
+  .tl-line {
+    width: 2px; background: var(--border-dim);
+    flex: 1; min-height: 40px; margin-top: 4px;
+  }
+
+  .tl-content { padding-bottom: 36px; }
+  .tl-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .tl-desc { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* ── Credentials ── */
+  .cred-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+
+  .cred-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px; background: var(--surface);
+    border: 1px solid var(--border-dim); border-radius: 12px;
+    font-size: 14px; color: var(--text-2);
+  }
+
+  .cred-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--grad-subtle); border: 1px solid var(--copper);
+    flex-shrink: 0;
+    background: var(--copper);
+  }
+
+  /* ── Next Steps ── */
+  .step-row {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 24px 0; border-bottom: 1px solid var(--border-dim);
+  }
+
+  .step-row:last-child { border-bottom: none; }
+
+  .step-num-badge {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: var(--grad-subtle); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .step-badge-wrap {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: var(--grad-subtle); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .step-text-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .step-text-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+
+  /* ── Fact chips ── */
+  .fact-strip {
+    display: flex; gap: 16px; flex-wrap: wrap; margin: 32px 0;
+  }
+
+  .fact-chip {
+    background: var(--surface); border: 1px solid var(--border-dim);
+    border-radius: 100px; padding: 10px 20px;
+    font-size: 13px; color: var(--text-2);
+  }
+
+  .fact-chip strong { color: var(--copper-light); }
+
+  /* ── Quote / callout ── */
+  .callout {
+    border-left: 3px solid var(--copper); padding: 20px 28px;
+    background: var(--surface); border-radius: 0 12px 12px 0;
+    margin: 32px 0;
+  }
+
+  .callout p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border-dim); padding: 48px 0 0;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-brand { font-size: 13px; color: var(--text-3); }
+  .footer-brand span { color: var(--copper-light); font-weight: 600; }
+  .footer-conf { font-size: 11px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ── Hero glow ── */
+  .hero-glow {
+    position: fixed; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(200,121,42,0.06) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
   }
 
 </style>
 </head>
 <body>
-<div class="deck" id="deck">
 
-  <!-- ═══════════════════════════════════════
-       SLIDE 1 — COVER
-  ═══════════════════════════════════════ -->
-  <div class="slide active" id="slide-1">
-    <div style="display:flex; align-items:center; gap:80px; width:100%; max-width:1100px;">
+<div class="hero-glow"></div>
 
-      <!-- Left -->
-      <div style="flex:1;">
-        <div class="tag">Copper State Strategic Initiative</div>
-        <div class="display" style="margin-bottom:24px;">
-          <span class="copper-text">Copper.</span><br>
-          Prototype<br>Proposal.
+<!-- Sticky Top Bar -->
+<div class="topbar">
+  <div class="topbar-brand"><span>Copper</span> · Prototype Proposal</div>
+  <div class="topbar-meta">Vestibule Consulting · March 2026 · Confidential</div>
+</div>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section style="padding-top: 40px;">
+    <span class="label">Copper State Credit Union · Strategic Initiative</span>
+    <h1>
+      From vision<br>to <span class="copper-text">clickable reality.</span>
+    </h1>
+    <p class="lead" style="max-width:620px;">
+      A structured, six-week engagement to define your product strategy, design the member experience, and deliver a fully interactive prototype of Copper — ready to demo to your board, validate with Gen Z members, and hand off to any development team.
+    </p>
+
+    <div class="fact-strip">
+      <div class="fact-chip"><strong>6 weeks</strong> start to demo</div>
+      <div class="fact-chip"><strong>30 screens</strong> fully designed</div>
+      <div class="fact-chip"><strong>5 flows</strong> clickable end-to-end</div>
+      <div class="fact-chip"><strong>$18,000</strong> fixed fee</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       EXECUTIVE SUMMARY
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Executive Summary</span>
+    <h2>The stakes are real.<br>So is the opportunity.</h2>
+
+    <p>
+      Copper State Credit Union is exploring the development of a new digital application — one positioned to win back a generation that credit unions have been losing for a decade. <strong>61% of Gen Z already use neobanks like Chime and Cash App</strong> as their primary financial institutions. Only 11% use a credit union.
+    </p>
+    <p>
+      Arizona is one of the best markets in the country for this bet. With over <strong>600,000 underbanked Arizonans</strong> and a fast-growing Gen Z population representing 26% of new state residents, the opportunity is validated and the timing is urgent. Arizona Financial Credit Union has already launched a competitor product. The first-mover window for a fintech-grade Gen Z brand — built on Copper State's NCUA charter — is open, but not indefinitely.
+    </p>
+    <p>
+      Before committing significant capital to development, it is critical to ensure that the product strategy, user experience, and feature set are clearly defined and aligned across stakeholders. <strong>This engagement is designed to deliver exactly that</strong> — a fully interactive, clickable prototype of Copper, enabling your team to validate the experience, align leadership, and move into a $2.5M development commitment with clarity and confidence.
+    </p>
+
+    <div class="callout">
+      <p>The prototype costs less than <strong>2% of the full build investment</strong>. It answers the hardest question before you spend a dollar building: does this product feel right?</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       OBJECTIVES
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Objectives</span>
+    <h2>What this engagement<br>is designed to accomplish.</h2>
+
+    <div class="grid-2" style="margin-top: 32px; gap: 16px;">
+      <div class="value-card">
+        <div class="value-icon">🎯</div>
+        <div class="value-title">Define high-impact use cases</div>
+        <div class="value-desc">Identify and prioritize the member journeys that will drive acquisition, activation, and retention among Gen Z Arizonans.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📱</div>
+        <div class="value-title">Design a modern digital experience</div>
+        <div class="value-desc">Build a UI that earns a place on the home screen next to Chime and Cash App — and showcases the financial advantages only a credit union can offer.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Align leadership around a shared vision</div>
+        <div class="value-desc">Replace abstract conversations about what Copper could be with a tangible, interactive product everyone on the team can see and respond to.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🛡️</div>
+        <div class="value-title">Reduce development risk</div>
+        <div class="value-desc">Surface product gaps and experience failures before they are built in — when a conversation costs nothing and a code change costs everything.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-title">Accelerate time-to-market</div>
+        <div class="value-desc">Give any development team, BaaS vendor, or engineering partner clear, validated direction from day one. No redesign phase. No wasted sprints.</div>
+      </div>
+      <div class="value-card" style="background: var(--grad-subtle); border-color: var(--border);">
+        <div class="value-icon">🏜️</div>
+        <div class="value-title">Establish Copper as Arizona's brand</div>
+        <div class="value-desc">Bring the Copper identity to life — authentically local, built for the state's next generation of members, before a single competitor claims the territory.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       SCOPE OF WORK
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Scope of Work</span>
+    <h2>Three phases.<br><span class="copper-text">No surprises.</span></h2>
+    <p style="max-width:580px; margin-bottom: 40px;">
+      Each phase builds on the last. Two formal review checkpoints ensure Copper State approves the direction before work advances — so the final prototype reflects your vision, not ours.
+    </p>
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num-wrap"><span class="phase-num">1</span></div>
+        <div>
+          <div class="phase-title">Product Strategy &amp; Alignment</div>
+          <div class="phase-weeks">Weeks 1–2</div>
         </div>
-        <p class="subhead" style="max-width:480px; margin-bottom:40px;">
-          A 6-week engagement to build a high-fidelity, clickable prototype of the Copper app — ready to demo to the board, validate with real Gen Z users, and hand off to any development team.
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          Before a single screen is designed, we need to understand what Copper State needs from Copper — and what Copper's future members need from their bank. This phase turns the strategic research already completed into a validated product foundation.
         </p>
-        <div style="display:flex; gap:32px;">
+        <div class="phase-cols">
           <div>
-            <div class="stat-num" style="font-size:36px;">6 weeks</div>
-            <div class="stat-label">Start to clickable demo</div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>Stakeholder interviews across leadership and key departments</li>
+              <li>Identification of core member journeys and use cases</li>
+              <li>Feature prioritization aligned to business goals and CU charter advantages</li>
+              <li>Strategic positioning relative to Chime, Varo, and traditional CU competitors</li>
+              <li>Review and refinement of existing market research (Arizona Gen Z data, 600K+ underbanked opportunity)</li>
+            </ul>
           </div>
           <div>
-            <div class="stat-num" style="font-size:36px;">30 screens</div>
-            <div class="stat-label">Fully designed, interactive</div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>Product vision summary</li>
+              <li>Prioritized feature roadmap (launch vs. Phase 2 vs. future)</li>
+              <li>Defined user journeys with persona detail</li>
+              <li>Competitive positioning map</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num-wrap"><span class="phase-num">2</span></div>
+        <div>
+          <div class="phase-title">UX Design &amp; User Flows</div>
+          <div class="phase-weeks">Weeks 2–4</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          With the strategy locked, we map every experience a Copper member will have — from opening an account in 90 seconds to receiving their first paycheck two days early. Structure and logic come before visual polish. This phase ends with your approval of the full wireframe set.
+        </p>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>End-to-end user flow mapping across 5 core experiences</li>
+              <li>Wireframing all 30 application screens</li>
+              <li>Defining interaction logic, navigation structure, and edge states</li>
+              <li>Wireframe review checkpoint with Copper State leadership</li>
+              <li>Revisions and sign-off before advancing to visual design</li>
+            </ul>
           </div>
           <div>
-            <div class="stat-num" style="font-size:36px;">5 flows</div>
-            <div class="stat-label">Complete user journeys</div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>User flow diagrams (5 complete journeys)</li>
+              <li>30 low- to mid-fidelity wireframes</li>
+              <li>Experience architecture document</li>
+              <li>Checkpoint review presentation</li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      <!-- Right: iPhone -->
-      <div class="iphone-wrap">
-        <div class="iphone">
-          <div class="iphone-screen">
-            <div class="di"></div>
-            <div class="app-hdr">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <div class="app-logo-sm">copper</div>
-                <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#C8792A,#E8A44A);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">AJ</div>
-              </div>
-              <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Available Balance</div>
-              <div class="app-bal">$2,847<span class="app-bal-cents">.50</span></div>
-              <div class="app-bal-sub">↑ +$234.00 this month</div>
+        <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border-dim);">
+          <h4 style="margin-bottom: 14px;">The 5 Core Flows</h4>
+          <div style="display: grid; grid-template-columns: repeat(5,1fr); gap: 10px;">
+            <div style="background:var(--surface-2); border-radius:10px; padding:14px; font-size:12px; color:var(--text-2); line-height:1.5;">
+              <div style="color:var(--copper-light); font-weight:700; margin-bottom:6px; font-size:11px;">Flow 1</div>
+              <div style="font-weight:600; color:var(--text); margin-bottom:6px;">Onboarding</div>
+              7 screens — welcome to first login
             </div>
-            <div class="app-actions">
-              <div class="app-action-btn">
-                <div class="app-action-icon">↑</div>
-                <div class="app-action-label">Send</div>
-              </div>
-              <div class="app-action-btn">
-                <div class="app-action-icon">↓</div>
-                <div class="app-action-label">Request</div>
-              </div>
-              <div class="app-action-btn">
-                <div class="app-action-icon">+</div>
-                <div class="app-action-label">Add Cash</div>
-              </div>
-              <div class="app-action-btn">
-                <div class="app-action-icon">%</div>
-                <div class="app-action-label">Save</div>
-              </div>
+            <div style="background:var(--surface-2); border-radius:10px; padding:14px; font-size:12px; color:var(--text-2); line-height:1.5;">
+              <div style="color:var(--copper-light); font-weight:700; margin-bottom:6px; font-size:11px;">Flow 2</div>
+              <div style="font-weight:600; color:var(--text); margin-bottom:6px;">Home + Transactions</div>
+              5 screens — dashboard, activity, early deposit
             </div>
-            <div class="app-txns">
-              <div class="app-txn-label">Recent</div>
-              <div class="app-txn">
-                <div class="app-txn-left">
-                  <div class="app-txn-icon">💼</div>
-                  <div>
-                    <div class="app-txn-name">Direct Deposit</div>
-                    <div class="app-txn-date">2 days early · Today</div>
-                  </div>
-                </div>
-                <div class="app-txn-amt pos">+$1,840</div>
-              </div>
-              <div class="app-txn">
-                <div class="app-txn-left">
-                  <div class="app-txn-icon">🛒</div>
-                  <div>
-                    <div class="app-txn-name">Fry's Food</div>
-                    <div class="app-txn-date">Yesterday</div>
-                  </div>
-                </div>
-                <div class="app-txn-amt neg">−$67.42</div>
-              </div>
-              <div class="app-txn">
-                <div class="app-txn-left">
-                  <div class="app-txn-icon">🎵</div>
-                  <div>
-                    <div class="app-txn-name">Spotify</div>
-                    <div class="app-txn-date">Mar 10</div>
-                  </div>
-                </div>
-                <div class="app-txn-amt neg">−$9.99</div>
-              </div>
+            <div style="background:var(--surface-2); border-radius:10px; padding:14px; font-size:12px; color:var(--text-2); line-height:1.5;">
+              <div style="color:var(--copper-light); font-weight:700; margin-bottom:6px; font-size:11px;">Flow 3</div>
+              <div style="font-weight:600; color:var(--text); margin-bottom:6px;">Send + Request</div>
+              6 screens — P2P payments end-to-end
             </div>
-            <div class="app-bar">
-              <div class="app-bar-item active"><div class="app-bar-icon">⌂</div><div class="app-bar-label" style="color:var(--copper-light);">Home</div></div>
-              <div class="app-bar-item"><div class="app-bar-icon">↕</div><div class="app-bar-label">Pay</div></div>
-              <div class="app-bar-item"><div class="app-bar-icon">◎</div><div class="app-bar-label">Save</div></div>
-              <div class="app-bar-item"><div class="app-bar-icon">★</div><div class="app-bar-label">Credit</div></div>
-              <div class="app-bar-item"><div class="app-bar-icon">☰</div><div class="app-bar-label">More</div></div>
+            <div style="background:var(--surface-2); border-radius:10px; padding:14px; font-size:12px; color:var(--text-2); line-height:1.5;">
+              <div style="color:var(--copper-light); font-weight:700; margin-bottom:6px; font-size:11px;">Flow 4</div>
+              <div style="font-weight:600; color:var(--text); margin-bottom:6px;">Savings Goals</div>
+              6 screens — create, track, auto-save
+            </div>
+            <div style="background:var(--surface-2); border-radius:10px; padding:14px; font-size:12px; color:var(--text-2); line-height:1.5;">
+              <div style="color:var(--copper-light); font-weight:700; margin-bottom:6px; font-size:11px;">Flow 5</div>
+              <div style="font-weight:600; color:var(--text); margin-bottom:6px;">Credit + Profile</div>
+              6 screens — CU loan offer, score, settings
             </div>
           </div>
         </div>
       </div>
-
     </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">Confidential</div>
-  </div>
 
-  <!-- ═══════════════════════════════════════
-       SLIDE 2 — WHAT IS A PROTOTYPE?
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-2">
-    <div style="width:100%; max-width:1100px;">
-      <div class="eyebrow">01 / What We're Building</div>
-      <div class="headline" style="margin-bottom:12px;">
-        A prototype is <span class="copper-text">proof before you build.</span>
-      </div>
-      <p class="subhead" style="max-width:600px; margin-bottom:48px;">
-        Before writing a single line of code or signing a vendor contract, a clickable Figma prototype lets you see, feel, and demo the Copper experience — at a fraction of the cost.
-      </p>
-
-      <div class="cols-3" style="gap:20px;">
-        <div class="card-copper">
-          <div style="font-size:28px; margin-bottom:16px;">📱</div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">It looks real</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            High-fidelity screens — real brand, real copy, real layout. Indistinguishable from a live app to the eye.
-          </p>
-        </div>
-        <div class="card">
-          <div style="font-size:28px; margin-bottom:16px;">👆</div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">It's clickable</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Tap through onboarding, send money, set a savings goal. Real interactions, real flows — no live backend required.
-          </p>
-        </div>
-        <div class="card">
-          <div style="font-size:28px; margin-bottom:16px;">🎯</div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">It validates the bet</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Put it in front of 10 Gen Z Arizonans before committing $2.5M. Know what works, what doesn't, before the build.
-          </p>
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-header" style="background: var(--grad-subtle); border-bottom-color: var(--border);">
+        <div class="phase-num-wrap"><span class="phase-num">3</span></div>
+        <div>
+          <div class="phase-title">Clickable Prototype &amp; Executive Presentation</div>
+          <div class="phase-weeks">Weeks 4–6 · Final Delivery</div>
         </div>
       </div>
-
-      <div class="card-copper" style="margin-top:20px; display:flex; align-items:center; gap:16px; padding:20px 24px;">
-        <div style="font-size:20px;">⚡</div>
-        <p style="font-size:14px; color:var(--text-2); line-height:1.5;">
-          <strong style="color:var(--text);">This is not a full build.</strong> It is a designed, interactive simulation used to align the board, excite potential members, and de-risk the $2.5M development investment before a dollar of it is spent.
+      <div class="phase-body">
+        <p style="font-size:14px; margin-bottom:24px;">
+          The wireframes become a living product. Full Copper brand — typography, color, icons, motion — applied to every screen. All flows linked and interactive in Figma. The result is an executive-ready demo you can hand to any stakeholder, open on any device, and present to your board.
         </p>
-      </div>
-    </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">01 / What We're Building</div>
-  </div>
-
-  <!-- ═══════════════════════════════════════
-       SLIDE 3 — SCREENS WE'LL DESIGN
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-3">
-    <div style="width:100%; max-width:1100px;">
-      <div class="eyebrow">02 / Scope</div>
-      <div class="headline" style="margin-bottom:8px;">
-        30 screens.<br><span class="copper-text">5 complete flows.</span>
-      </div>
-      <p class="subhead" style="margin-bottom:36px;">Every screen a Gen Z user would see on their first day with Copper.</p>
-
-      <div style="display:grid; grid-template-columns: repeat(5,1fr); gap:14px;">
-        <div class="screen-card">
-          <div class="screen-count">Flow 1 · 7 screens</div>
-          <div class="screen-title">Onboarding</div>
-          <div class="screen-items">
-            <div class="screen-item">Welcome splash</div>
-            <div class="screen-item">Sign up (name, email)</div>
-            <div class="screen-item">Identity verify</div>
-            <div class="screen-item">SSN + address</div>
-            <div class="screen-item">Account approved</div>
-            <div class="screen-item">Set up direct deposit</div>
-            <div class="screen-item">First login / home</div>
+        <div class="phase-cols">
+          <div>
+            <h4>Activities</h4>
+            <ul class="activity-list">
+              <li>High-fidelity UI design applied to all 30 screens</li>
+              <li>Full Copper brand system built in Figma (colors, type, icons, components)</li>
+              <li>Interactive prototype assembly — all 5 flows linked and tappable</li>
+              <li>Stakeholder review and iteration round</li>
+              <li>Developer handoff package preparation</li>
+            </ul>
           </div>
-        </div>
-        <div class="screen-card">
-          <div class="screen-count">Flow 2 · 5 screens</div>
-          <div class="screen-title">Home + Transactions</div>
-          <div class="screen-items">
-            <div class="screen-item">Dashboard</div>
-            <div class="screen-item">Transaction list</div>
-            <div class="screen-item">Transaction detail</div>
-            <div class="screen-item">Early deposit alert</div>
-            <div class="screen-item">Subscription tracker</div>
-          </div>
-        </div>
-        <div class="screen-card">
-          <div class="screen-count">Flow 3 · 6 screens</div>
-          <div class="screen-title">Send + Request</div>
-          <div class="screen-items">
-            <div class="screen-item">Send — enter amount</div>
-            <div class="screen-item">Send — pick contact</div>
-            <div class="screen-item">Send — confirm</div>
-            <div class="screen-item">Send — success</div>
-            <div class="screen-item">Request — amount</div>
-            <div class="screen-item">Request — sent</div>
-          </div>
-        </div>
-        <div class="screen-card">
-          <div class="screen-count">Flow 4 · 6 screens</div>
-          <div class="screen-title">Savings Goals</div>
-          <div class="screen-items">
-            <div class="screen-item">Savings home</div>
-            <div class="screen-item">Create a goal</div>
-            <div class="screen-item">Goal amount + date</div>
-            <div class="screen-item">Goal created</div>
-            <div class="screen-item">Goal progress detail</div>
-            <div class="screen-item">Auto-save settings</div>
-          </div>
-        </div>
-        <div class="screen-card">
-          <div class="screen-count">Flow 5 · 6 screens</div>
-          <div class="screen-title">Credit + Profile</div>
-          <div class="screen-items">
-            <div class="screen-item">Credit score home</div>
-            <div class="screen-item">Score history chart</div>
-            <div class="screen-item">Loan offer (CU rate)</div>
-            <div class="screen-item">Profile / settings</div>
-            <div class="screen-item">Notifications</div>
-            <div class="screen-item">Refer a friend</div>
+          <div>
+            <h4>Deliverables</h4>
+            <ul class="deliverable-list">
+              <li>Fully clickable prototype — shareable link, works on any device</li>
+              <li>30 high-fidelity screens in Figma</li>
+              <li>Copper design system &amp; component library</li>
+              <li>Developer handoff package (specs, assets, tokens)</li>
+              <li>Executive presentation materials</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">02 / Scope</div>
-  </div>
+  </section>
 
-  <!-- ═══════════════════════════════════════
-       SLIDE 4 — APPROACH / PHASES
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-4">
-    <div style="width:100%; max-width:1100px;">
-      <div class="eyebrow">03 / Our Approach</div>
-      <div class="headline" style="margin-bottom:40px;">
-        Four phases.<br><span class="copper-text">No surprises.</span>
-      </div>
+  <div class="divider"></div>
 
-      <div class="cols-4">
-        <div class="card" style="padding:24px;">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <div class="step-num-wrap"><span class="step-num">1</span></div>
-            <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">Week 1</div>
-          </div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--copper-light);">Discovery</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Align on brand, user flows, and key moments. Review pitch deck. Define what "great" looks like for a Gen Z Arizona member.
-          </p>
-          <div style="margin-top:16px; border-top:1px solid var(--border-dim); padding-top:14px;">
-            <div style="font-size:11px; color:var(--text-3); margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Deliverable</div>
-            <div style="font-size:12px; color:var(--text-2);">Flow map + screen inventory</div>
-          </div>
-        </div>
+  <!-- ══════════════════════════════════
+       VALUE
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Value to Copper State Credit Union</span>
+    <h2>What you gain before<br>the real build begins.</h2>
 
-        <div class="card" style="padding:24px;">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <div class="step-num-wrap"><span class="step-num">2</span></div>
-            <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">Weeks 2–3</div>
-          </div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--copper-light);">Wireframes</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Low-fidelity layout for all 30 screens. Structure and logic before visual polish. One round of revisions included.
-          </p>
-          <div style="margin-top:16px; border-top:1px solid var(--border-dim); padding-top:14px;">
-            <div style="font-size:11px; color:var(--text-3); margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Deliverable</div>
-            <div style="font-size:12px; color:var(--text-2);">30 approved wireframes</div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:24px;">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <div class="step-num-wrap"><span class="step-num">3</span></div>
-            <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">Weeks 3–5</div>
-          </div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--copper-light);">Visual Design</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Full Copper brand applied to every screen. Typography, color, icons, motion direction. Feels like a real app.
-          </p>
-          <div style="margin-top:16px; border-top:1px solid var(--border-dim); padding-top:14px;">
-            <div style="font-size:11px; color:var(--text-3); margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Deliverable</div>
-            <div style="font-size:12px; color:var(--text-2);">30 hi-fi screens in Figma</div>
-          </div>
-        </div>
-
-        <div class="card-copper" style="padding:24px;">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <div class="step-num-wrap"><span class="step-num">4</span></div>
-            <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">Week 6</div>
-          </div>
-          <div style="font-size:15px; font-weight:700; margin-bottom:8px; color:var(--copper-light);">Prototype + Handoff</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            All flows linked and interactive in Figma. Shareable link. Design tokens + component library ready for developers.
-          </p>
-          <div style="margin-top:16px; border-top:1px solid var(--border-dim); padding-top:14px;">
-            <div style="font-size:11px; color:var(--text-3); margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">Deliverable</div>
-            <div style="font-size:12px; color:var(--text-2);">Clickable prototype + dev handoff</div>
-          </div>
+    <div class="grid-2" style="margin-top:36px; gap:16px;">
+      <div class="card" style="display:flex; gap:20px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">🛡️</div>
+        <div>
+          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">Risk Reduction</div>
+          <div style="font-size:14px; color:var(--text-2); line-height:1.65;">Identify and resolve product gaps before entering development. A conversation costs nothing. A sprint costs $30,000.</div>
         </div>
       </div>
-
-      <div class="card" style="margin-top:20px; display:flex; align-items:center; gap:16px; padding:18px 24px;">
-        <div style="font-size:18px;">🔁</div>
-        <p style="font-size:13px; color:var(--text-2); line-height:1.5;">
-          <strong style="color:var(--text);">Two feedback checkpoints built in.</strong> After wireframes (Week 3) and after visual design (Week 5) — you review and approve before we move forward. No surprises at the finish line.
-        </p>
-      </div>
-    </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">03 / Approach</div>
-  </div>
-
-  <!-- ═══════════════════════════════════════
-       SLIDE 5 — TIMELINE
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-5">
-    <div style="width:100%; max-width:1100px; display:flex; gap:80px; align-items:center;">
-
-      <div style="flex:1;">
-        <div class="eyebrow">04 / Timeline</div>
-        <div class="headline" style="margin-bottom:8px;">
-          From kickoff to<br><span class="copper-text">clickable demo in 6 weeks.</span>
-        </div>
-        <p class="subhead" style="margin-bottom:40px; max-width:420px;">
-          Decision today. Board demo in April.
-        </p>
-
-        <div class="timeline">
-          <div class="timeline-row">
-            <div class="tl-week">Week 1</div>
-            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-            <div class="tl-content">
-              <div class="tl-title">Discovery &amp; Brand Alignment</div>
-              <div class="tl-desc">Kickoff call. Review pitch deck &amp; brand. Map all 5 user flows. Confirm screen inventory.</div>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="tl-week">Weeks 2–3</div>
-            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-            <div class="tl-content">
-              <div class="tl-title">Wireframes (all 30 screens)</div>
-              <div class="tl-desc">Low-fidelity layout. Checkpoint review at end of Week 3. Revisions &amp; approval.</div>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="tl-week">Weeks 3–5</div>
-            <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
-            <div class="tl-content">
-              <div class="tl-title">High-Fidelity Visual Design</div>
-              <div class="tl-desc">Full Copper brand on every screen. Checkpoint at end of Week 5. Final revisions.</div>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="tl-week">Week 6</div>
-            <div class="tl-dot-col"><div class="tl-dot" style="background:var(--copper-pale);box-shadow:0 0 12px rgba(200,121,42,0.5);"></div></div>
-            <div class="tl-content">
-              <div class="tl-title" style="color:var(--copper-light);">Prototype + Handoff — Demo Ready</div>
-              <div class="tl-desc">All flows linked. Shareable Figma link. Component library. Dev handoff package. Board presentation ready.</div>
-            </div>
-          </div>
+      <div class="card" style="display:flex; gap:20px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">⚡</div>
+        <div>
+          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">Faster Execution</div>
+          <div style="font-size:14px; color:var(--text-2); line-height:1.65;">Provide engineering teams and BaaS vendors with clear, validated direction from day one. No redesign phase. No wasted sprints.</div>
         </div>
       </div>
-
-      <div style="flex:1;">
-        <div class="card" style="padding:32px;">
-          <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:20px;">Sample Milestone Schedule</div>
-
-          <div style="display:flex; flex-direction:column; gap:16px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:13px; font-weight:600;">Kickoff Call</div>
-                <div style="font-size:11px; color:var(--text-3);">Scope &amp; brand alignment</div>
-              </div>
-              <div style="font-size:13px; color:var(--copper-light); font-weight:600;">Apr 1, 2026</div>
-            </div>
-            <div class="prog-track"><div class="prog-fill" style="width:0%;"></div></div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:13px; font-weight:600;">Wireframe Review</div>
-                <div style="font-size:11px; color:var(--text-3);">30 screens for approval</div>
-              </div>
-              <div style="font-size:13px; color:var(--copper-light); font-weight:600;">Apr 17, 2026</div>
-            </div>
-            <div class="prog-track"><div class="prog-fill" style="width:40%;"></div></div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:13px; font-weight:600;">Visual Design Review</div>
-                <div style="font-size:11px; color:var(--text-3);">Full hi-fi for approval</div>
-              </div>
-              <div style="font-size:13px; color:var(--copper-light); font-weight:600;">May 1, 2026</div>
-            </div>
-            <div class="prog-track"><div class="prog-fill" style="width:75%;"></div></div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:13px; font-weight:600; color:var(--copper-light);">Prototype Delivered</div>
-                <div style="font-size:11px; color:var(--text-3);">Board demo ready</div>
-              </div>
-              <div style="font-size:13px; color:var(--copper-light); font-weight:700;">May 13, 2026</div>
-            </div>
-            <div class="prog-track"><div class="prog-fill" style="width:100%;"></div></div>
-          </div>
-
-          <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--border-dim);">
-            <div style="font-size:12px; color:var(--text-3); line-height:1.6;">
-              Dates are illustrative. Final schedule set at kickoff based on Copper State availability for review checkpoints.
-            </div>
-          </div>
+      <div class="card" style="display:flex; gap:20px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">🤝</div>
+        <div>
+          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">Stakeholder Alignment</div>
+          <div style="font-size:14px; color:var(--text-2); line-height:1.65;">Enable leadership to experience and approve the product vision before the board vote. A demo is worth a thousand slide decks.</div>
         </div>
       </div>
-
-    </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">04 / Timeline</div>
-  </div>
-
-  <!-- ═══════════════════════════════════════
-       SLIDE 6 — INVESTMENT
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-6">
-    <div style="width:100%; max-width:1100px; display:flex; gap:80px; align-items:flex-start;">
-
-      <div style="flex:1.1;">
-        <div class="eyebrow">05 / Investment</div>
-        <div class="headline" style="margin-bottom:8px;">
-          <span class="copper-text">$18,000.</span><br>
-          All in.
-        </div>
-        <p class="subhead" style="margin-bottom:32px; max-width:440px;">
-          Fixed-fee engagement. No hourly billing surprises. Priced by scope, not by the clock.
-        </p>
-
-        <div class="card" style="padding:0; overflow:hidden;">
-          <div class="price-table">
-            <div class="price-row">
-              <div class="price-label">Discovery &amp; UX Strategy (Phase 1)</div>
-              <div class="price-val">$2,500</div>
-            </div>
-            <div class="price-row">
-              <div class="price-label">Wireframes — 30 screens (Phase 2)</div>
-              <div class="price-val">$4,000</div>
-            </div>
-            <div class="price-row">
-              <div class="price-label">High-Fidelity Visual Design (Phase 3)</div>
-              <div class="price-val">$8,500</div>
-            </div>
-            <div class="price-row">
-              <div class="price-label">Prototype Assembly + Dev Handoff (Phase 4)</div>
-              <div class="price-val">$3,000</div>
-            </div>
-            <div class="price-row total">
-              <div style="color:var(--text);">Total Engagement</div>
-              <div class="price-val copper">$18,000</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px; padding:18px 24px; display:flex; align-items:center; gap:14px;">
-          <div style="font-size:18px;">📌</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.5;">
-            Fixed-fee engagement with a boutique studio specializing in fintech mobile. No hourly overages, no surprises.
-          </p>
-        </div>
-      </div>
-
-      <div style="flex:0.9;">
-        <div class="card-copper" style="margin-bottom:16px;">
-          <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px;">Context: Cost vs. Risk Reduction</div>
-          <div style="display:flex; flex-direction:column; gap:20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:14px; font-weight:600;">This prototype</div>
-                <div style="font-size:11px; color:var(--text-3);">6 weeks · clickable demo</div>
-              </div>
-              <div class="stat-num" style="font-size:24px;">$18K</div>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; opacity:0.5;">
-              <div>
-                <div style="font-size:14px; font-weight:600;">Full Copper build</div>
-                <div style="font-size:11px; color:var(--text-3);">9–18 months</div>
-              </div>
-              <div style="font-size:24px; font-weight:800; color:var(--text);">$2.5M</div>
-            </div>
-          </div>
-          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
-            <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-              The prototype costs <strong style="color:var(--text);">1% of the full build.</strong> It answers the $2.5M question: does this product feel right before we build it?
-            </p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px;">What's Included</div>
-          <div class="check-list">
-            <div class="check-item"><div class="check-icon">✓</div><div>30 high-fidelity screens in Figma</div></div>
-            <div class="check-item"><div class="check-icon">✓</div><div>5 fully clickable user flows</div></div>
-            <div class="check-item"><div class="check-icon">✓</div><div>Shareable link — demo from any device</div></div>
-            <div class="check-item"><div class="check-icon">✓</div><div>Copper design system &amp; component library</div></div>
-            <div class="check-item"><div class="check-icon">✓</div><div>Developer handoff package (specs, assets)</div></div>
-            <div class="check-item"><div class="check-icon">✓</div><div>2 rounds of revisions included</div></div>
-          </div>
+      <div class="card" style="display:flex; gap:20px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">💡</div>
+        <div>
+          <div style="font-size:15px; font-weight:700; margin-bottom:8px;">Smarter Investment</div>
+          <div style="font-size:14px; color:var(--text-2); line-height:1.65;">Ensure the $2.5M development budget is focused on what matters most to members — not rebuilt mid-project when assumptions turn out to be wrong.</div>
         </div>
       </div>
     </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">05 / Investment</div>
-  </div>
+  </section>
 
-  <!-- ═══════════════════════════════════════
-       SLIDE 7 — WHAT YOU'LL BE ABLE TO DO
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-7">
-    <div style="width:100%; max-width:1100px;">
-      <div class="eyebrow">06 / Deliverables &amp; Outcomes</div>
-      <div class="headline" style="margin-bottom:8px;">
-        Six weeks from now,<br><span class="copper-text">here's what you'll have.</span>
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       INVESTMENT
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Investment</span>
+    <h2>Fixed fee.<br><span class="copper-text">No surprises.</span></h2>
+
+    <!-- Primary -->
+    <div class="inv-block" style="margin-top:32px;">
+      <div style="font-size:12px; color:var(--text-3); font-weight:700; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:12px;">Strategy + Clickable Prototype Engagement</div>
+      <div class="inv-price">$18,000</div>
+      <div class="inv-subtitle">Total investment · Fixed fee · 6 weeks</div>
+      <div class="inv-includes">
+        <div class="inv-item"><div class="inv-check">✓</div><div>Product strategy and stakeholder alignment (Phase 1)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>UX flows, wireframes, and experience architecture (Phase 2)</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>30 high-fidelity screens in Figma with full Copper brand system</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Fully clickable prototype simulating the real member experience</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Developer handoff package — specs, assets, design tokens</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Executive presentation materials for board alignment</div></div>
+        <div class="inv-item"><div class="inv-check">✓</div><div>Two rounds of revisions included across all phases</div></div>
       </div>
-      <p class="subhead" style="margin-bottom:40px; max-width:560px;">
-        Not a slide. Not a description. An actual product you can hand to someone and say: "This is what Copper feels like."
-      </p>
+    </div>
 
-      <div class="cols-3" style="gap:20px;">
-        <div class="card">
-          <div style="font-size:24px; margin-bottom:14px;">🎤</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Board Presentation</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Walk the Copper State board through a live demo of the app — not a concept, a real interactive prototype on a phone. Removes the imagination gap.
-          </p>
+    <div class="callout">
+      <p>At $18,000, this engagement represents <strong>less than 1% of the projected $2.5M build investment</strong> — and eliminates the most common cause of cost overruns: building the wrong thing.</p>
+    </div>
+
+    <!-- Add-on -->
+    <div class="addon-block">
+      <div style="font-size:12px; color:var(--text-3); font-weight:700; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:12px;">Optional Add-On · Product Blueprint &amp; Implementation Support</div>
+      <div class="addon-price">$15,000 – $25,000</div>
+      <div style="font-size:13px; color:var(--text-3); margin-bottom:24px;">Additional investment · Scope defined post-prototype</div>
+      <div class="inv-includes">
+        <div class="inv-item" style="font-size:14px;"><div class="inv-check" style="background:rgba(200,121,42,0.1); border-color:rgba(200,121,42,0.3); color:var(--copper-light);">✓</div><div>Technical architecture recommendations (BaaS vendor evaluation: Unit, Synctera, Narmi)</div></div>
+        <div class="inv-item" style="font-size:14px;"><div class="inv-check" style="background:rgba(200,121,42,0.1); border-color:rgba(200,121,42,0.3); color:var(--copper-light);">✓</div><div>Development roadmap and sprint sequencing for the full build</div></div>
+        <div class="inv-item" style="font-size:14px;"><div class="inv-check" style="background:rgba(200,121,42,0.1); border-color:rgba(200,121,42,0.3); color:var(--copper-light);">✓</div><div>Advisory support during implementation — keeping the build aligned to the prototype</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       TIMELINE
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Timeline</span>
+    <h2>Six weeks from kickoff<br>to <span class="copper-text">board-ready demo.</span></h2>
+    <p style="margin-bottom:48px;">Decision today. Prototype in your hands by mid-May. Board demo in the May meeting.</p>
+
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-label">Weeks 1–2</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Strategy &amp; Alignment</div>
+          <div class="tl-desc">Stakeholder interviews. Feature prioritization. User journey definition. Product vision locked before design begins.</div>
         </div>
-        <div class="card">
-          <div style="font-size:24px; margin-bottom:14px;">🧪</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">User Testing Ready</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Hand the prototype to 10 real Gen Z Arizonans. Watch what they do. Fix the confusion before you spend $2.5M building it in.
-          </p>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Weeks 2–4</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">UX Design &amp; Flows</div>
+          <div class="tl-desc">All 30 screens wireframed across 5 flows. Checkpoint review with Copper State leadership at end of Week 4. Revisions and sign-off.</div>
         </div>
-        <div class="card">
-          <div style="font-size:24px; margin-bottom:14px;">🏗️</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Build-Ready Specs</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Any development team — internal hire, agency, or BaaS vendor — can open the Figma file and start building immediately. No redesign phase.
-          </p>
-        </div>
-        <div class="card">
-          <div style="font-size:24px; margin-bottom:14px;">🤝</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Vendor Conversations</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Share the prototype with Unit, Synctera, or Narmi during vendor evaluation. Show them exactly what you need to build — and hold them accountable to it.
-          </p>
-        </div>
-        <div class="card">
-          <div style="font-size:24px; margin-bottom:14px;">📣</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Recruiting Tool</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            Attract a product lead or engineering team with a prototype that shows a real vision — not a job description full of promises about what you'll build someday.
-          </p>
-        </div>
-        <div class="card-copper">
-          <div style="font-size:24px; margin-bottom:14px;">🗺️</div>
-          <div style="font-size:14px; font-weight:700; margin-bottom:8px;">The Design System</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.6;">
-            The component library and design tokens built during prototyping are the foundation of every screen that gets built after. This work is not throwaway — it's a head start.
-          </p>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Weeks 4–6</div>
+        <div class="tl-spine"><div class="tl-dot" style="background:var(--copper-pale); box-shadow: 0 0 14px rgba(245,200,122,0.5);"></div></div>
+        <div class="tl-content">
+          <div class="tl-title" style="color:var(--copper-light);">Prototype &amp; Presentation — Delivered</div>
+          <div class="tl-desc">Full Copper brand applied. All flows interactive. Shareable Figma link. Developer handoff package. Executive presentation materials. Board demo ready.</div>
         </div>
       </div>
     </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">06 / Deliverables</div>
-  </div>
 
-  <!-- ═══════════════════════════════════════
-       SLIDE 8 — NEXT STEP
-  ═══════════════════════════════════════ -->
-  <div class="slide" id="slide-8">
-    <div style="width:100%; max-width:900px; text-align:center; margin:0 auto;">
-      <div class="tag" style="margin-bottom:32px;">One Decision</div>
-      <div class="display" style="margin-bottom:24px; line-height:1.05;">
-        The only question<br>is <span class="copper-text">when to start.</span>
-      </div>
-      <p class="subhead" style="max-width:600px; margin:0 auto 48px;">
-        Arizona Financial already launched Azpire. The Gen Z window is open — but it is not open indefinitely. A prototype can be in your hands by mid-May.
-      </p>
+    <div class="card" style="margin-top: 8px; display:flex; gap:20px; align-items:center; padding:24px 28px;">
+      <div style="font-size:20px;">📌</div>
+      <p style="margin:0; font-size:14px; color:var(--text-2); line-height:1.6;">Milestone dates are finalized at kickoff based on Copper State's availability for review sessions. Two review checkpoints — end of Week 4 (wireframes) and end of Week 5 (visual design) — are built into the schedule.</p>
+    </div>
+  </section>
 
-      <div style="display:flex; gap:20px; justify-content:center; margin-bottom:40px;">
-        <div class="card" style="width:260px; padding:28px; text-align:left;">
-          <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">Option A</div>
-          <div style="font-size:16px; font-weight:700; margin-bottom:8px;">Approve Now</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin-bottom:16px;">
-            Kickoff in April. Prototype delivered mid-May. Board demo in the May meeting.
-          </p>
-          <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(48,209,88,0.1); border:1px solid rgba(48,209,88,0.25); color:var(--green); font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 12px; border-radius:100px;">Recommended</div>
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       CREDENTIALS
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Experience &amp; Credentials</span>
+    <h2>Bart Morse<br><span class="copper-text">Vestibule Consulting</span></h2>
+
+    <p>
+      Bart Morse brings over 20 years of experience designing enterprise and consumer applications, including high-fidelity clickable prototypes used to align stakeholders and guide development across some of the most recognized organizations in the country.
+    </p>
+    <p>
+      This background combines deep UX expertise with a strategic, business-first approach to product development — ensuring that design decisions are always aligned with measurable outcomes, not aesthetic preferences.
+    </p>
+
+    <div style="margin: 32px 0 16px;">
+      <h4>Organizations Served</h4>
+    </div>
+    <div class="cred-list">
+      <div class="cred-item"><div class="cred-dot"></div>Microsoft</div>
+      <div class="cred-item"><div class="cred-dot"></div>The Academy of Motion Picture Arts and Sciences</div>
+      <div class="cred-item"><div class="cred-dot"></div>Pacific Life Insurance</div>
+      <div class="cred-item"><div class="cred-dot"></div>The Irvine Company</div>
+      <div class="cred-item"><div class="cred-dot"></div>Strum Platform</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       WHY VESTIBULE
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Why Vestibule Consulting</span>
+    <h2>This is not simply<br>a design engagement.</h2>
+
+    <p>
+      Vestibule Consulting operates at the intersection of product strategy, user experience, and business outcomes. The work is structured to de-risk a significant investment, align leadership, and accelerate execution — not to produce beautiful screens that get shelved.
+    </p>
+    <p>
+      Most design engagements produce artifacts. This one produces decisions. By the time the prototype is in your hands, Copper State will have a validated product strategy, a tested experience, and a clear path to a $2.5M development commitment — with every stakeholder already having seen and used what they are being asked to fund.
+    </p>
+
+    <div class="callout" style="margin-top:32px;">
+      <p><strong>The Copper opportunity is specific.</strong> Arizona. Gen Z. A credit union charter that Chime spent hundreds of millions trying to replicate. The brand is authentically local before a single ad runs. This engagement is designed to move that opportunity from concept to conviction — fast enough to matter.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════
+       NEXT STEPS
+  ══════════════════════════════════ -->
+  <section>
+    <div class="copper-rule"></div>
+    <span class="label">Next Steps</span>
+    <h2>Four steps.<br><span class="copper-text">One decision.</span></h2>
+    <p style="margin-bottom:40px;">The only question is when Copper State is ready to start. The Gen Z window is open — but it will not stay open indefinitely.</p>
+
+    <div style="border: 1px solid var(--border-dim); border-radius: 16px; overflow: hidden;">
+      <div class="step-row" style="padding: 24px 28px;">
+        <div class="step-badge-wrap"><span class="step-num-badge">1</span></div>
+        <div>
+          <div class="step-text-title">Confirm scope and engagement</div>
+          <div class="step-text-desc">Review this proposal with relevant stakeholders. Confirm the scope, timeline, and investment align with Copper State's current priorities.</div>
         </div>
-        <div class="card" style="width:260px; padding:28px; text-align:left; opacity:0.6;">
-          <div style="font-size:11px; color:var(--text-3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">Option B</div>
-          <div style="font-size:16px; font-weight:700; margin-bottom:8px;">Wait for Q3</div>
-          <p style="font-size:13px; color:var(--text-2); line-height:1.5; margin-bottom:16px;">
-            Delay 90 days. Competitors move. First-mover window narrows. Q3 budget cycle adds another quarter of lag.
-          </p>
-          <div style="font-size:12px; color:var(--red);">⚠ Not advised</div>
+      </div>
+      <div class="step-row" style="padding: 24px 28px;">
+        <div class="step-badge-wrap"><span class="step-num-badge">2</span></div>
+        <div>
+          <div class="step-text-title">Execute agreement</div>
+          <div class="step-text-desc">Sign the engagement letter and submit the initial payment. Work begins within 3 business days of execution.</div>
         </div>
       </div>
-
-      <div class="card-copper" style="max-width:600px; margin:0 auto; padding:24px 32px;">
-        <div style="font-size:13px; color:var(--text-2); line-height:1.7;">
-          <strong style="color:var(--text);">The ask is simple:</strong> approve a $18K prototype engagement so that by the time the full build decision comes to the board, everyone in the room will have already seen — and used — the app they are being asked to fund.
+      <div class="step-row" style="padding: 24px 28px;">
+        <div class="step-badge-wrap"><span class="step-num-badge">3</span></div>
+        <div>
+          <div class="step-text-title">Schedule kickoff session</div>
+          <div class="step-text-desc">A 90-minute kickoff call with key Copper State stakeholders to align on objectives, confirm the Phase 1 interview list, and set milestone dates.</div>
+        </div>
+      </div>
+      <div class="step-row" style="padding: 24px 28px; border-bottom: none;">
+        <div class="step-badge-wrap"><span class="step-num-badge">4</span></div>
+        <div>
+          <div class="step-text-title">Begin stakeholder interviews</div>
+          <div class="step-text-desc">Phase 1 begins immediately. Six weeks to a clickable prototype. Board demo ready by mid-May.</div>
         </div>
       </div>
     </div>
-    <div class="footer-label">Copper — Prototype Proposal · March 2026</div>
-    <div class="footer-right">Confidential</div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <div class="footer">
+    <div class="footer-brand"><span>Vestibule Consulting</span> · Bart Morse · vestibuleconsulting.com</div>
+    <div class="footer-conf">Confidential · March 2026</div>
   </div>
 
 </div>
 
-<!-- Nav -->
-<nav class="nav">
-  <button class="nav-btn" id="prevBtn">←</button>
-  <div class="nav-dots" id="dots"></div>
-  <span class="slide-counter" id="counter">1 / 8</span>
-  <button class="nav-btn" id="nextBtn">→</button>
-</nav>
-
-<script>
-  const slides = document.querySelectorAll('.slide');
-  const dotsEl = document.getElementById('dots');
-  const counter = document.getElementById('counter');
-  let current = 0;
-
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    slides[current].classList.add('exit-left');
-    setTimeout(() => slides[current < n ? current : n + 1 - 1 + (current > n ? 1 : 0)].classList.remove('exit-left'), 450);
-    const prev = current;
-    current = Math.max(0, Math.min(slides.length - 1, n));
-    slides[prev].classList.remove('active');
-    setTimeout(() => slides[prev].classList.remove('exit-left'), 450);
-    slides[current].classList.remove('exit-left');
-    slides[current].classList.add('active');
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-    counter.textContent = (current + 1) + ' / ' + slides.length;
-  }
-
-  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
-  });
-</script>
 </body>
 </html>
