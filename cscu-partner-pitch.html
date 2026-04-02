@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copper State Credit Union — Partnership Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:        #0d1b2a;
+    --navy-mid:    #162436;
+    --copper:      #b87333;
+    --copper-lt:   #d4956a;
+    --copper-pale: #f0dbc8;
+    --warm-white:  #f9f6f2;
+    --off-white:   #f1ece6;
+    --text-dark:   #1a1b1d;
+    --text-mid:    #4a5568;
+    --text-light:  #718096;
+    --gold:        #c8962a;
+    --green:       #276749;
+    --red-flag:    #c53030;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide Engine ── */
+  #deck {
+    width: 100%; height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 0.42s cubic-bezier(0.4,0,0.2,1), transform 0.42s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  /* ── Layout Helpers ── */
+  .slide-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4vh 7vw calc(4vh + 56px);
+  }
+
+  /* ── Typography ── */
+  .eyebrow {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.9em;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+    line-height: 1.1;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.8vw, 3.2rem);
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  p, li {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .lead {
+    font-size: clamp(1.05rem, 1.9vw, 1.45rem);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  strong { font-weight: 600; }
+
+  em {
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ── Rule ── */
+  .rule {
+    width: 60px; height: 3px;
+    border-radius: 2px;
+    margin: 1.4em 0 1.6em;
+  }
+
+  /* ── Grid Systems ── */
+  .cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    align-items: start;
+  }
+  .cols-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.2vw;
+    align-items: start;
+  }
+  .cols-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8vw;
+    align-items: start;
+  }
+
+  /* ── Card ── */
+  .card {
+    border-radius: 10px;
+    padding: 1.6em 1.8em;
+  }
+
+  /* ── Bullet Lists ── */
+  ul.clean {
+    list-style: none;
+    padding: 0;
+  }
+  ul.clean li {
+    padding: 0.45em 0;
+    padding-left: 1.4em;
+    position: relative;
+  }
+  ul.clean li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+  }
+
+  ul.check {
+    list-style: none;
+    padding: 0;
+  }
+  ul.check li {
+    padding: 0.5em 0;
+    padding-left: 2em;
+    position: relative;
+    font-size: clamp(0.88rem, 1.45vw, 1.1rem);
+  }
+  ul.check li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    font-size: 1em;
+  }
+
+  /* ── Stat Block ── */
+  .stat { text-align: center; padding: 1.4em 1em; }
+  .stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat .label {
+    font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.5em;
+    opacity: 0.75;
+  }
+
+  /* ── Nav Bar ── */
+  #nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5vw;
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    border-top: 1px solid rgba(184,115,51,0.25);
+  }
+
+  #nav .org {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  #nav .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+  }
+
+  #nav button {
+    background: rgba(184,115,51,0.15);
+    border: 1px solid rgba(184,115,51,0.4);
+    color: #d4956a;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4em 1.1em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #nav button:hover { background: rgba(184,115,51,0.28); }
+  #nav button:disabled { opacity: 0.3; cursor: default; }
+  #nav button:focus-visible { outline: 2px solid var(--copper-lt); outline-offset: 3px; }
+
+  #counter {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--copper), var(--gold));
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* ══════════════════════════════════
+     SLIDE THEMES
+  ══════════════════════════════════ */
+
+  /* Theme: Dark Navy (title, impact) */
+  .t-dark {
+    background: var(--navy);
+    color: var(--warm-white);
+  }
+  .t-dark .eyebrow { color: var(--copper-lt); }
+  .t-dark .rule { background: var(--copper); }
+  .t-dark h1, .t-dark h2, .t-dark h3 { color: #fff; }
+  .t-dark p, .t-dark li { color: rgba(255,255,255,0.82); }
+  .t-dark .lead { color: rgba(255,255,255,0.9); }
+  .t-dark .card { background: var(--navy-mid); border: 1px solid rgba(184,115,51,0.2); }
+  .t-dark ul.clean li::before { color: var(--copper-lt); }
+  .t-dark ul.check li::before { color: var(--gold); }
+  .t-dark .accent { color: var(--copper-lt); }
+
+  /* Theme: Warm White (content) */
+  .t-light {
+    background: var(--warm-white);
+    color: var(--text-dark);
+  }
+  .t-light .eyebrow { color: var(--copper); }
+  .t-light .rule { background: var(--copper); }
+  .t-light h2, .t-light h3 { color: var(--navy); }
+  .t-light p, .t-light li { color: var(--text-mid); }
+  .t-light .lead { color: var(--text-dark); }
+  .t-light .card { background: #fff; box-shadow: 0 1px 2px rgba(13,27,42,0.05), 0 4px 20px rgba(13,27,42,0.08); border: 1px solid rgba(13,27,42,0.06); }
+  .t-light ul.clean li::before { color: var(--copper); }
+  .t-light ul.check li::before { color: var(--green); }
+  .t-light .accent { color: var(--copper); }
+  .t-light .stat .num { color: var(--navy); }
+
+  /* Theme: Copper (highlight) */
+  .t-copper {
+    background: linear-gradient(135deg, #7a4410 0%, #b87333 55%, #d4956a 100%);
+    color: #fff;
+  }
+  .t-copper .eyebrow { color: rgba(255,255,255,0.7); }
+  .t-copper .rule { background: rgba(255,255,255,0.5); }
+  .t-copper h2, .t-copper h3 { color: #fff; }
+  .t-copper p, .t-copper li { color: rgba(255,255,255,0.9); }
+  .t-copper .lead { color: rgba(255,255,255,0.95); }
+  .t-copper .card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); }
+  .t-copper ul.check li::before { color: rgba(255,255,255,0.9); }
+
+  /* Theme: Off-White (secondary content) */
+  .t-off {
+    background: var(--off-white);
+    color: var(--text-dark);
+  }
+  .t-off .eyebrow { color: var(--copper); }
+  .t-off .rule { background: var(--copper); }
+  .t-off h2, .t-off h3 { color: var(--navy); }
+  .t-off p, .t-off li { color: var(--text-mid); }
+  .t-off .card { background: #fff; box-shadow: 0 1px 2px rgba(13,27,42,0.04), 0 4px 18px rgba(13,27,42,0.07); border: 1px solid rgba(13,27,42,0.06); }
+  .t-off ul.clean li::before { color: var(--copper); }
+  .t-off ul.check li::before { color: var(--green); }
+
+  /* ── Decorative corner mark ── */
+  .corner-mark {
+    position: absolute;
+    bottom: 72px;
+    right: 5vw;
+    width: 80px; height: 80px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+    opacity: 0.12;
+    border-radius: 0 0 8px 0;
+  }
+  .t-dark .corner-mark { border-color: #fff; }
+  .t-light .corner-mark, .t-off .corner-mark { border-color: var(--navy); }
+  .t-copper .corner-mark { border-color: rgba(255,255,255,0.6); }
+
+  /* ── Slide-specific tweaks ── */
+  .slide-title .inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 7vh 8vw 80px;
+  }
+  .slide-title .badge {
+    display: inline-block;
+    background: rgba(184,115,51,0.18);
+    border: 1px solid rgba(184,115,51,0.4);
+    color: var(--copper-lt);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.45em 1.1em;
+    border-radius: 4px;
+    margin-bottom: 2em;
+    align-self: flex-start;
+  }
+  .slide-title h1 span { color: var(--copper-lt); }
+  .slide-title .sub {
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    color: rgba(255,255,255,0.65);
+    margin-top: 1.4em;
+    font-weight: 300;
+    max-width: 680px;
+  }
+
+  .two-col-left {
+    grid-column: span 1;
+  }
+  .span-2 { grid-column: span 2; }
+
+  blockquote {
+    border-left: 4px solid var(--copper);
+    padding: 0.6em 0 0.6em 1.4em;
+    margin: 1.2em 0;
+  }
+  blockquote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+    line-height: 1.5;
+  }
+  .t-dark blockquote p { color: rgba(255,255,255,0.9); }
+  .t-light blockquote p, .t-off blockquote p { color: var(--text-dark); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25em 0.7em;
+    border-radius: 3px;
+    margin-bottom: 0.8em;
+  }
+  .tag-green { background: rgba(39,103,73,0.12); color: var(--green); }
+  .tag-copper { background: rgba(184,115,51,0.12); color: var(--copper); }
+  .tag-navy { background: rgba(13,27,42,0.09); color: var(--navy); }
+  .tag-red { background: rgba(197,48,48,0.1); color: var(--red-flag); }
+
+  .divider-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(13,27,42,0.1);
+    margin: 1.2em 0;
+  }
+  .t-dark .divider-line { background: rgba(255,255,255,0.1); }
+
+  .icon-circle {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1em;
+    flex-shrink: 0;
+  }
+  .t-dark .icon-circle { background: rgba(184,115,51,0.18); }
+  .t-light .icon-circle, .t-off .icon-circle { background: rgba(13,27,42,0.07); }
+  .t-dark .icon-circle svg { stroke: var(--copper-lt); }
+  .t-light .icon-circle svg, .t-off .icon-circle svg { stroke: var(--navy); opacity: 0.65; }
+
+  .placeholder {
+    color: var(--copper);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .t-dark .placeholder { color: var(--copper-lt); }
+
+  /* ── Compact grid for slide 4 (6-card layout needs to fit 720p) ── */
+  [data-index="3"] .card {
+    padding: 1.1em 1.3em;
+  }
+  [data-index="3"] .icon-circle {
+    width: 38px; height: 38px;
+    margin-bottom: 0.65em;
+  }
+  [data-index="3"] .icon-circle svg {
+    width: 18px; height: 18px;
+  }
+  [data-index="3"] h3 {
+    font-size: clamp(0.95rem, 1.7vw, 1.35rem);
+  }
+  [data-index="3"] p {
+    font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+    line-height: 1.55;
+  }
+  [data-index="3"] .cols-3 {
+    gap: 1.2vw;
+  }
+
+  /* ── Slide Dots ── */
+  #dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.25s ease, width 0.25s ease;
+  }
+  .dot.active-dot {
+    background: var(--copper);
+    width: 20px;
+    border-radius: 3px;
+  }
+  .dot:hover:not(.active-dot) { background: rgba(255,255,255,0.45); }
+  .dot:focus-visible { outline: 2px solid var(--copper-lt); outline-offset: 2px; }
+
+  /* ── Slide number micro-chip on slides ── */
+  .slide-num {
+    position: absolute;
+    top: 2.5vh;
+    right: 5vw;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    opacity: 0.28;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .t-dark .slide-num, .t-copper .slide-num { color: #fff; }
+  .t-light .slide-num, .t-off .slide-num { color: var(--navy); }
+
+  /* ── Reduced Motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: opacity 0.15s ease; transform: none !important; }
+    #progress { transition: none; }
+    .dot { transition: background 0.1s ease; }
+  }
+
+  /* ── Print ── */
+  @media print {
+    #nav, #progress { display: none; }
+    html, body { overflow: auto; height: auto; background: #fff; }
+    .slide {
+      position: relative;
+      opacity: 1;
+      pointer-events: all;
+      page-break-after: always;
+      height: 100vh;
+    }
+    .corner-mark { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 1 — TITLE
+══════════════════════════════════════ -->
+<div id="deck">
+
+<div class="slide t-dark slide-title active" data-index="0">
+  <div class="inner">
+    <div class="badge">Partnership Proposal · 2026</div>
+    <h1>Your Credit Union.<br><span>Stronger Together.</span></h1>
+    <p class="sub">A conversation about how Copper State Credit Union and your team can work together to serve your members better — and keep Arizona's credit union movement strong.</p>
+    <div style="margin-top:3.5em; display:flex; gap:2.5em; align-items:center;">
+      <div>
+        <div style="font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:0.4em;">Presented by</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.2rem; color:rgba(255,255,255,0.9);">Copper State Credit Union</div>
+        <div style="font-size:0.85rem; color:rgba(255,255,255,0.45); margin-top:0.25em;">Robb Scott · President/CEO</div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 2 — WHO WE ARE
+══════════════════════════════════════ -->
+<div class="slide t-dark" data-index="1">
+  <div class="slide-inner">
+    <div class="eyebrow">About Copper State</div>
+    <h2>We're a fellow Arizona credit union.</h2>
+    <div class="rule"></div>
+    <div class="cols-4" style="margin-top:1.8em;">
+      <div class="stat card">
+        <div class="num" style="color:var(--copper-lt);">$613M</div>
+        <div class="label" style="color:rgba(255,255,255,0.5);">Total Assets</div>
+      </div>
+      <div class="stat card">
+        <div class="num" style="color:var(--copper-lt);">43,400+</div>
+        <div class="label" style="color:rgba(255,255,255,0.5);">Members</div>
+      </div>
+      <div class="stat card">
+        <div class="num" style="color:var(--copper-lt);">75</div>
+        <div class="label" style="color:rgba(255,255,255,0.5);">Years Serving AZ</div>
+      </div>
+      <div class="stat card">
+        <div class="num" style="color:var(--copper-lt);">7</div>
+        <div class="label" style="color:rgba(255,255,255,0.5);">Branch Locations</div>
+      </div>
+    </div>
+    <div style="margin-top:2.5em; max-width:680px;">
+      <p class="lead">We've built programs in mortgage lending, small business services, and wealth management — not because it was easy, but because our members needed them. We want to make what we've built available to you.</p>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 3 — WHY WE'RE HERE
+══════════════════════════════════════ -->
+<div class="slide t-light" data-index="2">
+  <div class="slide-inner">
+    <div class="eyebrow">Our Intentions</div>
+    <h2>This is not a sales pitch.<br>It's an offer of partnership.</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:1.8em; gap:4vw;">
+      <div>
+        <p class="lead">We believe credit unions are strongest when we support each other. Smaller credit unions often face the same headwinds we've already navigated — with fewer resources to navigate them.</p>
+        <div style="margin-top:1.6em;">
+          <ul class="clean">
+            <li>We're not here to acquire your members</li>
+            <li>Your member relationships remain yours — always</li>
+            <li>We work in the background; you stay front and center</li>
+            <li>No exclusivity or lock-in</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <blockquote>
+          <p>"We've built the infrastructure. The question is — can we put it to work for more Arizona families?"</p>
+        </blockquote>
+        <div style="margin-top:1.8em;">
+          <div class="tag tag-navy">Our guiding principle</div>
+          <p>Credit unions exist to serve members, not to compete with each other. If we can help a smaller credit union deliver better products to their members, that's a win for the entire movement.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 4 — THE HEADWINDS
+══════════════════════════════════════ -->
+<div class="slide t-off" data-index="3">
+  <div class="slide-inner">
+    <div class="eyebrow">The Landscape</div>
+    <h2>You're navigating real headwinds.</h2>
+    <div class="rule"></div>
+    <div class="cols-3" style="margin-top:1em;">
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></div>
+        <h3>Scale Pressure</h3>
+        <p style="margin-top:0.7em;">Bigger institutions can offer lower rates and more products. Competing on range requires infrastructure most smaller CUs can't build alone.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Compliance Burden</h3>
+        <p style="margin-top:0.7em;">Regulatory demands keep growing. Keeping policies current, audits clean, and vendors vetted consumes management time and budget.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Talent & Leadership</h3>
+        <p style="margin-top:0.7em;">Recruiting and developing leaders in smaller markets is hard. Without development pipelines, key-person risk grows over time.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Earnings Pressure</h3>
+        <p style="margin-top:0.7em;">Thin margins mean every basis point matters. Balance sheet optimization and fee income diversification are increasingly necessary.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <h3>Member Expectations</h3>
+        <p style="margin-top:0.7em;">Members expect mortgage products, investment services, and small business lending. Meeting those needs without a referral network means losing members to banks.</p>
+      </div>
+      <div class="card" style="background:rgba(13,27,42,0.05); border:1px dashed rgba(13,27,42,0.15);">
+        <div style="height:100%; display:flex; align-items:center; justify-content:center; text-align:center; padding:1em;">
+          <p style="font-family:'Playfair Display',serif; font-style:italic; color:var(--navy); font-size:1.05rem; line-height:1.55;">None of these are unique to you. We've faced every one of them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 5 — LENDING SOLUTIONS
+══════════════════════════════════════ -->
+<div class="slide t-light" data-index="4">
+  <div class="slide-inner">
+    <div class="eyebrow">Partnership Service 1 of 4</div>
+    <h2>Lending Solutions</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:1.8em; gap:3.5vw;">
+      <div>
+        <div class="tag tag-copper">First Mortgage Lending</div>
+        <p>Your members come to you first. We give you the infrastructure to say yes.</p>
+        <ul class="check" style="margin-top:1em;">
+          <li>Full mortgage origination platform available to your members</li>
+          <li>Your team stays in the relationship — we handle processing and secondary market</li>
+          <li>Conventional, FHA, VA, USDA product set</li>
+          <li>Members see it as a product from their credit union</li>
+          <li>Revenue participation structure to be negotiated</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag tag-copper">Small Business Lending</div>
+        <p>SMBs are underserved in many Arizona communities. Your local relationships are the competitive advantage — our credit infrastructure enables the delivery.</p>
+        <ul class="check" style="margin-top:1em;">
+          <li>SBA 7(a) and 504 loan access</li>
+          <li>Lines of credit and term loans for small businesses</li>
+          <li>Credit underwriting and packaging support</li>
+          <li>Business deposit relationships stay with you</li>
+          <li>Shared revenue on funded loans</li>
+        </ul>
+        <div style="margin-top:1.4em; padding:1em 1.2em; background:rgba(13,27,42,0.05); border-radius:8px;">
+          <p style="font-size:0.88rem; color:var(--text-mid);"><strong>The principle:</strong> Your members should never need to walk into a bank to get a mortgage or a business loan. Let's make sure they don't have to.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 6 — WEALTH MANAGEMENT
+══════════════════════════════════════ -->
+<div class="slide t-off" data-index="5">
+  <div class="slide-inner">
+    <div class="eyebrow">Partnership Service 2 of 4</div>
+    <h2>Wealth Management Services</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:1.6em; gap:3.5vw;">
+      <div>
+        <p class="lead">When your members have money to invest, where do they go? Without an in-house offering, the answer is usually a bank or broker — and you lose the relationship.</p>
+        <div style="margin-top:1.6em;">
+          <ul class="clean">
+            <li>Investment accounts (brokerage, IRA, retirement planning)</li>
+            <li>Life and disability insurance products</li>
+            <li>Licensed advisors serve your members under your brand presence</li>
+            <li>Fee and revenue sharing back to your credit union</li>
+            <li>Program can be co-branded or white-labeled</li>
+          </ul>
+        </div>
+        <div style="margin-top:1.8em;">
+          <div class="tag tag-green">Why this matters</div>
+          <p>Wealth management deepens the member relationship in ways that a checking account simply can't. Members who have investments at their credit union rarely leave.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:1.2em;">
+          <h3 style="color:var(--navy); margin-bottom:0.6em;">What you gain</h3>
+          <ul class="check">
+            <li>A full investment program without hiring advisors</li>
+            <li>New non-interest income stream</li>
+            <li>Members keep their whole financial picture at your CU</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--navy); margin-bottom:0.6em;">What your members gain</h3>
+          <ul class="check">
+            <li>Trusted relationship with someone who knows them</li>
+            <li>Access to investment services they'd otherwise get from a bank</li>
+            <li>Local, Arizona-based support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 7 — ALM / BALANCE SHEET
+══════════════════════════════════════ -->
+<div class="slide t-dark" data-index="6">
+  <div class="slide-inner">
+    <div class="eyebrow">Partnership Service 3 of 4</div>
+    <h2>Balance Sheet &amp;<br>Liquidity Support</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:1.8em; gap:3.5vw;">
+      <div>
+        <div class="tag tag-copper" style="margin-bottom:0.9em;">Deposit Placement</div>
+        <p>If your balance sheet is deposit-heavy and you need earning assets — or if you have excess liquidity you want to put to work — we can place deposits on our balance sheet and pay a competitive rate.</p>
+        <ul class="clean" style="margin-top:1em;">
+          <li>Structured as certificates or term deposits</li>
+          <li>Competitive yield relative to Fed Funds alternatives</li>
+          <li>Helps your asset/liability mix</li>
+          <li>Flexible maturities based on your ALM strategy</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tag tag-copper" style="margin-bottom:0.9em;">Loan Participations</div>
+        <p>If you need earning assets but lack origination volume in specific categories, we can sell you participations in our loan portfolio — quality asset classes, vetted credit, immediate yield.</p>
+        <ul class="clean" style="margin-top:1em;">
+          <li>Consumer, mortgage, or commercial participation options</li>
+          <li>Full underwriting files and documentation shared</li>
+          <li>Choose asset classes that fit your risk appetite</li>
+          <li>Quarterly reporting on participation performance</li>
+        </ul>
+        <div style="margin-top:1.8em; padding:1.1em 1.3em; background:rgba(184,115,51,0.12); border:1px solid rgba(184,115,51,0.25); border-radius:8px;">
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.8);"><strong style="color:var(--copper-lt);">Bottom line:</strong> Your balance sheet should be working harder. Let's find structures that improve your earnings without adding operational complexity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 8 — LEADERSHIP & OPS
+══════════════════════════════════════ -->
+<div class="slide t-light" data-index="7">
+  <div class="slide-inner">
+    <div class="eyebrow">Partnership Service 4 of 4</div>
+    <h2>Leadership, Policy &amp;<br>Operational Resources</h2>
+    <div class="rule"></div>
+    <div class="cols-3" style="margin-top:1.8em;">
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <div class="tag tag-navy">Leadership Development</div>
+        <p>Open enrollment in our leadership cohort programs. Emerging managers and supervisors from your team participate alongside ours. Curriculum covers credit union operations, member experience, and management fundamentals.</p>
+        <div style="margin-top:1em; padding-top:1em; border-top:1px solid rgba(13,27,42,0.08);">
+          <p style="font-size:0.82rem; font-weight:600; color:var(--copper);">No charge to start — this is about the movement.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div class="tag tag-navy">Policy Library</div>
+        <p>Access to our policy and procedure framework — loan policies, BSA/AML procedures, lending guidelines, HR handbooks, and board governance documents. All built for Arizona-chartered credit unions and updated annually.</p>
+        <div style="margin-top:1em; padding-top:1em; border-top:1px solid rgba(13,27,42,0.08);">
+          <p style="font-size:0.82rem; font-weight:600; color:var(--copper);">Adapt to your charter — don't start from scratch.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="tag tag-navy">Vendor Management</div>
+        <p>Our vendor management process includes due diligence templates, contract review checklists, risk tiering frameworks, and a library of negotiated vendor terms. Plug our process into your operations.</p>
+        <div style="margin-top:1em; padding-top:1em; border-top:1px solid rgba(13,27,42,0.08);">
+          <p style="font-size:0.82rem; font-weight:600; color:var(--copper);">Regulators want this — we'll help you get there.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 9 — HOW IT WORKS
+══════════════════════════════════════ -->
+<div class="slide t-off" data-index="8">
+  <div class="slide-inner">
+    <div class="eyebrow">The Partnership Model</div>
+    <h2>How this actually works.</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:1.6em; gap:4vw; align-items:center;">
+      <div>
+        <ul class="clean" style="gap:0.2em;">
+          <li style="padding:0.8em 0 0.8em 1.6em;"><strong>You stay in front.</strong> Your brand, your team, your relationship. We never communicate directly with your members without your knowledge and direction.</li>
+          <div class="divider-line"></div>
+          <li style="padding:0.8em 0 0.8em 1.6em;"><strong>Start where you need it most.</strong> Pick one area — lending, wealth, operations — and build from there. No obligation to take everything.</li>
+          <div class="divider-line"></div>
+          <li style="padding:0.8em 0 0.8em 1.6em;"><strong>Governed by partner agreements.</strong> Every service is formalized in writing. Revenue sharing, service levels, and exit terms are all defined up front.</li>
+          <div class="divider-line"></div>
+          <li style="padding:0.8em 0 0.8em 1.6em;"><strong>No exclusivity.</strong> You can work with other partners. We're not asking for lock-in — we're asking for trust, and we'll earn it.</li>
+          <div class="divider-line"></div>
+          <li style="padding:0.8em 0 0.8em 1.6em;"><strong>Regular check-ins.</strong> Quarterly calls between our CEOs to review what's working, what isn't, and what's next.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card" style="padding:2em 2.2em; background:#fff;">
+          <div class="tag tag-green" style="margin-bottom:1.2em;">Our commitment to you</div>
+          <blockquote>
+            <p>"We will never use this relationship as leverage. If something isn't working, we fix it or we end it gracefully. That's what credit unions do for each other."</p>
+          </blockquote>
+          <div style="margin-top:1.6em;">
+            <p style="font-size:0.88rem; color:var(--text-mid);">We're asking for a chance to be useful — nothing more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 10 — FULL DISCLOSURE
+══════════════════════════════════════ -->
+<div class="slide t-copper" data-index="9">
+  <div class="slide-inner">
+    <div class="eyebrow" style="color:rgba(255,255,255,0.65);">Transparency</div>
+    <h2>Full Disclosure.</h2>
+    <div class="rule"></div>
+    <div class="cols-2" style="margin-top:2em; gap:4vw; align-items:start;">
+      <div>
+        <p class="lead">We believe in saying the quiet part out loud.</p>
+        <div style="margin-top:1.6em;">
+          <p>Everything we've described — the lending programs, wealth management, balance sheet tools, and operational resources — is offered because we genuinely want to help our fellow Arizona credit unions serve their members better.</p>
+          <div style="margin-top:1.4em;">
+            <p>That is our primary motivation, and we mean it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.2);">
+        <div style="font-size:0.72rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.65); margin-bottom:1em;">The honest part</div>
+        <p>If you ever arrived at a point where your board or membership considered a merger — for any reason — we would hope that the relationship and trust we had built together would give Copper State a seat at that table.</p>
+        <div style="margin-top:1.2em; padding-top:1.2em; border-top:1px solid rgba(255,255,255,0.15);">
+          <p style="font-size:0.9rem; opacity:0.85;">We're not building this relationship <em>for</em> that outcome. But we're not going to pretend that it isn't a possible future. You deserve to know that up front — so we're saying it now, and setting it aside.</p>
+        </div>
+        <div style="margin-top:1.4em;">
+          <p style="font-size:0.88rem; font-weight:600; color:rgba(255,255,255,0.9);">Our focus today: helping you succeed as an independent credit union.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SLIDE 11 — NEXT STEPS
+══════════════════════════════════════ -->
+<div class="slide t-dark" data-index="10">
+  <div class="slide-inner" style="align-items:center; text-align:center;">
+    <div class="eyebrow" style="text-align:center;">Thank You</div>
+    <h2 style="text-align:center;">Next Steps</h2>
+    <div class="rule" style="margin:1.4em auto 1.8em;"></div>
+
+    <div style="padding:2.2em 3em; background:rgba(184,115,51,0.12); border:1px solid rgba(184,115,51,0.3); border-radius:12px; max-width:480px;">
+      <div style="font-size:0.7rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:1.2em;">Get in touch</div>
+      <p style="font-family:'Playfair Display',serif; font-size:1.6rem; color:#fff; line-height:1.2;">Robb Scott</p>
+      <p style="font-size:1rem; color:rgba(255,255,255,0.5); margin-top:0.4em;">President/CEO · Copper State Credit Union</p>
+      <div style="margin-top:1.4em; padding-top:1.4em; border-top:1px solid rgba(184,115,51,0.25);">
+        <p style="font-size:1rem; color:var(--copper-lt); margin-top:0;">rscott@copperstatecu.org</p>
+        <p style="font-size:1rem; color:var(--copper-lt); margin-top:0.5em;">602.375.7318 &nbsp;·&nbsp; copperstatecu.org</p>
+      </div>
+    </div>
+  </div>
+  <div class="corner-mark"></div>
+</div>
+
+</div><!-- end #deck -->
+
+<!-- ══ NAV BAR ══ -->
+<div id="nav">
+  <div class="org">Copper State Credit Union · Partnership Proposal</div>
+  <div id="dots"></div>
+  <div class="controls">
+    <button id="btn-prev" onclick="go(-1)" disabled>← Prev</button>
+    <span id="counter">1 / 11</span>
+    <button id="btn-next" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const slides  = document.querySelectorAll('.slide');
+  const total   = slides.length;
+  const dotsEl  = document.getElementById('dots');
+  let current   = 0;
+
+  // Build dot indicators
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active-dot' : '');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    d.addEventListener('click', () => show(i));
+    dotsEl.appendChild(d);
+  });
+
+  function updateDots() {
+    dotsEl.querySelectorAll('.dot').forEach((d, i) =>
+      d.classList.toggle('active-dot', i === current)
+    );
+  }
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === total - 1;
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    updateDots();
+  }
+
+  function go(dir) { show(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End')  show(total - 1);
+  });
+
+  // Touch / swipe support
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  });
+
+  // Init
+  document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
