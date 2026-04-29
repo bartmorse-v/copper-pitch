@@ -87,9 +87,14 @@
 
     /* ── KPI ROW ────────────────────────────────── */
     .kpi-row {
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: 1fr 1fr 2fr;
       gap: var(--gap); margin-bottom: var(--gap);
     }
+    .kpi-card.kpi-thermo { display: flex; flex-direction: column; justify-content: center; }
+    .thermo-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; margin-bottom: 14px; }
+    .thermo-legend { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+    .thermo-leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-2); white-space: nowrap; }
+    .thermo-leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
     .kpi-card {
       background: var(--card); border-radius: var(--radius); padding: 20px 22px;
       box-shadow: var(--shadow); border-top: 3px solid transparent;
@@ -388,6 +393,7 @@
     /* ── RESPONSIVE ─────────────────────────────── */
     @media (max-width: 960px) {
       .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .kpi-card.kpi-thermo { grid-column: span 2; }
       .row-2-1, .row-1-2 { grid-template-columns: 1fr; }
       .insights-grid { grid-template-columns: repeat(2, 1fr); }
       .voices-grid   { grid-template-columns: repeat(2, 1fr); }
@@ -446,23 +452,35 @@
       <div class="kpi-sub">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; Q1 2026</div>
       <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
     </div>
-    <div class="kpi-card tier-exceptional">
-      <div class="kpi-label">Top Channel &mdash; Branch</div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">98.9<span class="kpi-denom" style="font-size:16px">%</span></div>
-        <span class="kpi-delta up">&#9650; +3.95pp</span>
+    <div class="kpi-card tier-effective kpi-thermo">
+      <div class="thermo-title">Performance Scale &mdash; Where do we stand?</div>
+      <div class="band-meter" style="margin-top:0">
+        <div class="band-track">
+          <div class="band-seg b-offtrack"></div>
+          <div class="band-seg b-mixed"></div>
+          <div class="band-seg b-effective"></div>
+          <div class="band-seg b-exceeds"></div>
+          <div class="band-seg b-exceptional"></div>
+        </div>
+        <div class="band-pointer-wrap" style="left:71.2%">
+          <div class="band-pointer-dot"></div>
+          <div class="band-pointer"></div>
+        </div>
+        <div class="band-labels">
+          <span>Off Track<br/>&le;2.00</span>
+          <span>Mixed<br/>2.01–2.75</span>
+          <span class="band-active">Effective<br/>2.76–3.75</span>
+          <span>Exceeds<br/>3.76–4.50</span>
+          <span>Exceptional<br/>4.51–5.00</span>
+        </div>
       </div>
-      <div class="kpi-sub">vs. 95.0% in Dec 2025</div>
-      <span class="kpi-badge badge-exceptional">Exceptional</span>
-    </div>
-    <div class="kpi-card tier-offtrack">
-      <div class="kpi-label">Needs Attention &mdash; Digital</div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">51.9<span class="kpi-denom" style="font-size:16px">%</span></div>
-        <span class="kpi-delta down">&#9660; &minus;10.6pp</span>
+      <div class="thermo-legend">
+        <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#FECACA"></div>Off Track &le;2.00</div>
+        <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#FED7AA"></div>Mixed 2.01–2.75</div>
+        <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#FEF08A"></div><strong>Effective 2.76–3.75</strong></div>
+        <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#BFDBFE"></div>Exceeds 3.76–4.50</div>
+        <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#BBF7D0"></div>Exceptional 4.51–5.00</div>
       </div>
-      <div class="kpi-sub">vs. 62.5% in Dec 2025</div>
-      <span class="kpi-badge badge-offtrack">Off Track</span>
     </div>
   </div>
 
