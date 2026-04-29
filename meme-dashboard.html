@@ -133,6 +133,49 @@
     .kpi-delta.down { background: var(--red-bg);   color: var(--red);   }
     .kpi-delta.flat { background: #f0f0f0;          color: var(--muted); }
 
+    /* ── CHANNEL TILES ──────────────────────────── */
+    .channel-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap); margin-bottom: var(--gap);
+    }
+    .ch-tile {
+      background: var(--card); border-radius: var(--radius); padding: 18px 20px;
+      box-shadow: var(--shadow); border-left: 4px solid transparent;
+      position: relative; transition: box-shadow 220ms ease, transform 220ms ease;
+    }
+    .ch-tile:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .ch-tile.t-exceptional { border-left-color: var(--green); }
+    .ch-tile.t-exceeds     { border-left-color: var(--blue);  }
+    .ch-tile.t-effective   { border-left-color: var(--amber); }
+    .ch-tile.t-mixed       { border-left-color: var(--orange);}
+    .ch-tile.t-offtrack    { border-left-color: var(--red);   }
+    .ch-tile-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+    .ch-tile-em { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+    .ch-tile-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .ch-tile-score-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .ch-tile-score { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
+    .ch-tile-unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+    .ch-tile-prev { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+    .ch-tile-delta {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 700; padding: 2px 7px;
+      border-radius: 10px; line-height: 1.4; flex-shrink: 0;
+    }
+    .ch-tile-delta.up   { background: var(--green-bg); color: var(--green); }
+    .ch-tile-delta.down { background: var(--red-bg);   color: var(--red);   }
+    .ch-tile-delta.flat { background: #f0f0f0;          color: var(--muted); }
+    .ch-tile-delta.na   { background: #f0f0f0;          color: var(--muted); }
+
+    /* ── COMBINED TIMELINE ───────────────────────── */
+    .timeline-note { font-size: 10px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+    @media (max-width: 960px) {
+      .channel-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .channel-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── CARD ───────────────────────────────────── */
     .card {
       background: var(--card); border-radius: var(--radius); padding: 22px 24px;
@@ -482,6 +525,153 @@
         <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#BBF7D0"></div>Exceptional 4.51–5.00</div>
       </div>
     </div>
+  </div>
+
+  <!-- CHANNEL TILES -->
+  <div class="section-label">Channel Performance &mdash; January 2026</div>
+  <div class="channel-grid">
+
+    <div class="ch-tile t-exceeds">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 1 &mdash; NPS</span>
+        <span class="ch-tile-delta up">&#9650; +2 pts</span>
+      </div>
+      <div class="ch-tile-name">Net Promoter Score</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">74</span>
+        <span class="ch-tile-unit">/ 100</span>
+      </div>
+      <div class="ch-tile-prev">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; 739 responses</div>
+      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
+    </div>
+
+    <div class="ch-tile t-exceeds">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 2 &mdash; Response Rate</span>
+        <span class="ch-tile-delta up">&#9650; +11.06 pts</span>
+      </div>
+      <div class="ch-tile-name">Survey Response Rate</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">26.2</span>
+        <span class="ch-tile-unit">%</span>
+      </div>
+      <div class="ch-tile-prev">vs. 15.18% in Dec 2025 &nbsp;&middot;&nbsp; 1,167 responses</div>
+      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
+    </div>
+
+    <div class="ch-tile t-exceptional">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 3 &mdash; Consumer Loan</span>
+        <span class="ch-tile-delta flat">&#9644; No change</span>
+      </div>
+      <div class="ch-tile-name">Consumer Loan Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">100</span>
+        <span class="ch-tile-unit">%</span>
+      </div>
+      <div class="ch-tile-prev">vs. 100% in Dec 2025 &nbsp;&middot;&nbsp; 15 responses</div>
+      <span class="kpi-badge badge-exceptional">Exceptional</span>
+    </div>
+
+    <div class="ch-tile t-exceeds">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 4 &mdash; New Member</span>
+        <span class="ch-tile-delta down">&#9660; &minus;1.44 pts</span>
+      </div>
+      <div class="ch-tile-name">New Member Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">92.3</span>
+        <span class="ch-tile-unit">%</span>
+      </div>
+      <div class="ch-tile-prev">vs. 93.75% in Dec 2025 &nbsp;&middot;&nbsp; 13 responses</div>
+      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
+    </div>
+
+    <div class="ch-tile t-effective">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 5 &mdash; Mortgage</span>
+        <span class="ch-tile-delta na">YTD only</span>
+      </div>
+      <div class="ch-tile-name">Mortgage Loan Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">80.0</span>
+        <span class="ch-tile-unit">% YTD</span>
+      </div>
+      <div class="ch-tile-prev">Jan 2026 YTD &nbsp;&middot;&nbsp; 5 responses</div>
+      <span class="kpi-badge badge-effective">Effective</span>
+    </div>
+
+    <div class="ch-tile t-mixed">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 6 &mdash; Chat</span>
+        <span class="ch-tile-delta na">Prior N/A</span>
+      </div>
+      <div class="ch-tile-name">Chat Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">2.50</span>
+        <span class="ch-tile-unit">/ 5</span>
+      </div>
+      <div class="ch-tile-prev">26 responses &nbsp;&middot;&nbsp; combined Autopilot + Agent</div>
+      <span class="kpi-badge badge-mixed">Mixed Performance</span>
+    </div>
+
+    <div class="ch-tile t-exceptional">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 7 &mdash; Branch</span>
+        <span class="ch-tile-delta up">&#9650; +3.95 pts</span>
+      </div>
+      <div class="ch-tile-name">Branch Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">98.9</span>
+        <span class="ch-tile-unit">%</span>
+      </div>
+      <div class="ch-tile-prev">vs. 95.0% in Dec 2025 &nbsp;&middot;&nbsp; 95 responses</div>
+      <span class="kpi-badge badge-exceptional">Exceptional</span>
+    </div>
+
+    <div class="ch-tile t-exceeds">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 8 &mdash; Phone</span>
+        <span class="ch-tile-delta up">&#9650; +0.10</span>
+      </div>
+      <div class="ch-tile-name">Phone Call Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">4.36</span>
+        <span class="ch-tile-unit">/ 5</span>
+      </div>
+      <div class="ch-tile-prev">vs. 4.26 in Dec 2025 &nbsp;&middot;&nbsp; 301 responses</div>
+      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
+    </div>
+
+    <div class="ch-tile t-offtrack">
+      <div class="ch-tile-header">
+        <span class="ch-tile-em">EM 9 &mdash; Digital</span>
+        <span class="ch-tile-delta down">&#9660; &minus;10.61 pts</span>
+      </div>
+      <div class="ch-tile-name">Digital Experience</div>
+      <div class="ch-tile-score-row">
+        <span class="ch-tile-score">51.9</span>
+        <span class="ch-tile-unit">%</span>
+      </div>
+      <div class="ch-tile-prev">vs. 62.5% in Dec 2025 &nbsp;&middot;&nbsp; 106 responses</div>
+      <span class="kpi-badge badge-offtrack">Off Track</span>
+    </div>
+
+  </div>
+
+  <!-- COMBINED TIMELINE -->
+  <div class="section-label">Member Experience Timeline &mdash; All Channels</div>
+  <div class="card row-full" style="margin-bottom:var(--gap)">
+    <div class="card-title">Channel Score History</div>
+    <div class="card-subtitle">Quarterly trend for all channels, MX Score and NPS &mdash; normalized to a 0–100 scale so all channels can be compared on one axis</div>
+    <div class="chart-wrap" style="height:340px">
+      <canvas id="timelineChart"></canvas>
+    </div>
+    <p class="timeline-note">
+      Normalization: CSAT % channels shown as-is &nbsp;&middot;&nbsp; NPS mapped (NPS + 100) &divide; 2 &nbsp;&middot;&nbsp;
+      Star ratings (1–5) mapped (score &minus; 1) &divide; 4 &times; 100 &nbsp;&middot;&nbsp; MX Score (1–5) same formula.
+      Hover for original values. Dashed lines = limited history.
+    </p>
   </div>
 
   <!-- PERFORMANCE SNAPSHOT -->
@@ -1404,6 +1594,133 @@ new Chart(document.getElementById('journeyChart').getContext('2d'), {
     scales:{
       x:{ grid:{ display:false }, ticks:{ font:{ size:12, weight:'600' }, color:MUTED } },
       y:{ min:60, max:105, grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED, callback: v => v+'%' } }
+    }
+  }
+});
+
+// ── COMBINED TIMELINE CHART ──────────────────────────────────────────────────
+// All channels normalized to 0-100:
+//   CSAT % → as-is   |   NPS → (v+100)/2   |   1-5 stars → (v-1)/4*100
+// Quarterly: Q1'23 through Q1'26 (13 points)
+const tlLabels = ["Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"];
+
+// Original values for tooltips (null = no data that quarter)
+const tlOrig = {
+  mx:        [3.64, 3.56, 3.50, 3.58, 3.85, 3.64, 3.61, 3.71, 3.16, 2.73, 3.18, 3.30, 3.56],
+  nps:       [67,   66,   66,   59,   68,   70,   69,   69,   67,   62,   72,   72,   74  ],
+  branch:    [100,  85.8, 74.4, 66.7, 95.7, 97.4, 96.2, 96.5, 97.1, null, 97.1, 95.8, 99.0],
+  newLoan:   [null, null, null, null, 97.4, 97.5, 98.2, 98.1, 100,  87.6, 94.4, 99.1, 100 ],
+  newMember: [null, null, null, null, null, null, null, null, 75.6, 93.9, 96.9, 96.4, 92.3],
+  digital:   [null, null, null, null, 68.6, 69.0, 67.6, 67.6, 39.4, 41.5, 50.8, 53.9, 51.9],
+  phone:     [null, null, null, null, null, null, 4.33, 4.47, 4.17, 3.83, 4.32, 4.34, 4.36],
+};
+
+// Normalize to 0-100
+function normMX(v)  { return v === null ? null : +((v-1)/4*100).toFixed(1); }
+function normNPS(v) { return v === null ? null : +((v+100)/2).toFixed(1); }
+function normStar(v){ return v === null ? null : +((v-1)/4*100).toFixed(1); }
+function norm0(v)   { return v; }
+
+const tlData = {
+  mx:        tlOrig.mx.map(normMX),
+  nps:       tlOrig.nps.map(normNPS),
+  branch:    tlOrig.branch.map(norm0),
+  newLoan:   tlOrig.newLoan.map(norm0),
+  newMember: tlOrig.newMember.map(norm0),
+  digital:   tlOrig.digital.map(norm0),
+  phone:     tlOrig.phone.map(normStar),
+};
+
+const tlFmt = {
+  mx:        v => v === null ? null : `MX Score: ${tlOrig.mx[v]} /5`,
+  nps:       v => v === null ? null : `NPS: ${tlOrig.nps[v]}`,
+  branch:    v => v === null ? null : `Branch: ${tlOrig.branch[v]}%`,
+  newLoan:   v => v === null ? null : `New Loan: ${tlOrig.newLoan[v]}%`,
+  newMember: v => v === null ? null : `New Member: ${tlOrig.newMember[v]}%`,
+  digital:   v => v === null ? null : `Digital: ${tlOrig.digital[v]}%`,
+  phone:     v => v === null ? null : `Phone: ${tlOrig.phone[v]} /5`,
+};
+
+const NL = tlLabels.length - 1;
+function tlPt(color, last=true) {
+  return { pointRadius: ctx => ctx.dataIndex===NL ? 6 : (ctx.raw===null ? 0 : 2.5),
+           pointBackgroundColor: color, pointBorderColor:'#fff', pointBorderWidth:2 };
+}
+
+new Chart(document.getElementById('timelineChart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: tlLabels,
+    datasets: [
+      {
+        label:'MX Score', data: tlData.mx, origKey:'mx',
+        borderColor: NAVY, borderWidth: 3, fill: false, tension: 0.35,
+        ...tlPt(NAVY), spanGaps: true,
+      },
+      {
+        label:'NPS', data: tlData.nps, origKey:'nps',
+        borderColor: '#00A3E0', borderWidth: 2.5, fill: false, tension: 0.35,
+        ...tlPt('#00A3E0'), spanGaps: true,
+      },
+      {
+        label:'Branch', data: tlData.branch, origKey:'branch',
+        borderColor: '#15803D', borderWidth: 2, fill: false, tension: 0.35,
+        ...tlPt('#15803D'), spanGaps: true,
+      },
+      {
+        label:'New Loan', data: tlData.newLoan, origKey:'newLoan',
+        borderColor: '#059669', borderWidth: 2, fill: false, tension: 0.35,
+        borderDash: [5,3],
+        ...tlPt('#059669'), spanGaps: true,
+      },
+      {
+        label:'New Member', data: tlData.newMember, origKey:'newMember',
+        borderColor: '#0891B2', borderWidth: 2, fill: false, tension: 0.35,
+        borderDash: [5,3],
+        ...tlPt('#0891B2'), spanGaps: true,
+      },
+      {
+        label:'Phone', data: tlData.phone, origKey:'phone',
+        borderColor: '#B45309', borderWidth: 2, fill: false, tension: 0.35,
+        ...tlPt('#B45309'), spanGaps: true,
+      },
+      {
+        label:'Digital', data: tlData.digital, origKey:'digital',
+        borderColor: '#DC2626', borderWidth: 2, fill: false, tension: 0.35,
+        ...tlPt('#DC2626'), spanGaps: true,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        display: true, position: 'top',
+        labels: { font: { size: 11 }, color: MUTED, boxWidth: 14, padding: 14,
+                  filter: item => item.text !== '' }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const key = ctx.dataset.origKey;
+            const idx = ctx.dataIndex;
+            const origArr = tlOrig[key];
+            const v = origArr ? origArr[idx] : null;
+            if (v === null || v === undefined) return null;
+            const fmt = tlFmt[key];
+            return fmt ? ` ${fmt(idx)}` : ` ${ctx.dataset.label}: ${v}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 }, color: MUTED } },
+      y: {
+        min: 30, max: 100,
+        grid: { color: '#F1F5F9' },
+        ticks: { font: { size: 10 }, color: MUTED, callback: v => v + '' }
+      }
     }
   }
 });
