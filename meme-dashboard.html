@@ -627,8 +627,8 @@
   <div style="display:grid;grid-template-columns:1fr 2fr;gap:var(--gap);margin-bottom:var(--gap);align-items:start">
     <div class="card">
       <div class="card-title">Are our surveys reaching members?</div>
-      <div class="card-subtitle">Response rate by channel — January 2026 &nbsp;&middot;&nbsp; Higher rate = higher confidence</div>
-      <div class="chart-wrap" style="height:208px">
+      <div class="card-subtitle">Responses received by channel — January 2026</div>
+      <div class="chart-wrap" style="height:240px">
         <canvas id="responseChart"></canvas>
       </div>
     </div>
@@ -1126,9 +1126,9 @@ const channels = [
   { name:'Chat',       score:34.62,  tier:'Off Track',   color:RED,    note:'Avg ★ 2.50/5', delta: null,  deltaDir:'na'   },
 ];
 
-const responseChannels = ['Mortgage','New Member','Phone','New Loan','NPS'];
-const responseRates    = [83.3,29.5,14.7,9.5,9.1];
-const responseColors   = [GREEN,BLUE,AMBER,'#00A3E0',MUTED];
+const responseChannels = ['NPS','Phone','Digital','Branch','Chat','New Loan','New Member','Mortgage'];
+const responseCounts   = [739,301,106,95,26,15,13,5];
+const responseColors   = [NAVY,AMBER,RED,GREEN,ORANGE,'#00A3E0',BLUE,AMBER];
 
 const journeyChannels = ['New Loan','New Member','Mortgage'];
 const journeyScores   = [100,92.31,80.0];
@@ -1228,7 +1228,7 @@ new Chart(document.getElementById('responseChart').getContext('2d'), {
   data:{
     labels:responseChannels,
     datasets:[{
-      label:'Response Rate', data:responseRates,
+      label:'Responses', data:responseCounts,
       backgroundColor:responseColors.map(c=>c+'CC'),
       borderColor:responseColors, borderWidth:1.5, borderRadius:5,
     }]
@@ -1237,10 +1237,10 @@ new Chart(document.getElementById('responseChart').getContext('2d'), {
     responsive:true, maintainAspectRatio:false, indexAxis:'y',
     plugins:{
       legend:{ display:false },
-      tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.x.toFixed(1)}% response rate` } }
+      tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.x} responses` } }
     },
     scales:{
-      x:{ min:0, max:100, grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED, callback: v => v+'%' } },
+      x:{ min:0, grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED } },
       y:{ grid:{ display:false }, ticks:{ font:{ size:11 }, color:MUTED } }
     }
   }
