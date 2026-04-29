@@ -133,6 +133,23 @@
     .kpi-delta.down { background: var(--red-bg);   color: var(--red);   }
     .kpi-delta.flat { background: #f0f0f0;          color: var(--muted); }
 
+    /* ── TAB BAR ─────────────────────────────────── */
+    .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+    .tab-btn {
+      padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border);
+      background: var(--bg); font-size: 11px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 150ms ease; font-family: inherit;
+    }
+    .tab-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .tab-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+
+    /* ── BAR DELTA ───────────────────────────────── */
+    .ch-delta { font-family:'Montserrat','Trebuchet MS',sans-serif; width:86px; font-size:11px; font-weight:700; flex-shrink:0; text-align:right; }
+    .ch-delta.up   { color: var(--green);  }
+    .ch-delta.down { color: var(--red);    }
+    .ch-delta.flat { color: var(--muted);  }
+    .ch-delta.na   { color: var(--muted); font-weight: 400; }
+
     /* ── CHANNEL TILES ──────────────────────────── */
     .channel-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -527,244 +544,48 @@
     </div>
   </div>
 
-  <!-- CHANNEL TILES -->
-  <div class="section-label">Channel Performance &mdash; January 2026</div>
-  <div class="channel-grid">
-
-    <div class="ch-tile t-exceeds">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 1 &mdash; NPS</span>
-        <span class="ch-tile-delta up">&#9650; +2 pts</span>
-      </div>
-      <div class="ch-tile-name">Net Promoter Score</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">74</span>
-        <span class="ch-tile-unit">/ 100</span>
-      </div>
-      <div class="ch-tile-prev">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; 739 responses</div>
-      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
-    </div>
-
-    <div class="ch-tile t-exceeds">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 2 &mdash; Response Rate</span>
-        <span class="ch-tile-delta up">&#9650; +11.06 pts</span>
-      </div>
-      <div class="ch-tile-name">Survey Response Rate</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">26.2</span>
-        <span class="ch-tile-unit">%</span>
-      </div>
-      <div class="ch-tile-prev">vs. 15.18% in Dec 2025 &nbsp;&middot;&nbsp; 1,167 responses</div>
-      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
-    </div>
-
-    <div class="ch-tile t-exceptional">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 3 &mdash; Consumer Loan</span>
-        <span class="ch-tile-delta flat">&#9644; No change</span>
-      </div>
-      <div class="ch-tile-name">Consumer Loan Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">100</span>
-        <span class="ch-tile-unit">%</span>
-      </div>
-      <div class="ch-tile-prev">vs. 100% in Dec 2025 &nbsp;&middot;&nbsp; 15 responses</div>
-      <span class="kpi-badge badge-exceptional">Exceptional</span>
-    </div>
-
-    <div class="ch-tile t-exceeds">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 4 &mdash; New Member</span>
-        <span class="ch-tile-delta down">&#9660; &minus;1.44 pts</span>
-      </div>
-      <div class="ch-tile-name">New Member Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">92.3</span>
-        <span class="ch-tile-unit">%</span>
-      </div>
-      <div class="ch-tile-prev">vs. 93.75% in Dec 2025 &nbsp;&middot;&nbsp; 13 responses</div>
-      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
-    </div>
-
-    <div class="ch-tile t-effective">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 5 &mdash; Mortgage</span>
-        <span class="ch-tile-delta na">YTD only</span>
-      </div>
-      <div class="ch-tile-name">Mortgage Loan Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">80.0</span>
-        <span class="ch-tile-unit">% YTD</span>
-      </div>
-      <div class="ch-tile-prev">Jan 2026 YTD &nbsp;&middot;&nbsp; 5 responses</div>
-      <span class="kpi-badge badge-effective">Effective</span>
-    </div>
-
-    <div class="ch-tile t-mixed">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 6 &mdash; Chat</span>
-        <span class="ch-tile-delta na">Prior N/A</span>
-      </div>
-      <div class="ch-tile-name">Chat Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">2.50</span>
-        <span class="ch-tile-unit">/ 5</span>
-      </div>
-      <div class="ch-tile-prev">26 responses &nbsp;&middot;&nbsp; combined Autopilot + Agent</div>
-      <span class="kpi-badge badge-mixed">Mixed Performance</span>
-    </div>
-
-    <div class="ch-tile t-exceptional">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 7 &mdash; Branch</span>
-        <span class="ch-tile-delta up">&#9650; +3.95 pts</span>
-      </div>
-      <div class="ch-tile-name">Branch Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">98.9</span>
-        <span class="ch-tile-unit">%</span>
-      </div>
-      <div class="ch-tile-prev">vs. 95.0% in Dec 2025 &nbsp;&middot;&nbsp; 95 responses</div>
-      <span class="kpi-badge badge-exceptional">Exceptional</span>
-    </div>
-
-    <div class="ch-tile t-exceeds">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 8 &mdash; Phone</span>
-        <span class="ch-tile-delta up">&#9650; +0.10</span>
-      </div>
-      <div class="ch-tile-name">Phone Call Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">4.36</span>
-        <span class="ch-tile-unit">/ 5</span>
-      </div>
-      <div class="ch-tile-prev">vs. 4.26 in Dec 2025 &nbsp;&middot;&nbsp; 301 responses</div>
-      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
-    </div>
-
-    <div class="ch-tile t-offtrack">
-      <div class="ch-tile-header">
-        <span class="ch-tile-em">EM 9 &mdash; Digital</span>
-        <span class="ch-tile-delta down">&#9660; &minus;10.61 pts</span>
-      </div>
-      <div class="ch-tile-name">Digital Experience</div>
-      <div class="ch-tile-score-row">
-        <span class="ch-tile-score">51.9</span>
-        <span class="ch-tile-unit">%</span>
-      </div>
-      <div class="ch-tile-prev">vs. 62.5% in Dec 2025 &nbsp;&middot;&nbsp; 106 responses</div>
-      <span class="kpi-badge badge-offtrack">Off Track</span>
-    </div>
-
-  </div>
-
-  <!-- COMBINED TIMELINE -->
-  <div class="section-label">Member Experience Timeline &mdash; All Channels</div>
-  <div class="card row-full" style="margin-bottom:var(--gap)">
-    <div class="card-title">Channel Score History</div>
-    <div class="card-subtitle">Quarterly trend for all channels, MX Score and NPS &mdash; normalized to a 0–100 scale so all channels can be compared on one axis</div>
-    <div class="chart-wrap" style="height:340px">
-      <canvas id="timelineChart"></canvas>
-    </div>
-    <p class="timeline-note">
-      Normalization: CSAT % channels shown as-is &nbsp;&middot;&nbsp; NPS mapped (NPS + 100) &divide; 2 &nbsp;&middot;&nbsp;
-      Star ratings (1–5) mapped (score &minus; 1) &divide; 4 &times; 100 &nbsp;&middot;&nbsp; MX Score (1–5) same formula.
-      Hover for original values. Dashed lines = limited history.
-    </p>
-  </div>
-
-  <!-- PERFORMANCE SNAPSHOT -->
-  <div class="section-label">Performance Snapshot</div>
-  <div class="row-1-2">
-
+  <!-- NPS & MX SCORE TREND -->
+  <div class="section-label">Would our members recommend us?</div>
+  <div class="row-full">
     <div class="card">
-      <div class="card-title">Where do we stand overall?</div>
-      <div class="card-subtitle">Overall Member Experience Score vs. performance bands</div>
-      <div class="mes-score-display">
-        <div class="mes-big-num">3.56<span class="mes-denom">/5</span></div>
-        <div class="mes-band-label">Effective Band</div>
-        <div style="font-size:11px;color:var(--amber);margin-top:6px;font-weight:600;">
-          0.20 points below Exceeds Expectations threshold
-        </div>
-      </div>
-      <div class="band-meter">
-        <div class="band-track">
-          <div class="band-seg b-offtrack"></div>
-          <div class="band-seg b-mixed"></div>
-          <div class="band-seg b-effective"></div>
-          <div class="band-seg b-exceeds"></div>
-          <div class="band-seg b-exceptional"></div>
-        </div>
-        <div class="band-pointer-wrap" style="left:64%">
-          <div class="band-pointer-dot"></div>
-          <div class="band-pointer"></div>
-        </div>
-        <div class="band-labels">
-          <span>Off Track<br/>&le;2.00</span>
-          <span>Mixed<br/>2.01–2.75</span>
-          <span class="band-active">Effective<br/>2.76–3.75</span>
-          <span>Exceeds<br/>3.76–4.50</span>
-          <span>Exceptional<br/>4.51–5.00</span>
-        </div>
-      </div>
-      <div class="band-targets">
-        <div class="band-target-row">
-          <div class="bt-dot" style="background:#FECACA;border:1px solid #F87171"></div>
-          <span class="bt-label">Off Track</span><span class="bt-range">&le;&nbsp;2.00</span>
-        </div>
-        <div class="band-target-row">
-          <div class="bt-dot" style="background:#FED7AA;border:1px solid #FB923C"></div>
-          <span class="bt-label">Mixed Performance</span><span class="bt-range">2.01–2.75</span>
-        </div>
-        <div class="band-target-row" style="font-weight:700">
-          <div class="bt-dot" style="background:#FDE047;border:1px solid #CA8A04"></div>
-          <span class="bt-label bt-current">Current &mdash; Effective</span><span class="bt-range bt-current">2.76–3.75</span>
-        </div>
-        <div class="band-target-row">
-          <div class="bt-dot" style="background:#93C5FD;border:1px solid #3B82F6"></div>
-          <span class="bt-label">Exceeds Expectations</span><span class="bt-range">3.76–4.50</span>
-        </div>
-        <div class="band-target-row">
-          <div class="bt-dot" style="background:#86EFAC;border:1px solid #22C55E"></div>
-          <span class="bt-label">Exceptional</span><span class="bt-range">4.51–5.00</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Would our members recommend us?</div>
-      <div class="card-subtitle">Net Promoter Score (NPS) — quarterly, Q3 2022 through Q1 2026</div>
-      <div class="chart-wrap" style="height:240px">
+      <div class="card-title">Net Promoter Score &amp; MX Score &mdash; Quarterly Trend</div>
+      <div class="card-subtitle">NPS tracks likelihood to recommend (left axis, quarterly Q3 2022&ndash;Q1 2026). MX Score is the composite of all 9 Experience Measures (right axis).</div>
+      <div class="chart-wrap" style="height:290px">
         <canvas id="npsChart"></canvas>
       </div>
       <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;align-items:center;">
         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
-          <div style="width:20px;height:2px;background:#86EFAC;border-radius:2px"></div> Exceptional (80)
+          <div style="width:20px;height:3px;background:var(--navy);border-radius:2px"></div> NPS Score (left axis)
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
-          <div style="width:20px;height:0;border-top:2px dashed #3B82F6"></div> Exceeds (70)
+          <div style="width:20px;height:3px;background:#B87333;border-radius:2px;border-top:2px dashed #B87333"></div> MX Score (right axis)
         </div>
         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
-          <div style="width:20px;height:0;border-top:2px dashed #CA8A04"></div> Effective (66)
+          <div style="width:20px;height:0;border-top:2px dashed #86EFAC"></div> Exceptional (NPS 80)
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
+          <div style="width:20px;height:0;border-top:2px dashed #3B82F6"></div> Exceeds (NPS 70)
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
+          <div style="width:20px;height:0;border-top:2px dashed #CA8A04"></div> Effective (NPS 66)
         </div>
         <div style="margin-left:auto;font-size:12px;font-weight:700;color:var(--navy)">
-          Q1 2026: <span style="color:var(--blue)">74 &mdash; All-time high</span>
+          Q1 2026: NPS <span style="color:var(--blue)">74 &mdash; All-time high</span> &nbsp;&middot;&nbsp; MX <span style="color:#B87333">3.56</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- CHANNEL PERFORMANCE -->
-  <div class="section-label">Channel Performance</div>
+  <div class="section-label">Channel Performance &mdash; January 2026</div>
   <div class="row-full">
     <div class="card">
       <div class="card-title">How is each channel performing?</div>
-      <div class="card-subtitle">January 2026 satisfaction scores across all service channels — ranked best to worst</div>
+      <div class="card-subtitle">Jan 2026 satisfaction scores &mdash; ranked best to worst. Change column shows shift vs. previous period.</div>
       <div class="channel-bars" id="channelBars"></div>
       <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:12px;align-items:center;">
         <div style="font-size:11px;color:var(--muted);font-style:italic;flex:1;min-width:200px">
-          * Phone &amp; Chat show % of members rating 4&ndash;5 stars. All other channels show % marking &ldquo;Happy&rdquo; (satisfied).
+          * Phone &amp; Chat show average star rating (1&ndash;5). All other channels show % of members marking &ldquo;Happy.&rdquo;
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <span class="kpi-badge badge-exceptional" style="font-size:10px">Exceptional &ge;95%</span>
@@ -777,29 +598,46 @@
     </div>
   </div>
 
-  <!-- TRENDS & SURVEY HEALTH -->
-  <div class="section-label">Trends &amp; Survey Health</div>
-  <div class="row-2-1">
-
+  <!-- CHANNEL TIMELINES -->
+  <div class="section-label">Channel Score History</div>
+  <div class="row-full">
     <div class="card">
-      <div class="card-title">How are we trending over time?</div>
-      <div class="card-subtitle">Monthly MX score — January 2023 through January 2026 &nbsp;&middot;&nbsp; Reference lines show band thresholds</div>
-      <div class="chart-wrap" style="height:250px">
-        <canvas id="mesTrendChart"></canvas>
+      <div class="card-title">How has each channel trended over time?</div>
+      <div class="card-subtitle">Click a channel tab to see its full score history with benchmark thresholds</div>
+      <div class="tab-bar" id="channelTabs">
+        <button class="tab-btn active" data-ch="nps">NPS</button>
+        <button class="tab-btn" data-ch="rr">Response Rate</button>
+        <button class="tab-btn" data-ch="loan">Consumer Loan</button>
+        <button class="tab-btn" data-ch="newmbr">New Member</button>
+        <button class="tab-btn" data-ch="mortgage">Mortgage</button>
+        <button class="tab-btn" data-ch="chat">Chat</button>
+        <button class="tab-btn" data-ch="branch">Branch</button>
+        <button class="tab-btn" data-ch="phone">Phone</button>
+        <button class="tab-btn" data-ch="digital">Digital</button>
       </div>
+      <div class="chart-wrap" style="height:300px">
+        <canvas id="channelTimelineChart"></canvas>
+      </div>
+      <p id="channelTimelineNote" class="timeline-note"></p>
     </div>
+  </div>
 
+  <!-- SURVEY HEALTH -->
+  <div class="section-label">Survey Health</div>
+  <div class="row-full">
     <div class="card">
       <div class="card-title">Are our surveys reaching members?</div>
       <div class="card-subtitle">Response rate by channel — January 2026 &nbsp;&middot;&nbsp; Higher rate = higher confidence</div>
-      <div class="chart-wrap" style="height:208px">
-        <canvas id="responseChart"></canvas>
-      </div>
-      <div class="caveat-box">
-        <svg class="caveat-box-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-        <div>
-          <div class="caveat-box-title">NPS sample caveat</div>
-          <div class="caveat-box-text">NPS response rate is 9.1% (739/8,083 delivered). Score of 74 is based on a small sample &mdash; interpret with caution.</div>
+      <div style="display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:center">
+        <div class="chart-wrap" style="height:208px">
+          <canvas id="responseChart"></canvas>
+        </div>
+        <div class="caveat-box">
+          <svg class="caveat-box-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          <div>
+            <div class="caveat-box-title">NPS sample caveat</div>
+            <div class="caveat-box-text">NPS response rate is 9.1% (739/8,083 delivered). Score of 74 is based on a small sample &mdash; interpret with caution.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1328,13 +1166,13 @@ const mesScores = [
 ];
 
 const channels = [
-  { name:'New Loan',   score:100.00, tier:'Exceptional', color:GREEN,  note:'% Happy (14/14)' },
-  { name:'Branch',     score:98.95,  tier:'Exceptional', color:GREEN,  note:'% Happy (94/95)' },
-  { name:'New Member', score:92.31,  tier:'Exceeds',     color:BLUE,   note:'% Happy (12/13)' },
-  { name:'Phone',      score:82.72,  tier:'Effective',   color:AMBER,  note:'% 4–5★ (249/301)'},
-  { name:'Mortgage',   score:80.00,  tier:'Effective',   color:AMBER,  note:'% Happy (4/5)'   },
-  { name:'Digital',    score:51.89,  tier:'Off Track',   color:RED,    note:'% Happy (55/106)'},
-  { name:'Chat',       score:34.62,  tier:'Off Track',   color:RED,    note:'% 4–5★ (9/26)'  },
+  { name:'New Loan',   score:100.00, tier:'Exceptional', color:GREEN,  note:'% Happy (14/14)',  delta: 0,      deltaDir:'flat' },
+  { name:'Branch',     score:98.95,  tier:'Exceptional', color:GREEN,  note:'% Happy (94/95)',  delta:+3.95,   deltaDir:'up'   },
+  { name:'New Member', score:92.31,  tier:'Exceeds',     color:BLUE,   note:'% Happy (12/13)',  delta:-1.44,   deltaDir:'down' },
+  { name:'Phone',      score:82.72,  tier:'Effective',   color:AMBER,  note:'Avg ★ 4.36/5', delta:+0.10,  deltaDir:'up',  deltaLabel:'★ +0.10' },
+  { name:'Mortgage',   score:80.00,  tier:'Effective',   color:AMBER,  note:'% Happy YTD (4/5)',delta: null,   deltaDir:'na'   },
+  { name:'Digital',    score:51.89,  tier:'Off Track',   color:RED,    note:'% Happy (55/106)', delta:-10.61,  deltaDir:'down' },
+  { name:'Chat',       score:34.62,  tier:'Off Track',   color:RED,    note:'Avg ★ 2.50/5', delta: null,  deltaDir:'na'   },
 ];
 
 const responseChannels = ['Mortgage','New Member','Phone','New Loan','NPS'];
@@ -1362,6 +1200,15 @@ const barsEl = document.getElementById('channelBars');
 channels.forEach(ch => {
   const row = document.createElement('div');
   row.className = 'ch-row';
+  let deltaHtml;
+  if (ch.deltaDir === 'na' || ch.delta === null) {
+    deltaHtml = `<div class="ch-delta na">—</div>`;
+  } else if (ch.deltaDir === 'flat' || ch.delta === 0) {
+    deltaHtml = `<div class="ch-delta flat">No change</div>`;
+  } else {
+    const lbl = ch.deltaLabel || `${ch.delta > 0 ? '+' : ''}${ch.delta.toFixed(2)} pts`;
+    deltaHtml = `<div class="ch-delta ${ch.deltaDir}">${ch.delta > 0 ? '▲' : '▼'} ${lbl}</div>`;
+  }
   row.innerHTML = `
     <div class="ch-name">${ch.name}</div>
     <div class="ch-bar-track">
@@ -1372,27 +1219,36 @@ channels.forEach(ch => {
     <div class="ch-score" style="color:${ch.color}">${ch.score.toFixed(1)}%</div>
     ${tierBadgeHtml(ch.tier)}
     <div class="ch-note">${ch.note}</div>
+    ${deltaHtml}
   `;
   barsEl.appendChild(row);
 });
 
-// NPS Chart
+// NPS + MX Score Chart (dual axis)
+const mesQuarterly = [null,null, 3.64,3.56,3.50,3.58, 3.85,3.64,3.61,3.71, 3.16,2.73,3.18,3.30, 3.56];
 new Chart(document.getElementById('npsChart').getContext('2d'), {
   type:'line',
   data:{
     labels:npsLabels,
     datasets:[
       {
-        label:'NPS Score', data:npsScores,
+        label:'NPS Score', data:npsScores, yAxisID:'y',
         borderColor:NAVY, backgroundColor:NAVY+'18', borderWidth:2.5,
         fill:true, tension:0.3,
         pointRadius: ctx => ctx.dataIndex===14 ? 7 : 3,
         pointBackgroundColor: ctx => ctx.dataIndex===14 ? BLUE : NAVY,
         pointBorderColor:'#fff', pointBorderWidth:2, order:1,
       },
-      { label:'Exceptional', data:npsExceptional, borderColor:GREEN+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:4 },
-      { label:'Exceeds',     data:npsExceeds,     borderColor:BLUE+'60',  borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:3 },
-      { label:'Effective',   data:npsEffective,   borderColor:AMBER+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:2 },
+      {
+        label:'MX Score', data:mesQuarterly, yAxisID:'y2',
+        borderColor:'#B87333', borderWidth:2.5, borderDash:[6,3],
+        fill:false, tension:0.3, spanGaps:true,
+        pointRadius: ctx => ctx.raw===null ? 0 : (ctx.dataIndex===14 ? 7 : 3),
+        pointBackgroundColor:'#B87333', pointBorderColor:'#fff', pointBorderWidth:2, order:2,
+      },
+      { label:'Exceptional', data:npsExceptional, yAxisID:'y', borderColor:GREEN+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:4 },
+      { label:'Exceeds',     data:npsExceeds,     yAxisID:'y', borderColor:BLUE+'60',  borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:3 },
+      { label:'Effective',   data:npsEffective,   yAxisID:'y', borderColor:AMBER+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false, order:2 },
     ]
   },
   options:{
@@ -1400,64 +1256,20 @@ new Chart(document.getElementById('npsChart').getContext('2d'), {
     interaction:{ mode:'index', intersect:false },
     plugins:{
       legend:{ display:false },
-      tooltip:{ callbacks:{ label: ctx => ctx.dataset.label==='NPS Score' ? ` NPS: ${ctx.parsed.y}` : ` ${ctx.dataset.label}: ${ctx.parsed.y}` } }
+      tooltip:{ callbacks:{ label: ctx => {
+        if (ctx.dataset.label==='NPS Score') return ` NPS: ${ctx.parsed.y}`;
+        if (ctx.dataset.label==='MX Score') return ctx.raw===null ? null : ` MX Score: ${Number(ctx.raw).toFixed(2)}`;
+        return ` ${ctx.dataset.label}: ${ctx.parsed.y}`;
+      }}}
     },
     scales:{
       x:{ grid:{ display:false }, ticks:{ font:{ size:10 }, maxRotation:45, color:MUTED } },
-      y:{ min:50, max:90, grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED } }
+      y:  { min:50, max:90, position:'left',  grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED } },
+      y2: { min:2.0, max:4.5, position:'right', grid:{ display:false }, ticks:{ font:{ size:10 }, color:'#B87333', callback: v => v.toFixed(1) } }
     }
   }
 });
 
-// MX Trend Chart
-const pointColors = mesScores.map((s,i) => {
-  if (i===mesScores.length-1) return BLUE;
-  if (s>=3.76) return GREEN;
-  if (s>=2.76) return AMBER;
-  return RED;
-});
-new Chart(document.getElementById('mesTrendChart').getContext('2d'), {
-  type:'line',
-  data:{
-    labels:mesLabels,
-    datasets:[
-      {
-        label:'MX Score', data:mesScores,
-        borderColor:NAVY,
-        backgroundColor: ctx => {
-          const g = ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);
-          g.addColorStop(0, NAVY+'25'); g.addColorStop(1, NAVY+'00'); return g;
-        },
-        borderWidth:2, fill:true, tension:0.3,
-        pointRadius: ctx => ctx.dataIndex===mesScores.length-1 ? 7 : 2,
-        pointBackgroundColor:pointColors, pointBorderColor:'#fff', pointBorderWidth:1.5,
-        order:1,
-      },
-      { label:'Exceeds (3.76)',  data:Array(mesScores.length).fill(3.76), borderColor:BLUE+'70',  borderWidth:1.5, borderDash:[5,4], pointRadius:0, fill:false, order:2 },
-      { label:'Effective (2.76)',data:Array(mesScores.length).fill(2.76), borderColor:AMBER+'70', borderWidth:1.5, borderDash:[5,4], pointRadius:0, fill:false, order:3 },
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    interaction:{ mode:'index', intersect:false },
-    plugins:{
-      legend:{ position:'top', labels:{ usePointStyle:true, font:{ size:10 }, color:MUTED, padding:12 } },
-      tooltip:{ callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}` } }
-    },
-    scales:{
-      x:{
-        grid:{ display:false },
-        ticks:{ font:{ size:9 }, color:MUTED, maxRotation:45,
-          callback:(val,idx) => {
-            const l = mesLabels[idx];
-            return (l.includes("'23")||l.includes("'24")||l.includes("'25")||l.includes("'26")) ? l : '';
-          }
-        }
-      },
-      y:{ min:2.2, max:4.3, grid:{ color:'#F1F5F9' }, ticks:{ font:{ size:10 }, color:MUTED, callback: v => v.toFixed(2) } }
-    }
-  }
-});
 
 // Response Rate Chart
 new Chart(document.getElementById('responseChart').getContext('2d'), {
@@ -1598,132 +1410,150 @@ new Chart(document.getElementById('journeyChart').getContext('2d'), {
   }
 });
 
-// ── COMBINED TIMELINE CHART ──────────────────────────────────────────────────
-// All channels normalized to 0-100:
-//   CSAT % → as-is   |   NPS → (v+100)/2   |   1-5 stars → (v-1)/4*100
-// Quarterly: Q1'23 through Q1'26 (13 points)
-const tlLabels = ["Q1'23","Q2'23","Q3'23","Q4'23","Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"];
-
-// Original values for tooltips (null = no data that quarter)
-const tlOrig = {
-  mx:        [3.64, 3.56, 3.50, 3.58, 3.85, 3.64, 3.61, 3.71, 3.16, 2.73, 3.18, 3.30, 3.56],
-  nps:       [67,   66,   66,   59,   68,   70,   69,   69,   67,   62,   72,   72,   74  ],
-  branch:    [100,  85.8, 74.4, 66.7, 95.7, 97.4, 96.2, 96.5, 97.1, null, 97.1, 95.8, 99.0],
-  newLoan:   [null, null, null, null, 97.4, 97.5, 98.2, 98.1, 100,  87.6, 94.4, 99.1, 100 ],
-  newMember: [null, null, null, null, null, null, null, null, 75.6, 93.9, 96.9, 96.4, 92.3],
-  digital:   [null, null, null, null, 68.6, 69.0, 67.6, 67.6, 39.4, 41.5, 50.8, 53.9, 51.9],
-  phone:     [null, null, null, null, null, null, 4.33, 4.47, 4.17, 3.83, 4.32, 4.34, 4.36],
+// ── CHANNEL TIMELINE (TABBED) ───────────────────────────────────────────────
+const channelHistoryData = {
+  nps: {
+    label:'NPS Score', unit:'', color:NAVY, yMin:50, yMax:90,
+    labels:npsLabels, data:npsScores,
+    benchmarks:[ {v:80,l:'Exceptional',c:GREEN}, {v:70,l:'Exceeds',c:BLUE}, {v:66,l:'Effective',c:AMBER} ],
+    note:'Quarterly NPS survey — emailed to a randomized 25% of members each quarter.'
+  },
+  rr: {
+    label:'Response Rate (%)', unit:'%', color:'#0891B2', yMin:5, yMax:35,
+    labels:["Jan'24","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'24","Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[16.0,23.0,25.6,20.5,21.11,20.98,22.99,24.0,23.81,21.76,21.79,17.07,20.33,17.33,16.25,13.53,12.09,12.62,13.21,14.58,13.95,15.51,16.48,15.18,26.24],
+    benchmarks:[ {v:30,l:'Exceptional',c:GREEN}, {v:20,l:'Exceeds',c:BLUE}, {v:17,l:'Effective',c:AMBER} ],
+    note:'Overall monthly response rate across all channels. Jan 2026 spike driven by high Mortgage response rate (83.3%).'
+  },
+  loan: {
+    label:'% Happy', unit:'%', color:'#15803D', yMin:70, yMax:105,
+    labels:["Jan'24","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'24","Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[100,92.31,100,100,94.74,97.78,97.83,96.67,100,97.83,100,96.43,100,100,100,81.25,89.29,92.11,96.88,96.08,90.32,97.44,100,100,100],
+    benchmarks:[ {v:95,l:'Exceptional',c:GREEN}, {v:90,l:'Exceeds',c:BLUE}, {v:80,l:'Effective',c:AMBER} ],
+    note:'Email survey sent 1–3 business days after loan funding.'
+  },
+  newmbr: {
+    label:'% Happy', unit:'%', color:BLUE, yMin:40, yMax:105,
+    labels:["Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[88.46,50.00,88.24,100,90.91,90.91,96.15,94.44,100,95.45,100,93.75,92.31],
+    benchmarks:[ {v:95,l:'Exceptional',c:GREEN}, {v:90,l:'Exceeds',c:BLUE}, {v:80,l:'Effective',c:AMBER} ],
+    note:'Email survey sent 3–5 days after account opening. Data available from Jan 2025. Feb 2025 dip (50%) reflects very small sample.'
+  },
+  mortgage: {
+    label:'% Happy (YTD)', unit:'%', color:AMBER, yMin:60, yMax:105,
+    labels:['Jan 2026 YTD'],
+    data:[80],
+    benchmarks:[ {v:95,l:'Exceptional',c:GREEN}, {v:90,l:'Exceeds',c:BLUE}, {v:80,l:'Effective',c:AMBER} ],
+    note:'Mortgage data is tracked YTD only — monthly trend data is not available. Jan 2026 YTD: 80% (5 responses, 4 happy, 1 neutral).'
+  },
+  chat: {
+    label:'Avg Rating (1–5)', unit:'/5', color:'#C26000', yMin:1, yMax:5,
+    labels:["Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    datasets:[
+      { label:'Autopilot Chat', color:'#C26000',
+        data:[1.91,1.30,null,1.29,1.68,1.19,1.42,1.48,1.86,1.63,1.05,2.00,null] },
+      { label:'Solution Center Agent', color:'#0891B2',
+        data:[null,null,4.42,3.55,2.67,4.00,4.20,4.20,4.29,4.75,4.75,3.00,null] },
+      { label:'Combined (Jan '26)', color:NAVY,
+        data:[null,null,null,null,null,null,null,null,null,null,null,null,2.50] },
+    ],
+    benchmarks:[ {v:4.51,l:'Exceptional',c:GREEN}, {v:2.76,l:'Effective',c:AMBER} ],
+    note:'2025: Autopilot and Solution Center Agent tracked separately. Jan 2026 combined avg = 2.50/5. Autopilot consistently scores lower, reflecting automated response friction.'
+  },
+  branch: {
+    label:'% Happy', unit:'%', color:'#15803D', yMin:60, yMax:105,
+    labels:["Jan'24","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'24","Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[92.31,94.87,100,95.83,100,96.30,93.51,96.67,98.31,96.90,96.30,96.30,97.06,null,null,null,null,null,95.92,97.60,97.79,97.25,95.00,95.00,98.95],
+    benchmarks:[ {v:95,l:'Exceptional',c:GREEN}, {v:85,l:'Exceeds',c:BLUE}, {v:76,l:'Effective',c:AMBER} ],
+    note:'Email/text sent 1 day after branch visit. Nulls in Feb–Jun 2025 indicate months with no recorded data. All months with data have been at Exceptional level since Jan 2024.'
+  },
+  phone: {
+    label:'Avg Rating (1–5)', unit:'/5', color:'#B45309', yMin:2.5, yMax:5.0,
+    labels:["Jul'24","Aug","Sep","Oct","Nov","Dec'24","Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[4.33,4.37,4.30,4.65,4.40,4.29,4.53,3.86,4.11,3.63,3.66,4.21,4.37,4.19,4.40,4.42,4.33,4.26,4.36],
+    benchmarks:[ {v:4.51,l:'Exceptional',c:GREEN}, {v:3.76,l:'Exceeds',c:BLUE}, {v:2.76,l:'Effective',c:AMBER} ],
+    note:'Recorded in-call survey via Talkdesk (Solution Center only). Available from Jul 2024. Dip in Q2 2025 (Apr–May) warrants further investigation.'
+  },
+  digital: {
+    label:'% Happy', unit:'%', color:RED, yMin:0, yMax:80,
+    labels:["Jan'24","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'24","Jan'25","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec'25","Jan'26"],
+    data:[66.48,70.95,68.35,68.87,68.55,69.66,72.41,67.43,62.96,61.14,73.39,68.29,68.63,20.25,29.32,40.91,41.18,42.31,53.97,48.28,50.00,50.91,48.39,62.50,51.89],
+    benchmarks:[ {v:75,l:'Exceptional',c:GREEN}, {v:72,l:'Exceeds',c:BLUE}, {v:70,l:'Effective',c:AMBER} ],
+    note:'Pop-up survey on copperstatecu.org, OLB, and mobile app. Sharp drop Feb–Mar 2025 reflects the new digital banking platform launch. Recovery ongoing but not yet back to pre-launch levels.'
+  }
 };
 
-// Normalize to 0-100
-function normMX(v)  { return v === null ? null : +((v-1)/4*100).toFixed(1); }
-function normNPS(v) { return v === null ? null : +((v+100)/2).toFixed(1); }
-function normStar(v){ return v === null ? null : +((v-1)/4*100).toFixed(1); }
-function norm0(v)   { return v; }
+let channelChart = null;
 
-const tlData = {
-  mx:        tlOrig.mx.map(normMX),
-  nps:       tlOrig.nps.map(normNPS),
-  branch:    tlOrig.branch.map(norm0),
-  newLoan:   tlOrig.newLoan.map(norm0),
-  newMember: tlOrig.newMember.map(norm0),
-  digital:   tlOrig.digital.map(norm0),
-  phone:     tlOrig.phone.map(normStar),
-};
-
-const tlFmt = {
-  mx:        v => v === null ? null : `MX Score: ${tlOrig.mx[v]} /5`,
-  nps:       v => v === null ? null : `NPS: ${tlOrig.nps[v]}`,
-  branch:    v => v === null ? null : `Branch: ${tlOrig.branch[v]}%`,
-  newLoan:   v => v === null ? null : `New Loan: ${tlOrig.newLoan[v]}%`,
-  newMember: v => v === null ? null : `New Member: ${tlOrig.newMember[v]}%`,
-  digital:   v => v === null ? null : `Digital: ${tlOrig.digital[v]}%`,
-  phone:     v => v === null ? null : `Phone: ${tlOrig.phone[v]} /5`,
-};
-
-const NL = tlLabels.length - 1;
-function tlPt(color, last=true) {
-  return { pointRadius: ctx => ctx.dataIndex===NL ? 6 : (ctx.raw===null ? 0 : 2.5),
-           pointBackgroundColor: color, pointBorderColor:'#fff', pointBorderWidth:2 };
+function buildDatasets(ch) {
+  const N = ch.labels.length - 1;
+  // multi-dataset (chat)
+  if (ch.datasets) {
+    const ds = ch.datasets.map(d => ({
+      label: d.label, data: d.data,
+      borderColor: d.color, borderWidth: 2, fill: false, tension: 0.35, spanGaps: true,
+      pointRadius: ctx => ctx.raw===null ? 0 : (ctx.dataIndex===N ? 7 : 2.5),
+      pointBackgroundColor: d.color, pointBorderColor:'#fff', pointBorderWidth:2,
+    }));
+    ds.push(...ch.benchmarks.map(b => ({
+      label: b.l, data: Array(ch.labels.length).fill(b.v),
+      borderColor: b.c+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false,
+    })));
+    return ds;
+  }
+  // single-dataset
+  return [
+    {
+      label: ch.label, data: ch.data,
+      borderColor: ch.color, backgroundColor: ch.color+'18', borderWidth: 2.5,
+      fill: true, tension: 0.35, spanGaps: true,
+      pointRadius: ctx => ctx.raw===null ? 0 : (ctx.dataIndex===N ? 7 : 2.5),
+      pointBackgroundColor: ch.color, pointBorderColor:'#fff', pointBorderWidth:2,
+    },
+    ...ch.benchmarks.map(b => ({
+      label: b.l, data: Array(ch.labels.length).fill(b.v),
+      borderColor: b.c+'60', borderWidth:1.5, borderDash:[4,4], pointRadius:0, fill:false,
+    }))
+  ];
 }
 
-new Chart(document.getElementById('timelineChart').getContext('2d'), {
-  type: 'line',
-  data: {
-    labels: tlLabels,
-    datasets: [
-      {
-        label:'MX Score', data: tlData.mx, origKey:'mx',
-        borderColor: NAVY, borderWidth: 3, fill: false, tension: 0.35,
-        ...tlPt(NAVY), spanGaps: true,
+function showChannelTab(key) {
+  const ch = channelHistoryData[key];
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.ch===key));
+  document.getElementById('channelTimelineNote').textContent = ch.note || '';
+  if (channelChart) { channelChart.destroy(); channelChart = null; }
+  channelChart = new Chart(document.getElementById('channelTimelineChart').getContext('2d'), {
+    type: 'line',
+    data: { labels: ch.labels, datasets: buildDatasets(ch) },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: {
+          display: !!(ch.datasets),
+          labels: { font:{ size:10 }, color:MUTED, boxWidth:12, padding:10 }
+        },
+        tooltip: { callbacks: {
+          label: ctx => ctx.raw===null ? null : ` ${ctx.dataset.label}: ${Number(ctx.raw).toFixed(2)}${ch.unit}`
+        }}
       },
-      {
-        label:'NPS', data: tlData.nps, origKey:'nps',
-        borderColor: '#00A3E0', borderWidth: 2.5, fill: false, tension: 0.35,
-        ...tlPt('#00A3E0'), spanGaps: true,
-      },
-      {
-        label:'Branch', data: tlData.branch, origKey:'branch',
-        borderColor: '#15803D', borderWidth: 2, fill: false, tension: 0.35,
-        ...tlPt('#15803D'), spanGaps: true,
-      },
-      {
-        label:'New Loan', data: tlData.newLoan, origKey:'newLoan',
-        borderColor: '#059669', borderWidth: 2, fill: false, tension: 0.35,
-        borderDash: [5,3],
-        ...tlPt('#059669'), spanGaps: true,
-      },
-      {
-        label:'New Member', data: tlData.newMember, origKey:'newMember',
-        borderColor: '#0891B2', borderWidth: 2, fill: false, tension: 0.35,
-        borderDash: [5,3],
-        ...tlPt('#0891B2'), spanGaps: true,
-      },
-      {
-        label:'Phone', data: tlData.phone, origKey:'phone',
-        borderColor: '#B45309', borderWidth: 2, fill: false, tension: 0.35,
-        ...tlPt('#B45309'), spanGaps: true,
-      },
-      {
-        label:'Digital', data: tlData.digital, origKey:'digital',
-        borderColor: '#DC2626', borderWidth: 2, fill: false, tension: 0.35,
-        ...tlPt('#DC2626'), spanGaps: true,
-      },
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: {
-        display: true, position: 'top',
-        labels: { font: { size: 11 }, color: MUTED, boxWidth: 14, padding: 14,
-                  filter: item => item.text !== '' }
-      },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const key = ctx.dataset.origKey;
-            const idx = ctx.dataIndex;
-            const origArr = tlOrig[key];
-            const v = origArr ? origArr[idx] : null;
-            if (v === null || v === undefined) return null;
-            const fmt = tlFmt[key];
-            return fmt ? ` ${fmt(idx)}` : ` ${ctx.dataset.label}: ${v}`;
-          }
+      scales: {
+        x: { grid:{ display:false }, ticks:{ font:{ size:10 }, maxRotation:45, color:MUTED } },
+        y: {
+          min: ch.yMin, max: ch.yMax,
+          grid:{ color:'#F1F5F9' },
+          ticks:{ font:{ size:10 }, color:MUTED, callback: v => v + ch.unit }
         }
       }
-    },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 10 }, color: MUTED } },
-      y: {
-        min: 30, max: 100,
-        grid: { color: '#F1F5F9' },
-        ticks: { font: { size: 10 }, color: MUTED, callback: v => v + '' }
-      }
     }
-  }
+  });
+}
+
+document.getElementById('channelTabs').addEventListener('click', e => {
+  if (e.target.classList.contains('tab-btn')) showChannelTab(e.target.dataset.ch);
 });
+showChannelTab('nps');
+
 </script>
 </body>
 </html>
