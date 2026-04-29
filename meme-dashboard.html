@@ -87,7 +87,7 @@
 
     /* ── KPI ROW ────────────────────────────────── */
     .kpi-row {
-      display: grid; grid-template-columns: 1fr 1fr 2fr;
+      display: grid; grid-template-columns: 1fr 2fr 1fr;
       gap: var(--gap); margin-bottom: var(--gap);
     }
     .kpi-card.kpi-thermo { display: flex; flex-direction: column; justify-content: center; }
@@ -453,7 +453,7 @@
     /* ── RESPONSIVE ─────────────────────────────── */
     @media (max-width: 960px) {
       .kpi-row { grid-template-columns: repeat(2, 1fr); }
-      .kpi-card.kpi-thermo { grid-column: span 2; }
+      .kpi-card.kpi-thermo { grid-column: 1 / -1; }
       .row-2-1, .row-1-2 { grid-template-columns: 1fr; }
       .insights-grid { grid-template-columns: repeat(2, 1fr); }
       .voices-grid   { grid-template-columns: repeat(2, 1fr); }
@@ -503,15 +503,6 @@
       <div class="kpi-sub">vs. 3.18 in Dec 2025</div>
       <span class="kpi-badge badge-effective">Effective</span>
     </div>
-    <div class="kpi-card tier-exceeds">
-      <div class="kpi-label">Net Promoter Score</div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">74</div>
-        <span class="kpi-delta up">&#9650; +2 pts</span>
-      </div>
-      <div class="kpi-sub">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; Q1 2026</div>
-      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
-    </div>
     <div class="kpi-card tier-effective kpi-thermo">
       <div class="thermo-title">Performance Scale &mdash; Where do we stand?</div>
       <div class="band-meter" style="margin-top:0">
@@ -541,6 +532,15 @@
         <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#BFDBFE"></div>Exceeds 3.76–4.50</div>
         <div class="thermo-leg-item"><div class="thermo-leg-dot" style="background:#BBF7D0"></div>Exceptional 4.51–5.00</div>
       </div>
+    </div>
+    <div class="kpi-card tier-exceeds">
+      <div class="kpi-label">Net Promoter Score</div>
+      <div class="kpi-value-row">
+        <div class="kpi-value">74</div>
+        <span class="kpi-delta up">&#9650; +2 pts</span>
+      </div>
+      <div class="kpi-sub">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; Q1 2026</div>
+      <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
     </div>
   </div>
 
