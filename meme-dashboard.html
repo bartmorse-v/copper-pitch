@@ -144,7 +144,7 @@
       width: 3px; background: var(--copper); border-radius: 2px;
     }
 
-    /* ── MES BAND METER ─────────────────────────── */
+    /* ── MX BAND METER ─────────────────────────── */
     .mes-score-display { text-align: center; margin-bottom: 20px; }
     .mes-big-num {
       font-family: 'Montserrat', 'Trebuchet MS', sans-serif; font-size: 58px; font-weight: 700;
@@ -420,7 +420,7 @@
   <!-- KPI CARDS -->
   <div class="kpi-row">
     <div class="kpi-card tier-effective">
-      <div class="kpi-label">Overall MES Score</div>
+      <div class="kpi-label">Overall MX Score</div>
       <div class="kpi-value">3.56<span class="kpi-denom">/5.00</span></div>
       <div class="kpi-sub">Up from 3.18 in Dec 2025 (+0.38)</div>
       <span class="kpi-badge badge-effective">Effective</span>
@@ -554,7 +554,7 @@
 
     <div class="card">
       <div class="card-title">How are we trending over time?</div>
-      <div class="card-subtitle">Monthly MES score — January 2023 through January 2026 &nbsp;&middot;&nbsp; Reference lines show band thresholds</div>
+      <div class="card-subtitle">Monthly MX score — January 2023 through January 2026 &nbsp;&middot;&nbsp; Reference lines show band thresholds</div>
       <div class="chart-wrap" style="height:250px">
         <canvas id="mesTrendChart"></canvas>
       </div>
@@ -758,7 +758,7 @@
             Critical Priority
           </div>
           <div class="insight-title">Digital &amp; Chat are in crisis</div>
-          <div class="insight-body">Digital satisfaction is 51.9% — the worst performing channel by far. Chat scores 2.50/5 stars. Both are dragging the overall MES score below the "Exceeds" target. Top complaints: login failures, Autopilot bot being unhelpful, mobile app balance display issues, and too many pop-ups.</div>
+          <div class="insight-body">Digital satisfaction is 51.9% — the worst performing channel by far. Chat scores 2.50/5 stars. Both are dragging the overall MX score below the "Exceeds" target. Top complaints: login failures, Autopilot bot being unhelpful, mobile app balance display issues, and too many pop-ups.</div>
           <div class="insight-action">&rarr; Audit Autopilot chat flows immediately. Fix login/app bugs before next report cycle.</div>
         </div>
 
@@ -767,7 +767,7 @@
             <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="currentColor"/></svg>
             Watch Closely
           </div>
-          <div class="insight-title">MES is recovering &mdash; but slowly</div>
+          <div class="insight-title">MX is recovering &mdash; but slowly</div>
           <div class="insight-body">The score dipped to a low of 2.56 in February 2025 — the only time it fell into "Mixed" territory. The current 3.56 represents a full-year recovery (+0.38 since Dec 2025), but it still sits 0.20 points below the "Exceeds Expectations" target of 3.76. The trend is positive but fragile.</div>
           <div class="insight-action">&rarr; Investigate root cause of Feb 2025 collapse. Confirm it won't recur.</div>
         </div>
@@ -1180,7 +1180,7 @@ new Chart(document.getElementById('npsChart').getContext('2d'), {
   }
 });
 
-// MES Trend Chart
+// MX Trend Chart
 const pointColors = mesScores.map((s,i) => {
   if (i===mesScores.length-1) return BLUE;
   if (s>=3.76) return GREEN;
@@ -1193,7 +1193,7 @@ new Chart(document.getElementById('mesTrendChart').getContext('2d'), {
     labels:mesLabels,
     datasets:[
       {
-        label:'MES Score', data:mesScores,
+        label:'MX Score', data:mesScores,
         borderColor:NAVY,
         backgroundColor: ctx => {
           const g = ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);
