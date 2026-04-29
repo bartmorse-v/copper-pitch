@@ -118,6 +118,15 @@
     .badge-effective   { background: var(--amber-bg); color: var(--amber); }
     .badge-mixed       { background: var(--orange-bg);color: var(--orange);}
     .badge-offtrack    { background: var(--red-bg);   color: var(--red);   }
+    .kpi-value-row { display: flex; align-items: baseline; gap: 10px; }
+    .kpi-delta {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 13px; font-weight: 700; padding: 2px 8px;
+      border-radius: 12px; line-height: 1.4; flex-shrink: 0;
+    }
+    .kpi-delta.up   { background: var(--green-bg); color: var(--green); }
+    .kpi-delta.down { background: var(--red-bg);   color: var(--red);   }
+    .kpi-delta.flat { background: #f0f0f0;          color: var(--muted); }
 
     /* ── CARD ───────────────────────────────────── */
     .card {
@@ -421,26 +430,38 @@
   <div class="kpi-row">
     <div class="kpi-card tier-effective">
       <div class="kpi-label">Overall MX Score</div>
-      <div class="kpi-value">3.56<span class="kpi-denom">/5.00</span></div>
-      <div class="kpi-sub">Up from 3.18 in Dec 2025 (+0.38)</div>
+      <div class="kpi-value-row">
+        <div class="kpi-value">3.56<span class="kpi-denom">/5.00</span></div>
+        <span class="kpi-delta up">&#9650; +0.38</span>
+      </div>
+      <div class="kpi-sub">vs. 3.18 in Dec 2025</div>
       <span class="kpi-badge badge-effective">Effective</span>
     </div>
     <div class="kpi-card tier-exceeds">
       <div class="kpi-label">Net Promoter Score</div>
-      <div class="kpi-value">74</div>
-      <div class="kpi-sub">Highest recorded &nbsp;&middot;&nbsp; Q1 2026</div>
+      <div class="kpi-value-row">
+        <div class="kpi-value">74</div>
+        <span class="kpi-delta up">&#9650; +2 pts</span>
+      </div>
+      <div class="kpi-sub">vs. 72 in Q4 2025 &nbsp;&middot;&nbsp; Q1 2026</div>
       <span class="kpi-badge badge-exceeds">Exceeds Expectations</span>
     </div>
     <div class="kpi-card tier-exceptional">
       <div class="kpi-label">Top Channel &mdash; Branch</div>
-      <div class="kpi-value">98.9<span class="kpi-denom" style="font-size:16px">%</span></div>
-      <div class="kpi-sub">94 of 95 members satisfied</div>
+      <div class="kpi-value-row">
+        <div class="kpi-value">98.9<span class="kpi-denom" style="font-size:16px">%</span></div>
+        <span class="kpi-delta up">&#9650; +3.95pp</span>
+      </div>
+      <div class="kpi-sub">vs. 95.0% in Dec 2025</div>
       <span class="kpi-badge badge-exceptional">Exceptional</span>
     </div>
     <div class="kpi-card tier-offtrack">
       <div class="kpi-label">Needs Attention &mdash; Digital</div>
-      <div class="kpi-value">51.9<span class="kpi-denom" style="font-size:16px">%</span></div>
-      <div class="kpi-sub">55 happy &nbsp;&middot;&nbsp; 16 neutral &nbsp;&middot;&nbsp; 35 unhappy</div>
+      <div class="kpi-value-row">
+        <div class="kpi-value">51.9<span class="kpi-denom" style="font-size:16px">%</span></div>
+        <span class="kpi-delta down">&#9660; &minus;10.6pp</span>
+      </div>
+      <div class="kpi-sub">vs. 62.5% in Dec 2025</div>
       <span class="kpi-badge badge-offtrack">Off Track</span>
     </div>
   </div>
