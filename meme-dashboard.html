@@ -51,13 +51,23 @@
 
     /* ── HEADER ─────────────────────────────────── */
     .header {
-      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-light) 100%);
+      background: url('foil-bg.jpg') center/cover no-repeat;
       border-radius: var(--radius);
-      padding: 24px 28px;
+      padding: 32px 28px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
       margin-bottom: var(--gap);
       box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
     }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(20, 8, 0, 0.35);
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+    .header > * { position: relative; z-index: 1; }
     .header-left { display: flex; align-items: center; gap: 14px; }
     .header-logo {
       display: flex; flex-direction: column; align-items: flex-start;
@@ -475,10 +485,7 @@
   <!-- HEADER -->
   <div class="header">
     <div class="header-left">
-      <div class="header-logo">
-        <div class="header-logo-name"><span>Copper</span>State</div>
-        <div class="header-logo-cu">Credit Union</div>
-      </div>
+      <img src="cscu-logo-white.png" alt="Copper State Credit Union" style="height:56px;width:auto;display:block;flex-shrink:0">
       <div class="header-title">
         <h1>Member Experience Measurement Engine</h1>
         <p>Copper State Credit Union &nbsp;&middot;&nbsp; Monitoring member satisfaction across 7 channels</p>
